@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
-import {View, StyleSheet, ScrollView, Alert} from 'react-native';
+import {View, StyleSheet, SafeAreaView, Alert} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import {withTheme, Text, Divider} from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -22,7 +22,7 @@ export function MainTest({navigation}){
       }, [navigation]);
 
     return (
-        <View style={{...styles.container}}>
+        <SafeAreaView style={{...styles.container}}>
             <View style={{...styles.header, backgroundColor: colors.card}}>
                 <View style={styles.info}>
                     <Text style={styles.headerText}>No Question</Text>
@@ -63,7 +63,7 @@ export function MainTest({navigation}){
                 }} 
             />
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -183,6 +183,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     headerButton: {
-        marginLeft: 10,
+        marginHorizontal: 10,
     }
 });
