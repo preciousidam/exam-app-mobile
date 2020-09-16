@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import {Text, Avatar, Badge, withTheme, Button, Divider} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useTheme} from '@react-navigation/native';
@@ -22,7 +22,7 @@ export function PracticeScreen({navigation}){
     const onSubmit = _ => setShowModal(false);
 
     return(
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <ScrollView>
                 <View style={styles.innerView}>
                     <Header name={'Ebube'} />
@@ -59,7 +59,7 @@ export function PracticeScreen({navigation}){
             </ScrollView>
             <LevelModal show={showModal} onSubmit={onSubmit} />
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.background} />
-        </SafeAreaView>
+        </View>
     )
 }
 

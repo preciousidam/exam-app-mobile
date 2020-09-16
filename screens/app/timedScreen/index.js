@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, SafeAreaView, Image} from 'react-native';
+import {View, StyleSheet, ScrollView, Image} from 'react-native';
 import {Text, Badge, withTheme, Button, Divider} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useTheme} from '@react-navigation/native';
@@ -11,7 +11,7 @@ import {data, practise} from '../../../constants/data';
 export function TimedScreen({navigation}){
     const {colors, dark} = useTheme()
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             
             <View style={styles.container}>
                 <Header />
@@ -19,7 +19,7 @@ export function TimedScreen({navigation}){
             </View>
             
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.primary} />
-        </SafeAreaView>
+        </View>
     );
 }
 

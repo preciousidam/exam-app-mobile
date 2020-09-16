@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {KeyboardAvoidingView, Text, View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import {KeyboardAvoidingView, Text, View, StyleSheet, ScrollView } from 'react-native';
 import { Text as Typography } from 'react-native-elements';
 import { AppLoading } from 'expo';
 import { withTheme } from 'react-native-elements';
@@ -27,70 +27,68 @@ export function SignUp({navigation}){
 
     return (
         fontLoaded ?
-            <SafeAreaView>
-                <ScrollView contentContainerStyle={{...styles.scroll, backgroundColor: colors.card}}>
-                    <KeyboardAvoidingView 
-                        style={{...styles.container, backgroundColor: colors.card}}
-                        behavior="padding"
-                        keyboardVerticalOffset={40}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.header}>
-                                <Typography h3 h3Style={{...styles.h3, color: colors.text}}>Create Account,</Typography>
-                                <Typography h4 h4Style={styles.h4}>Sign up to get started!</Typography>
-                            </View>
-                            <OutlinedInput 
-                                placeholder="Full Name" 
-                                value={email} 
-                                onChangeText={({nativeEvent}) =>setEmail(nativeEvent.text)} 
-                                style={styles.textInput}
-                                textContentType="name"
-                            />
-                            <OutlinedInput 
-                                placeholder="Email" 
-                                value={password} 
-                                onChangeText={({nativeEvent}) => setPassword(nativeEvent.text)}
-                                style={styles.textInput}
-                                keyboardType="email-address"
-                                textContentType="emailAddress"
-                            />
-                            <OutlinedInput 
-                                placeholder="Password" 
-                                value={password} 
-                                onChangeText={({nativeEvent}) => setPassword(nativeEvent.text)}
-                                style={styles.textInput}
-                                secureTextEntry={true}
-                                textContentType="newPassword"
-                            />
-                            
-                            <View style={styles.term}>
-                                
-                                <Text style={{color: colors.text, flexWrap: 'wrap',}}>
-                                    By signing up you have agreed to the{" "} 
-                                    <Text style={{color: colors.secondary, flexWrap: 'wrap'}}>
-                                        terms and 
-                                        condition {" "}
-                                    </Text> for using this app
-                                </Text>
-                            </View>
-                            
-                            <GradientButton text="Sign Up" style={styles.btn} />
+            <ScrollView contentContainerStyle={{...styles.scroll, backgroundColor: colors.card}}>
+                <KeyboardAvoidingView 
+                    style={{...styles.container, backgroundColor: colors.card}}
+                    behavior="padding"
+                    keyboardVerticalOffset={40}
+                >
+                    <View style={styles.centeredView}>
+                        <View style={styles.header}>
+                            <Typography h3 h3Style={{...styles.h3, color: colors.text}}>Create Account,</Typography>
+                            <Typography h4 h4Style={styles.h4}>Sign up to get started!</Typography>
                         </View>
-                        <View style={styles.bottom}>
-                            <Text style={{color: colors.text,}}>
-                                I'm already a user,{" "}   
-                                <Text 
-                                    style={{color: colors.primary}}
-                                    onPress={e => navigation.navigate('signIn')}
-                                > 
-                                    Sign In
-                                </Text>
+                        <OutlinedInput 
+                            placeholder="Full Name" 
+                            value={email} 
+                            onChangeText={({nativeEvent}) =>setEmail(nativeEvent.text)} 
+                            style={styles.textInput}
+                            textContentType="name"
+                        />
+                        <OutlinedInput 
+                            placeholder="Email" 
+                            value={password} 
+                            onChangeText={({nativeEvent}) => setPassword(nativeEvent.text)}
+                            style={styles.textInput}
+                            keyboardType="email-address"
+                            textContentType="emailAddress"
+                        />
+                        <OutlinedInput 
+                            placeholder="Password" 
+                            value={password} 
+                            onChangeText={({nativeEvent}) => setPassword(nativeEvent.text)}
+                            style={styles.textInput}
+                            secureTextEntry={true}
+                            textContentType="newPassword"
+                        />
+                        
+                        <View style={styles.term}>
+                            
+                            <Text style={{color: colors.text, flexWrap: 'wrap',}}>
+                                By signing up you have agreed to the{" "} 
+                                <Text style={{color: colors.secondary, flexWrap: 'wrap'}}>
+                                    terms and 
+                                    condition {" "}
+                                </Text> for using this app
                             </Text>
                         </View>
-                    </KeyboardAvoidingView>
-                    
-                </ScrollView>
-            </SafeAreaView>: <AppLoading />
+                        
+                        <GradientButton text="Sign Up" style={styles.btn} />
+                    </View>
+                    <View style={styles.bottom}>
+                        <Text style={{color: colors.text,}}>
+                            I'm already a user,{" "}   
+                            <Text 
+                                style={{color: colors.primary}}
+                                onPress={e => navigation.navigate('signIn')}
+                            > 
+                                Sign In
+                            </Text>
+                        </Text>
+                    </View>
+                </KeyboardAvoidingView>
+                
+            </ScrollView>: <AppLoading />
     )
 }
 

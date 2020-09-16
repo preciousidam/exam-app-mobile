@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add bodymovin
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add react-native-safe-area-context
 
 PATH: 
   C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\compiler;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Microsoft VS Code\bin;C:\Program Files\Git\cmd;C:\Users\Cortts Limited\AppData\Local\Android\Sdk\platform-tools\;C:\Program Files\Java\jdk-13.0.2\bin\;C:\Program Files\LOVE\;C:\Python27\;C:\Program Files\PuTTY\;C:\HashiCorp\Vagrant\bin;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\CMake\bin;C:\Program Files\opencv\build\x64\vc15\bin;C:\Program Files (x86)\IntelSWTools\openvino\bin;C:\Users\Cortts Limited\AppData\Local\Programs\Python\Python36\Scripts;C:\Users\Cortts Limited\AppData\Local\Programs\Python\Python36\;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files\MongoDB\Server\4.2\bin;C:\flutter\bin;C:\wamp64\bin\mysql\mysql5.7.26\bin;C:\Users\Cortts Limited\AppData\Local\Programs\Python\Python36\Scripts;C:\Users\Cortts Limited\AppData\Local\Programs\Python\Python36\;C:\Users\Cortts Limited\AppData\Local\Microsoft\WindowsApps;C:\Users\Cortts Limited\AppData\Local\Programs\Python\Python37-32\;C:\Users\Cortts Limited\AppData\Local\Programs\Python\Python37-32\Scripts\;C:\Users\Cortts Limited\AppData\Local\Android\Sdk\platform-tools\;C:\Program Files\Java\jdk-13.0.2\bin\;C:\Program Files\LOVE\;C:\Python27\;C:\Users\Cortts Limited\AppData\Local\GitHubDesktop\bin;C:\Users\Cortts Limited\AppData\Local\Yarn\bin;C:\Program Files\opencv\build\x64\vc15\bin;C:\Program Files (x86)\IntelSWTools\openvino\bin;C:\Users\Cortts Limited\AppData\Roaming\npm;C:\Program Files\Docker Toolbox;C:\Program Files\MongoDB\Server\4.2\bin;C:\flutter\bin;C:\wamp64\bin\mysql\mysql5.7.26\bin;
@@ -38,6 +38,7 @@ npm manifest:
       "@react-navigation/native": "^5.7.3",
       "@react-navigation/stack": "^5.9.0",
       "@reduxjs/toolkit": "^1.4.0",
+      "bodymovin": "^4.13.0",
       "expo": "~38.0.8",
       "expo-font": "~8.2.1",
       "expo-linear-gradient": "~8.2.1",
@@ -1844,6 +1845,11 @@ Lockfile:
     version "2.18.0"
     resolved "https://registry.yarnpkg.com/blueimp-md5/-/blueimp-md5-2.18.0.tgz#1152be1335f0c6b3911ed9e36db54f3e6ac52935"
     integrity sha512-vE52okJvzsVWhcgUHOv+69OG3Mdg151xyn41aVQN/5W5S+S43qZhxECtYLAEHMSFWX6Mv5IZrzj3T5+JqXfj5Q==
+  
+  bodymovin@^4.13.0:
+    version "4.13.0"
+    resolved "https://registry.yarnpkg.com/bodymovin/-/bodymovin-4.13.0.tgz#06d97c0130e2334dccb33bea638136f88a74540b"
+    integrity sha1-Btl8ATDiM03MszvqY4E2+Ip0VAs=
   
   bplist-creator@0.0.8:
     version "0.0.8"

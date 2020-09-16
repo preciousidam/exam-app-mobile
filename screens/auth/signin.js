@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {KeyboardAvoidingView, Text, View, StyleSheet, ScrollView, StatusBar, SafeAreaView } from 'react-native';
+import {KeyboardAvoidingView, Text, View, StyleSheet, ScrollView, StatusBar } from 'react-native';
 import { Text as Typography } from 'react-native-elements';
 import { AppLoading } from 'expo';
 import { withTheme } from 'react-native-elements';
@@ -21,53 +21,51 @@ export function SignIn({navigation, route}){
     const onPress = e => signIn({ type: 'SIGN_IN', token: email });
 
     return (
-        fontLoaded ?
-            <SafeAreaView>
-                <ScrollView contentContainerStyle={styles.scroll}>
-                    <KeyboardAvoidingView style={{...styles.container, backgroundColor: colors.card}}>
-                        <View style={styles.centeredView}>
-                            <View style={styles.header}>
-                                <Typography h3 h3Style={{...styles.h3, color: colors.text}}>Welcome,</Typography>
-                                <Typography h4 h4Style={styles.h4}>Sign in to continue!</Typography>
-                            </View>
-                            <OutlinedInput 
-                                placeholder="Email" 
-                                value={email} 
-                                onChangeText={({nativeEvent}) =>setEmail(nativeEvent.text)} 
-                                style={styles.textInput}
-                                textContentType='emailAddress'
-                                keyboardType="email-address"
-                            />
-                            <OutlinedInput 
-                                placeholder="Password" 
-                                value={password} 
-                                onChangeText={({nativeEvent}) => setPassword(nativeEvent.text)}
-                                style={styles.textInput} 
-                                textContentType='password'
-                                secureTextEntry={true}
-                            />
-                            <Text style={{...styles.reset, color: colors.text}} >Forgot Password</Text>
-                            <GradientButton 
-                                text="Login" 
-                                style={styles.btn}
-                                onPress={onPress}
-                            />
+        fontLoaded ? 
+            <ScrollView contentContainerStyle={styles.scroll}>
+                <KeyboardAvoidingView style={{...styles.container, backgroundColor: colors.card}}>
+                    <View style={styles.centeredView}>
+                        <View style={styles.header}>
+                            <Typography h3 h3Style={{...styles.h3, color: colors.text}}>Welcome,</Typography>
+                            <Typography h4 h4Style={styles.h4}>Sign in to continue!</Typography>
                         </View>
-                        <View style={styles.bottom}>
-                            <Text style={{color: colors.text}}>
-                                I'm a new user,{" "}  
-                                <Text 
-                                    style={{color: colors.primary}}
-                                    onPress={e => navigation.navigate('signUp')}
-                                > 
-                                    Create Account
-                                </Text>
+                        <OutlinedInput 
+                            placeholder="Email" 
+                            value={email} 
+                            onChangeText={({nativeEvent}) =>setEmail(nativeEvent.text)} 
+                            style={styles.textInput}
+                            textContentType='emailAddress'
+                            keyboardType="email-address"
+                        />
+                        <OutlinedInput 
+                            placeholder="Password" 
+                            value={password} 
+                            onChangeText={({nativeEvent}) => setPassword(nativeEvent.text)}
+                            style={styles.textInput} 
+                            textContentType='password'
+                            secureTextEntry={true}
+                        />
+                        <Text style={{...styles.reset, color: colors.text}} >Forgot Password</Text>
+                        <GradientButton 
+                            text="Login" 
+                            style={styles.btn}
+                            onPress={onPress}
+                        />
+                    </View>
+                    <View style={styles.bottom}>
+                        <Text style={{color: colors.text}}>
+                            I'm a new user,{" "}  
+                            <Text 
+                                style={{color: colors.primary}}
+                                onPress={e => navigation.navigate('signUp')}
+                            > 
+                                Create Account
                             </Text>
-                        </View>
-                    </KeyboardAvoidingView>
-                    <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
-                </ScrollView>
-            </SafeAreaView>
+                        </Text>
+                    </View>
+                </KeyboardAvoidingView>
+                <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
+            </ScrollView>
         : <AppLoading />
     )
 }

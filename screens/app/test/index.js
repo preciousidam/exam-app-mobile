@@ -1,5 +1,5 @@
 import React, {} from 'react';
-import {View, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import {withTheme, Text, Divider} from 'react-native-elements';
 
@@ -9,7 +9,7 @@ import {Solidbutton} from '../../../components/button';
 export function InstructionScreen({navigation}){
     const {colors, dark} = useTheme();
     return (
-        <SafeAreaView style={{...styles.container}}>
+        <View style={{...styles.container}}>
             <View style={{...styles.header, backgroundColor: colors.primary}}>
                 <Text h4 h4Style={styles.h4}>Biology Exercise</Text>
                 <Text style={styles.headerText}>JAMB 2019 questions</Text>
@@ -39,7 +39,7 @@ export function InstructionScreen({navigation}){
                 />
             </View>
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.primary} />
-        </SafeAreaView>
+        </View>
     )
 }
 
