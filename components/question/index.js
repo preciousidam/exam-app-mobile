@@ -157,7 +157,6 @@ const styles = StyleSheet.create({
     rounded: {
         width: 30,
         height: 30,
-        padding: 5,
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',

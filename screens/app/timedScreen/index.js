@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, ScrollView, Image} from 'react-native';
+import {View, StyleSheet, Platform, Image} from 'react-native';
 import {Text, Badge, withTheme, Button, Divider} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useTheme} from '@react-navigation/native';
@@ -7,15 +7,17 @@ import {useTheme} from '@react-navigation/native';
 import FocusAwareStatusBar from '../../../components/StatusBar';
 import ExamList from '../../../components/exam';
 import {data, practise} from '../../../constants/data';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function TimedScreen({navigation}){
-    const {colors, dark} = useTheme()
+    const {colors, dark} = useTheme();
+    const {top, bottom} = useSafeAreaInsets();
     return (
-        <View style={styles.container}>
+        <View style={{...styles.container}}>
             
             <View style={styles.container}>
                 <Header />
-                <ExamList data={practise} onPress={() => navigation.navigate('test')} />
+                <ExamList data={practise} onPress={() => navigation.navigate('Test')} />
             </View>
             
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.primary} />
@@ -28,8 +30,11 @@ export default withTheme(TimedScreen);
 function Header(){
     const {colors} = useTheme()
     const notification = true;
+    const {top, bottom} = useSafeAreaInsets();
+    const paddingTop = Platform.OS == 'ios' ? top : 20;
+
     return (
-        <View style={{...styles.header, backgroundColor: colors.primary}}>
+        <View style={{...styles.header, backgroundColor: colors.primary, paddingTop}}>
             <View style={styles.navbar}>
                 <View>
                     <Ionicons name='ios-notifications-outline' size={30} color={colors.text} />

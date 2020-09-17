@@ -4,6 +4,7 @@ import { Text as Typography } from 'react-native-elements';
 import { AppLoading } from 'expo';
 import { withTheme } from 'react-native-elements';
 import { useTheme } from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {loadFonts} from '../../libs/fonts';
 import {GradientButton} from '../../components/button';
@@ -22,50 +23,63 @@ export function SignIn({navigation, route}){
 
     return (
         fontLoaded ? 
-            <ScrollView contentContainerStyle={styles.scroll}>
-                <KeyboardAvoidingView style={{...styles.container, backgroundColor: colors.card}}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.header}>
-                            <Typography h3 h3Style={{...styles.h3, color: colors.text}}>Welcome,</Typography>
-                            <Typography h4 h4Style={styles.h4}>Sign in to continue!</Typography>
+            <SafeAreaView style={{flex: 1, backgroundColor: colors.card}}>
+                <ScrollView contentContainerStyle={[styles.scroll, {backgroundColor: colors.card}]}>
+                    <KeyboardAvoidingView 
+                        style={{...styles.container, backgroundColor: colors.card}}
+                        style={{...styles.container, backgroundColor: colors.card}}
+                        behavior={Platform.OS === 'ios'? "padding": "position"}
+                        keyboardVerticalOffset={Platform.OS === 'ios' ? 100: 10}
+                    >
+                        <View style={styles.centeredView}>
+                            <View style={styles.header}>
+                                <Typography h3 h3Style={{...styles.h3, color: colors.text}}>Welcome,</Typography>
+                                <Typography h4 h4Style={styles.h4}>Sign in to continue!</Typography>
+                            </View>
+                            <OutlinedInput 
+                                placeholder="Email" 
+                                value={email} 
+                                onChangeText={({nativeEvent}) =>setEmail(nativeEvent.text)} 
+                                style={styles.textInput}
+                                textContentType='emailAddress'
+                                keyboardType="email-address"
+                            />
+                            <OutlinedInput 
+                                placeholder="Password" 
+                                value={password} 
+                                onChangeText={({nativeEvent}) => setPassword(nativeEvent.text)}
+                                style={styles.textInput} 
+                                textContentType='password'
+                                secureTextEntry={true}
+                            />
+                            <Text 
+                                style={{...styles.reset, color: colors.text}} 
+                                onPress={_ => navigation.navigate('Reset')} 
+                            >
+                                Forgot Password
+                            </Text>
+                            <GradientButton 
+                                text="Login" 
+                                style={styles.btn}
+                                onPress={onPress}
+                            />
                         </View>
-                        <OutlinedInput 
-                            placeholder="Email" 
-                            value={email} 
-                            onChangeText={({nativeEvent}) =>setEmail(nativeEvent.text)} 
-                            style={styles.textInput}
-                            textContentType='emailAddress'
-                            keyboardType="email-address"
-                        />
-                        <OutlinedInput 
-                            placeholder="Password" 
-                            value={password} 
-                            onChangeText={({nativeEvent}) => setPassword(nativeEvent.text)}
-                            style={styles.textInput} 
-                            textContentType='password'
-                            secureTextEntry={true}
-                        />
-                        <Text style={{...styles.reset, color: colors.text}} >Forgot Password</Text>
-                        <GradientButton 
-                            text="Login" 
-                            style={styles.btn}
-                            onPress={onPress}
-                        />
-                    </View>
-                    <View style={styles.bottom}>
+                    </KeyboardAvoidingView>
+                    
+                    <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
+                </ScrollView>
+                <View style={styles.bottom}>
                         <Text style={{color: colors.text}}>
                             I'm a new user,{" "}  
                             <Text 
                                 style={{color: colors.primary}}
-                                onPress={e => navigation.navigate('signUp')}
+                                onPress={e => navigation.navigate('Register')}
                             > 
                                 Create Account
                             </Text>
                         </Text>
                     </View>
-                </KeyboardAvoidingView>
-                <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
-            </ScrollView>
+            </SafeAreaView>
         : <AppLoading />
     )
 }
@@ -113,5 +127,6 @@ const styles = StyleSheet.create({
     bottom: {
         alignItems: "center",
         justifyContent: 'center',
+        paddingBottom: 30,
     },
 })

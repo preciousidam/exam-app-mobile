@@ -177,7 +177,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     headerRight: {
-        paddingHorizontal: 20,
         flexDirection: "row",
         justifyContent: 'center',
         alignItems: "center",

@@ -21,6 +21,9 @@
       "supportsTablet": true,
       "userInterfaceStyle": "automatic"
     },
+    "android": {
+      "softwareKeyboardLayoutMode": "adjustPan"
+    },
     "web": {
       "favicon": "./assets/favicon.png"
     },

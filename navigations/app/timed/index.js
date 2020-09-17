@@ -11,7 +11,7 @@ export default function TimedNavigator({navigation}){
         <Navigator>
             <Screen 
                 component={TimedScreen}
-                name="timed"
+                name="Timed"
                 options={{
                     headerShown: false,
                 }}

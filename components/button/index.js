@@ -18,11 +18,9 @@ export const Outlinedbutton = ({text, onPress, style, textStyle}) =>{
 export const Solidbutton = ({text, onPress, style, textStyle}) =>{
     return (
         <TouchableOpacity onPress={onPress} style={{...styles.container}} activeOpacity={0.8}>
-            <View style={{...styles.view, borderRadius: 30, ...style}}>
-                <LinearGradient start={[0.7,0.2]} colors={['#f5af19', '#FF9D14',]} style={{...styles.grad, borderRadius: 30}} >
+                <LinearGradient start={[0.7,0.2]} colors={['#f5af19', '#FF9D14',]} style={[{...styles.grad, borderRadius: 25},style]} >
                     <Text style={{...styles.text, ...textStyle}}>{text}</Text>
                 </LinearGradient>
-            </View>
         </TouchableOpacity>
     )
 }
@@ -47,13 +45,6 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: 'Montserrat_700Bold',
         fontWeight: 'bold',
-    },
-    view: {
-        borderWidth: 1,
-        borderColor: 'transparent',
-        borderRadius: 10,
-        justifyContent: "center",
-        alignItems: 'center',
     },
     grad: {
         width: '100%',

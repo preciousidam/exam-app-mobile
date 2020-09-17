@@ -12,14 +12,14 @@ export default function TestNavigator({navigation}){
         <Navigator>
             <Screen 
                 component={InstructionScreen}
-                name="instruction"
+                name="Instruction"
                 options={{
                     headerShown: false,
                 }}
             />
             <Screen 
                 component={TestScreen}
-                name="test"
+                name="Test"
                 options={{
                     title: 'Test'
                 }}

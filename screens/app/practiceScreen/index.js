@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView, Platform} from 'react-native';
 import {Text, Avatar, Badge, withTheme, Button, Divider} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useTheme} from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 
@@ -69,8 +70,11 @@ export default withTheme(PracticeScreen);
 function Header({name}){
     const {colors} = useTheme();
     const notification = true;
+    const {top, bottom} = useSafeAreaInsets();
+    const paddingTop = Platform.OS == 'ios' ? top : 20;
+
     return (
-        <View style={styles.header}>
+        <View style={[styles.header,{paddingTop}]}>
             <View style={styles.headerprofile}>
                 <Avatar 
                     rounded 

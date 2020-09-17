@@ -25,8 +25,7 @@ export function HomeTabNavigation({navigation}){
         <Navigator
             tabBarOptions={{
                 style: {
-                    height: 60,
-                    paddingBottom: 10,
+                    
                 }
             }}
             screenOptions={({route}) => ({
@@ -90,14 +89,14 @@ export default function HomeNavigation({navigation}){
         <Navigator>
             <Screen 
                 component={HomeTabNavigation}
-                name="home"
+                name="Home"
                 options={{
                     headerShown: false,
                 }}
             />
             <Screen 
                 component={TestNavigator}
-                name="test"
+                name="Test"
                 options={{
                     headerShown: false,
                 }}

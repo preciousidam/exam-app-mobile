@@ -1,18 +1,29 @@
 import React, {} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView, Platform} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import {withTheme, Text, Divider} from 'react-native-elements';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { HeaderBackButton } from '@react-navigation/stack';
 
 import FocusAwareStatusBar from '../../../components/StatusBar';
 import {Solidbutton} from '../../../components/button';
 
 export function InstructionScreen({navigation}){
     const {colors, dark} = useTheme();
+    const {top, bottom} = useSafeAreaInsets();
+    const paddingTop = Platform.OS == 'ios' ? top : 0;
+    const paddingBottom = Platform.OS == 'ios' ? bottom : 20;
+
     return (
         <View style={{...styles.container}}>
-            <View style={{...styles.header, backgroundColor: colors.primary}}>
-                <Text h4 h4Style={styles.h4}>Biology Exercise</Text>
-                <Text style={styles.headerText}>JAMB 2019 questions</Text>
+            <View style={{ backgroundColor: colors.primary, paddingTop}}>
+                <View style={{}}>
+                    <HeaderBackButton tintColor={colors.text} onPress={() => navigation.goBack()} />
+                </View>
+                <View style={styles.header}>
+                    <Text h4 h4Style={styles.h4}>Biology Exercise</Text>
+                    <Text style={styles.headerText}>JAMB 2019 questions</Text>
+                </View>
             </View>
             <ScrollView contentContainerStyle={{minHeight: '60%'}}>
                 <View style={styles.insCont}>
@@ -31,10 +42,10 @@ export function InstructionScreen({navigation}){
                 </View>
             </ScrollView>
                 
-            <View style={styles.footer}> 
+            <View style={[styles.footer, {paddingBottom}]}> 
                 <Solidbutton 
                     text="Start Test" 
-                    onPress={_ => navigation.navigate('test')}
+                    onPress={_ => navigation.navigate('Test')}
                     style={styles.button}
                 />
             </View>
@@ -52,6 +63,7 @@ const styles = StyleSheet.create({
     },
     header: {
         padding: 20,
+        paddingTop: 10,
     },  
     h4: {
         fontFamily: 'Montserrat_700Bold'
