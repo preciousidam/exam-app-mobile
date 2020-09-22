@@ -3,10 +3,10 @@ import React, {createContext, useReducer} from 'react';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import {ThemeProvider } from 'react-native-elements';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
-import { AppLoading } from 'expo';
 
 import MainNavigator from './navigations';
 import {dark, light} from './constants/colors';
+import {colors} from './constants/custom-colors';
 
 
 const AuthContext = createContext();
@@ -17,11 +17,12 @@ export default function App() {
   
   
   const rnDefalt = scheme === 'dark' ? DarkTheme: DefaultTheme ;
-  const colors = scheme === 'dark' ? dark: light;
+  const theme = scheme === 'dark' ? dark: light;
   const rnTheme = {
       ...rnDefalt,
       colors: {
         ...rnDefalt.colors,
+        ...theme,
         ...colors,
       }
   }
@@ -29,7 +30,7 @@ export default function App() {
   const componentTheme = {
       Text: {
         style: {
-          color: colors.text,
+          color: theme.text,
         },
         h4Style: {
           fontSize: 20,
@@ -37,13 +38,13 @@ export default function App() {
       },
       Button: {
         buttonStyle: {
-          backgroundColor: colors.secondary,
+          backgroundColor: theme.secondary,
           borderRadius: 30,
           paddingVertical: 10,
         }
       },
       colors: {
-        ...colors,
+        ...theme,
       }
   }
 

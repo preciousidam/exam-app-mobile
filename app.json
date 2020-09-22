@@ -22,7 +22,7 @@
       "userInterfaceStyle": "automatic"
     },
     "android": {
-      "softwareKeyboardLayoutMode": "adjustPan"
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -26,6 +26,8 @@ export function SignUp({navigation}){
         setDate(selDate);
     }
 
+    const onPress = e => navigation.navigate('Verify');
+
     return (
         fontLoaded ?
             <SafeAreaView style={{flex: 1, backgroundColor: colors.card}}>
@@ -85,7 +87,11 @@ export function SignUp({navigation}){
                                 </Text>
                             </View>
                             
-                            <GradientButton text="Sign Up" style={styles.btn} />
+                            <GradientButton 
+                                text="Sign Up" 
+                                style={styles.btn}
+                                onPress={onPress}
+                            />
                         </View>
                         
                     </KeyboardAvoidingView>

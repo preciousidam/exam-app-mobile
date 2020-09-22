@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignIn from '../../screens/auth/signin';
 import SignUp from '../../screens/auth/signup';
 import Reset from '../../screens/auth/forgotPassword';
+import VerifyPhone from '../../screens/auth/verifyPhone';
 
 
 
@@ -42,6 +43,15 @@ export default function AuthFlow({route}){
                 name="Reset"
                 initialParams={{ signIn: dispatch }}
                 options={{
+                    animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                }}
+            />
+            <Screen 
+                component={VerifyPhone}
+                name="Verify"
+                initialParams={{ signIn: dispatch }}
+                options={{
+                    
                     animationTypeForReplace: state.isSignout ? 'pop' : 'push',
                 }}
             />

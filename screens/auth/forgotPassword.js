@@ -29,7 +29,7 @@ export function ResetPassword({navigation, route}){
                     <OutlinedInput 
                         placeholder="Email" 
                         value={email} 
-                        onChangeText={({nativeEvent}) =>setEmail(nativeEvent.text)} 
+                        onChangeText={({nativeEvent: {text}}) =>setEmail(text)} 
                         style={styles.textInput}
                         textContentType='emailAddress'
                         keyboardType="email-address"

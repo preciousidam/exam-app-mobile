@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {KeyboardAvoidingView, Text, View, StyleSheet, ScrollView, StatusBar } from 'react-native';
+import {KeyboardAvoidingView, Text, View, StyleSheet, ScrollView, StatusBar, Platform } from 'react-native';
 import { Text as Typography } from 'react-native-elements';
 import { AppLoading } from 'expo';
 import { withTheme } from 'react-native-elements';
