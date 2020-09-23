@@ -63,7 +63,10 @@ export const DynamicPickerIOS = ({style, contProps, pickerStyle, onValueChange, 
             options: sheetOptions,
             cancelButtonIndex: sheetOptions.length - 1,
         },
-        index => console.log(index)
+        index => {
+            if(index === sheetOptions.length - 1) return
+            onValueChange(sheetOptions[index]);
+        }
     );
     
     return (
@@ -73,7 +76,7 @@ export const DynamicPickerIOS = ({style, contProps, pickerStyle, onValueChange, 
                 style={{...styles.container, ...style}}
             >
                 <Text
-                    style={{...styles.input, color: colors.text, ...pickerStyle}} 
+                    style={{...styles.input, color: colors.text, ...pickerStyle, padding: 15}} 
                     {...rest} 
                 >
                     {value}
@@ -89,6 +92,7 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         borderWidth: 1,
+        borderColor: '#c6c6c6',
         borderRadius: 10,
     },
     input: {

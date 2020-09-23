@@ -17,9 +17,9 @@ export function CreateProfile({navigation}){
     const fontLoaded = loadFonts();
     const {colors, dark} = useTheme();
     const [dob, setDOB] = useState('');
-    const [gender, setGender] = useState('');
-    const [school, setSchool] = useState('');
-    const [level, setLevel] = useState('');
+    const [gender, setGender] = useState('Select Gender');
+    const [school, setSchool] = useState('Select School');
+    const [level, setLevel] = useState('Select Level');
     const [matricNo, setMatricNo] = useState('');
 
     const onLevelChange = (itemValue) => setLevel(itemValue);
@@ -39,7 +39,7 @@ export function CreateProfile({navigation}){
                     >
                         <View style={styles.centeredView}>
                             <View style={styles.header}>
-                                <Typography h4 h4Style={styles.h4}>Please provide the details below if applicable</Typography>
+                                <Typography h4 h4Style={[styles.h4, {color: colors['color-info-500']}]}>Please provide the details below if applicable</Typography>
                             </View>
                             <OutlinedInput 
                                 placeholder="DOB eg 02/02/2020" 
@@ -61,13 +61,14 @@ export function CreateProfile({navigation}){
                                 onValueChange={onSchoolChange}
                                 style={styles.picker}
                                 pickerStyle={{color: '#000'}}
-                                options={['Select school', 'Penny Internation colledge']}
+                                options={['Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge']}
                             />
-                            <LevelPicker 
+                            <DynaPicker 
                                 value={level}
                                 onValueChange={onLevelChange}
                                 style={styles.picker}
                                 pickerStyle={{color: '#000'}}
+                                options={['Senior Secondary', 'Junior Secondary']}
                             />
                             <OutlinedInput 
                                 placeholder="Matric no / Exam No/ Registration No" 
