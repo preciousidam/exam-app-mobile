@@ -22,14 +22,14 @@ export function VerifyPhone({navigation, route}){
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT})
     const [props, getCellOnLayoutHandler] = useClearByFocusCell({value, setValue});
 
-    const onPress = e => signIn({ type: 'SIGN_IN', token: email });
+    const onPress = e => navigation.navigate('Profile');
 
     return (
         <ScrollView contentContainerStyle={styles.scroll}>
             <KeyboardAvoidingView style={{...styles.container, backgroundColor: colors.card}}>
                 <View style={styles.centeredView}>
                     <View style={styles.header}>
-                        <Typography h3 h3Style={{...styles.h3, color: colors.text}}>Verify Account,</Typography>
+                        <Typography h3 h3Style={{...styles.h3, color: colors.text}}>Verify Number</Typography>
                     </View>
                     <SvgXml xml={verify} width={150} height={100} />
                     <Typography 

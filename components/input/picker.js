@@ -1,6 +1,10 @@
-import React, {createRef, useEffect, useState} from 'react';
-import {Picker, View, StyleSheet} from 'react-native';
+import React from 'react';
+import { View, StyleSheet, TouchableWithoutFeedback, Text} from 'react-native';
+import {Picker} from '@react-native-community/picker';
+import {useActionSheet} from '@expo/react-native-action-sheet';
 import { useTheme } from '@react-navigation/native';
+
+
 
 const {Item} = Picker;
 
@@ -24,6 +28,58 @@ export const LevelPicker = ({style, contProps, pickerStyle, onValueChange, value
                 {levels.map((x,i) => <Item label={x} key={i} value={x} />)}
             </Picker>
         </View>
+    )
+}
+
+
+export const DynamicPicker = ({style, contProps, pickerStyle, onValueChange, options, value, ...rest}) => {
+    
+    const {colors} = useTheme();
+    
+    return (
+        <View 
+            {...contProps} 
+            style={{...styles.container, ...style}}
+        >
+            <Picker 
+                selectedValue={value} 
+                style={{...styles.input, color: colors.text, ...pickerStyle}} 
+                onValueChange={onValueChange}
+                {...rest} 
+            >
+                {options.map((x,i) => <Item label={x} key={i} value={x} />)}
+            </Picker>
+        </View>
+    )
+}
+
+export const DynamicPickerIOS = ({style, contProps, pickerStyle, onValueChange, options, value, ...rest}) => {
+    
+    const {colors} = useTheme();
+    const sheetOptions = [...options, 'cancel'];
+    const { showActionSheetWithOptions } = useActionSheet();
+    const showSheet = _ => showActionSheetWithOptions(
+        {
+            options: sheetOptions,
+            cancelButtonIndex: sheetOptions.length - 1,
+        },
+        index => console.log(index)
+    );
+    
+    return (
+        <TouchableWithoutFeedback onPress={showSheet}>
+            <View
+                {...contProps} 
+                style={{...styles.container, ...style}}
+            >
+                <Text
+                    style={{...styles.input, color: colors.text, ...pickerStyle}} 
+                    {...rest} 
+                >
+                    {value}
+                </Text>
+            </View>
+        </TouchableWithoutFeedback>
     )
 }
 

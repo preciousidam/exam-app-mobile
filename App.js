@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import React, {createContext, useReducer} from 'react';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import {ThemeProvider } from 'react-native-elements';
+import {ActionSheetProvider} from '@expo/react-native-action-sheet';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 
 import MainNavigator from './navigations';
@@ -126,9 +127,11 @@ export default function App() {
     <AuthContext.Provider value={authContext}>
       <AppearanceProvider>
         <ThemeProvider useDark={scheme === 'dark'} theme={componentTheme}>
-          <NavigationContainer theme={rnTheme}>
-              <MainNavigator state={state} dispatch={dispatch} />
-          </NavigationContainer>
+          <ActionSheetProvider>
+            <NavigationContainer theme={rnTheme}>
+                <MainNavigator state={state} dispatch={dispatch} />
+            </NavigationContainer>
+          </ActionSheetProvider>
         </ThemeProvider>
       </AppearanceProvider>
     </AuthContext.Provider>

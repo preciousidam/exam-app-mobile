@@ -19,7 +19,7 @@ export function SignUp({navigation}){
     const [password, setPassword] = useState('');
     const [phone, setPhone] = useState('');
     const [date, setDate] = useState(new Date());
-    const [accept, setAccept] = useState(false);
+    const [fullname, setFullname] = useState('');
 
     const onDateChange = (event, selectedDate) => {
         const selDate = selectedDate || date;
@@ -44,15 +44,15 @@ export function SignUp({navigation}){
                             </View>
                             <OutlinedInput 
                                 placeholder="Full Name" 
-                                value={email} 
-                                onChangeText={({nativeEvent}) =>setEmail(nativeEvent.text)} 
+                                value={fullname} 
+                                onChangeText={({nativeEvent}) =>setFullname(nativeEvent.text)} 
                                 style={styles.textInput}
                                 textContentType="name"
                             />
                             <OutlinedInput 
                                 placeholder="Email" 
-                                value={password} 
-                                onChangeText={({nativeEvent}) => setPassword(nativeEvent.text)}
+                                value={email} 
+                                onChangeText={({nativeEvent}) => setEmail(nativeEvent.text)}
                                 style={styles.textInput}
                                 keyboardType="email-address"
                                 textContentType="emailAddress"
@@ -70,7 +70,6 @@ export function SignUp({navigation}){
                                 value={phone} 
                                 onChangeText={({nativeEvent}) => setPhone(nativeEvent.text)}
                                 style={styles.textInput}
-                                textContentType="newPassword"
                                 keyboardType='phone-pad'
                                 textContentType='telephoneNumber'
                             />

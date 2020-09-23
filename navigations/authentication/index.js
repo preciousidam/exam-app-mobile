@@ -6,6 +6,7 @@ import SignIn from '../../screens/auth/signin';
 import SignUp from '../../screens/auth/signup';
 import Reset from '../../screens/auth/forgotPassword';
 import VerifyPhone from '../../screens/auth/verifyPhone';
+import CreateProfile from '../../screens/auth/ info';
 
 
 
@@ -51,7 +52,16 @@ export default function AuthFlow({route}){
                 name="Verify"
                 initialParams={{ signIn: dispatch }}
                 options={{
-                    
+                    title: 'Verify Number',
+                    animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                }}
+            />
+            <Screen 
+                component={CreateProfile}
+                name="Profile"
+                initialParams={{ signIn: dispatch }}
+                options={{
+                    title: 'Create Profile',
                     animationTypeForReplace: state.isSignout ? 'pop' : 'push',
                 }}
             />
