@@ -76,11 +76,7 @@ export const DynamicPickerIOS = ({style, contProps, pickerStyle, onValueChange, 
                 style={{...styles.container, ...style}}
             >
                 <Text
-<<<<<<< HEAD
-                    style={{...styles.input, color: colors.text, ...pickerStyle, padding: 15}} 
-=======
-                    style={{...styles.input, ...pickerStyle, color: colors.text}} 
->>>>>>> a13e136b80d53e4202b0e1213e459945e703dad8
+                    style={{...styles.input, color: colors.text, ...pickerStyle, padding: 15}}  
                     {...rest} 
                 >
                     {value}

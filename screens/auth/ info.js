@@ -64,19 +64,11 @@ export function CreateProfile({navigation}){
                                 options={['Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge']}
                             />
                             <DynaPicker 
-<<<<<<< HEAD
-                                value={level}
-                                onValueChange={onLevelChange}
-                                style={styles.picker}
-                                pickerStyle={{color: '#000'}}
-                                options={['Senior Secondary', 'Junior Secondary']}
-=======
                                 value={school}
                                 onValueChange={onLevelChange}
                                 style={styles.picker}
                                 pickerStyle={{color: '#000'}}
                                 options={['Select Level', 'Senior secondary', 'Junior secondary']}
->>>>>>> a13e136b80d53e4202b0e1213e459945e703dad8
                             />
                             <OutlinedInput 
                                 placeholder="Matric no / Exam No/ Registration No" 
