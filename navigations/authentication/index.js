@@ -6,7 +6,7 @@ import SignIn from '../../screens/auth/signin';
 import SignUp from '../../screens/auth/signup';
 import Reset from '../../screens/auth/forgotPassword';
 import VerifyPhone from '../../screens/auth/verifyPhone';
-import CreateProfile from '../../screens/auth/ info';
+import { ScreenOne, ScreenTwo, ScreenThree } from '../../screens/auth/ info';
 
 
 
@@ -57,11 +57,29 @@ export default function AuthFlow({route}){
                 }}
             />
             <Screen 
-                component={CreateProfile}
+                component={ScreenOne}
                 name="Profile"
                 initialParams={{ signIn: dispatch }}
                 options={{
                     title: 'Create Profile',
+                    animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                }}
+            />
+            <Screen 
+                component={ScreenTwo}
+                name="profile-cont"
+                initialParams={{ signIn: dispatch }}
+                options={{
+                    title: 'Location',
+                    animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                }}
+            />
+            <Screen 
+                component={ScreenThree}
+                name="guardian"
+                initialParams={{ signIn: dispatch }}
+                options={{
+                    title: 'Guardian Details',
                     animationTypeForReplace: state.isSignout ? 'pop' : 'push',
                 }}
             />

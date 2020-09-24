@@ -43,9 +43,9 @@ export const DynamicPicker = ({style, contProps, pickerStyle, onValueChange, opt
         >
             <Picker 
                 selectedValue={value} 
-                style={{...styles.input, color: colors.text, ...pickerStyle}} 
+                style={{...styles.input, ...pickerStyle, color: colors.text}} 
                 onValueChange={onValueChange}
-                {...rest} 
+                {...rest}
             >
                 {options.map((x,i) => <Item label={x} key={i} value={x} />)}
             </Picker>
@@ -73,7 +73,7 @@ export const DynamicPickerIOS = ({style, contProps, pickerStyle, onValueChange, 
                 style={{...styles.container, ...style}}
             >
                 <Text
-                    style={{...styles.input, color: colors.text, ...pickerStyle}} 
+                    style={{...styles.input, ...pickerStyle, color: colors.text}} 
                     {...rest} 
                 >
                     {value}
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
         width: '100%',
         borderWidth: 1,
         borderRadius: 10,
+        borderColor: '#c6c6c6'
     },
     input: {
         fontFamily: 'Montserrat_700Bold',
