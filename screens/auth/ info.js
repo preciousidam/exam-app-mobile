@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {KeyboardAvoidingView, Text, View, StyleSheet, ScrollView, Platform, StatusBar } from 'react-native';
-import { Text as Typography } from 'react-native-elements';
+import { Text as Typography, Divider } from 'react-native-elements';
 import { AppLoading } from 'expo';
 import { withTheme } from 'react-native-elements';
 import { useTheme } from '@react-navigation/native';
@@ -25,7 +25,7 @@ export function CreateProfile({navigation}){
     const onLevelChange = (itemValue) => setLevel(itemValue);
     const onSchoolChange = (itemValue) => setSchool(itemValue);
     const onGenderChange = (itemValue) => setGender(itemValue);
-    const onPress = e => navigation.navigate('Verify');
+    const onPress = e => navigation.navigate('profile-cont');
     const DynaPicker = Platform.OS === 'ios' ? DynamicPickerIOS: DynamicPicker;
 
     return (
@@ -34,8 +34,8 @@ export function CreateProfile({navigation}){
                 <ScrollView contentContainerStyle={{...styles.scroll, backgroundColor: colors.card}}>
                     <KeyboardAvoidingView 
                         style={{...styles.container, backgroundColor: colors.card}}
-                        behavior={Platform.OS === 'ios'? "padding": "position"}
-                        keyboardVerticalOffset={Platform.OS === 'ios' ? 100: 10}
+                        behavior={Platform.OS === 'ios'? "padding": "padding"}
+                        keyboardVerticalOffset={Platform.OS === 'ios' ? 100: 100}
                     >
                         <View style={styles.centeredView}>
                             <View style={styles.header}>
@@ -47,14 +47,14 @@ export function CreateProfile({navigation}){
                                 onChangeText={({nativeEvent}) =>setDOB(nativeEvent.text)} 
                                 style={styles.textInput}
                                 textContentType="name"
-                                keyboardType='numeric'
+                                keyboardType='phone-pad'
                             />
                             <DynaPicker 
                                 value={gender}
                                 onValueChange={onGenderChange}
                                 style={styles.picker}
-                                pickerStyle={{color: '#000'}}
-                                options={['male', 'female']}
+                                pickerStyle={{color: colors.text}}
+                                options={['Select Gender', 'male', 'female']}
                             />
                             <DynaPicker 
                                 value={school}
@@ -64,11 +64,19 @@ export function CreateProfile({navigation}){
                                 options={['Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge']}
                             />
                             <DynaPicker 
+<<<<<<< HEAD
                                 value={level}
                                 onValueChange={onLevelChange}
                                 style={styles.picker}
                                 pickerStyle={{color: '#000'}}
                                 options={['Senior Secondary', 'Junior Secondary']}
+=======
+                                value={school}
+                                onValueChange={onLevelChange}
+                                style={styles.picker}
+                                pickerStyle={{color: '#000'}}
+                                options={['Select Level', 'Senior secondary', 'Junior secondary']}
+>>>>>>> a13e136b80d53e4202b0e1213e459945e703dad8
                             />
                             <OutlinedInput 
                                 placeholder="Matric no / Exam No/ Registration No" 
@@ -98,7 +106,161 @@ export function CreateProfile({navigation}){
     )
 }
 
-export default withTheme(CreateProfile);
+export function CreateProfileCont({navigation}){
+    const fontLoaded = loadFonts();
+    const {colors, dark} = useTheme();
+    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [country, setCountry] = useState('');
+    const [matricNo, setMatricNo] = useState('');
+
+    
+    const onCountryChange = (itemValue) => setCountry(itemValue);
+    const onPress = e => navigation.navigate('guardian');
+    const DynaPicker = Platform.OS === 'ios' ? DynamicPickerIOS: DynamicPicker;
+
+    return (
+        fontLoaded ?
+            <SafeAreaView style={{flex: 1, backgroundColor: colors.card}}>
+                <ScrollView contentContainerStyle={{...styles.scroll, backgroundColor: colors.card}}>
+                    <KeyboardAvoidingView 
+                        style={{...styles.container, backgroundColor: colors.card}}
+                        behavior="padding"
+                        keyboardVerticalOffset={100}
+                    >
+                        <View style={styles.centeredView}>
+                            <View style={styles.header}>
+                                <Typography h4 h4Style={styles.h4}>Please provide the details below if applicable</Typography>
+                            </View>
+                            <OutlinedInput 
+                                placeholder="Address" 
+                                value={address} 
+                                onChangeText={({nativeEvent}) =>setAddress(nativeEvent.text)} 
+                                style={styles.textInput}
+                                textContentType="fullStreetAddress"
+                            />
+                            <OutlinedInput 
+                                placeholder="City" 
+                                value={city} 
+                                onChangeText={({nativeEvent}) =>setCity(nativeEvent.text)} 
+                                style={styles.textInput}
+                                textContentType="addressCity"
+                            />
+                            <OutlinedInput 
+                                placeholder="State" 
+                                value={state} 
+                                onChangeText={({nativeEvent}) =>setState(nativeEvent.text)} 
+                                style={styles.textInput}
+                                textContentType="addressState"
+                            />
+                            <DynaPicker 
+                                value={country}
+                                onValueChange={onCountryChange}
+                                style={styles.picker}
+                                pickerStyle={{color: '#000'}}
+                                options={['Select Country', 'Nigeria', 'Ghana', 'Togo', 'Benin']}
+                            />
+
+                            
+                            
+                            <GradientButton 
+                                text="Continue" 
+                                style={styles.btn}
+                                onPress={onPress}
+                            />
+                        </View>
+                        
+                    </KeyboardAvoidingView>
+                    
+                </ScrollView>
+                <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
+            </SafeAreaView>
+        : <AppLoading />
+    )
+}
+
+export function AddGuardiansDetail({navigation}){
+    const fontLoaded = loadFonts();
+    const {colors, dark} = useTheme();
+    const [g1Email, setG1Email] = useState('');
+    const [g2Email, setG2Email] = useState('');
+    const [g1Phone, setG1Phone] = useState('');
+    const [g2Phone, setG2Phone] = useState('');
+
+    
+    const onCountryChange = (itemValue) => setCountry(itemValue);
+    const onPress = e => navigation.navigate('profile-cont');
+    const DynaPicker = Platform.OS === 'ios' ? DynamicPickerIOS: DynamicPicker;
+
+    return (
+        fontLoaded ?
+            <SafeAreaView style={{flex: 1, backgroundColor: colors.card}}>
+                <ScrollView contentContainerStyle={{...styles.scroll, backgroundColor: colors.card}}>
+                    <KeyboardAvoidingView 
+                        style={{...styles.container, backgroundColor: colors.card}}
+                        behavior="padding"
+                        keyboardVerticalOffset={100}
+                    >
+                        <View style={styles.centeredView}>
+                            <Text style={{color: colors.text}}>Guardian 1</Text>
+                            <Divider  />
+                            <OutlinedInput 
+                                placeholder="email address" 
+                                value={g1Email} 
+                                onChangeText={({nativeEvent}) =>setG1Email(nativeEvent.text)} 
+                                style={styles.textInput}
+                                textContentType="emailAddress"
+                                keyboardType="email-address"
+                            />
+                            <OutlinedInput 
+                                placeholder="phone number" 
+                                value={g1Phone} 
+                                onChangeText={({nativeEvent}) =>setG1Phone(nativeEvent.text)} 
+                                style={styles.textInput}
+                                textContentType="telephoneNumber"
+                                keyboardType="phone-pad"
+                            />
+                            <Text style={{color: colors.text}}>Guardian 2</Text>
+                            <Divider  />
+                            <OutlinedInput 
+                                placeholder="email address" 
+                                value={g2Email} 
+                                onChangeText={({nativeEvent}) =>setG2Email(nativeEvent.text)} 
+                                style={styles.textInput}
+                                textContentType="emailAddress"
+                                keyboardType="email-address"
+                            />
+                            <OutlinedInput 
+                                placeholder="phone number" 
+                                value={g2Phone} 
+                                onChangeText={({nativeEvent}) =>setG2Phone(nativeEvent.text)} 
+                                style={styles.textInput}
+                                textContentType="telephoneNumber"
+                                keyboardType="phone-pad"
+                            />
+
+                            
+                            
+                            <GradientButton 
+                                text="Continue" 
+                                style={styles.btn}
+                                onPress={onPress}
+                            />
+                        </View>
+                        
+                    </KeyboardAvoidingView>
+                    
+                </ScrollView>
+                <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
+            </SafeAreaView>
+        : <AppLoading />
+    )
+}
+
+export const ScreenOne = withTheme(CreateProfile);
+export const ScreenTwo = withTheme(CreateProfileCont);
+export const ScreenThree = withTheme(AddGuardiansDetail);
 
 const styles = StyleSheet.create({
     scroll: {
@@ -125,14 +287,15 @@ const styles = StyleSheet.create({
     centeredView: {
         justifyContent: "center",
         paddingTop: 10,
+        paddingHorizontal: 15,
     },
     textInput: {
-        marginVertical: 10,
+        marginVertical: 20,
     },
     btn: {
         marginTop: 50,
     },
     picker: {
-        marginTop: 20,
+        marginVertical: 20
     },
 })

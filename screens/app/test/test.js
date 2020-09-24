@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
-import {View, StyleSheet, ScrollView, Alert} from 'react-native';
+import {View, StyleSheet, ScrollView, Alert, TouchableWithoutFeedback} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import {withTheme, Text, Divider} from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -112,9 +112,9 @@ export function HeaderButtonRight({onNotePress}){
     const {colors} = useTheme();
     return (
         <View style={styles.headerRight} >
-            <View onPress={onNotePress} style={styles.headerButton}>
+            <TouchableWithoutFeedback onPress={onNotePress} style={styles.headerButton}>
                 <MaterialCommunityIcons name='file-document-edit-outline' color={colors.text} size={24} onPress={onNotePress} />
-            </View>
+            </TouchableWithoutFeedback>
         </View>
     )
 }
