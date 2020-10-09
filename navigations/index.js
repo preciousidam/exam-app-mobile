@@ -1,6 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppLoading } from 'expo';
+import { useSelector } from 'react-redux';
 
 import SplashScreen from '../screens/splashScreen';
 import AuthFlow from './authentication';
@@ -8,24 +9,20 @@ import HomeNavigation from './app';
 import {loadFonts} from '../libs/fonts';
 
 
-
-
-
 const Stack = createStackNavigator();
 
-export default function MainNavigation({state, dispatch}){
+export function MainNavigation(props){
   
     const {Navigator, Screen} = Stack;
     const fontLoaded = loadFonts();
+    const {isLoading, user} = useSelector(state => state.auth);
     
-
     return(
         fontLoaded ? <Navigator>
-            {state.isLoading? (<Screen name='Splash' component={SplashScreen} options={{headerShown: false}} />): 
-              state.userToken == null ? <Screen
+            {isLoading? (<Screen name='Splash' component={SplashScreen} options={{headerShown: false}} />): 
+              user == null ? <Screen
                 name="auth"
                 component={AuthFlow}
-                initialParams={{state, dispatch}}
                 options={{
                   headerShown: false,
                 }}
@@ -33,7 +30,6 @@ export default function MainNavigation({state, dispatch}){
               <Screen
                 name="app"
                 component={HomeNavigation}
-                initialParams={{state}}
                 options={{
                   headerShown: false,
                 }}
@@ -43,3 +39,5 @@ export default function MainNavigation({state, dispatch}){
     )
       
 }
+
+export default MainNavigation;

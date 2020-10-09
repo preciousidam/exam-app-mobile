@@ -16,7 +16,7 @@ import {data, practise} from '../../../constants/data';
 
 export function PracticeScreen({navigation}){
     const {colors, dark} = useTheme();
-    const [showModal, setShowModal] = useState(true);
+    const [showModal, setShowModal] = useState(false);
 
     const random = [colors.primary, colors.secondary, colors.notification, colors.facebook];
 

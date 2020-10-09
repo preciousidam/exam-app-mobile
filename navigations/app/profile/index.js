@@ -11,9 +11,9 @@ export default function ProfileNavigator({navigation}){
         <Navigator>
             <Screen 
                 component={ProfileScreen}
-                name="profile"
+                name="Profile"
                 options={{
-                    headerShown: false,
+                    title: "Profile",
                 }}
             />
         </Navigator>

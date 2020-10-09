@@ -8,14 +8,12 @@ import {CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell} from 'react-na
 
 
 import {GradientButton} from '../../components/button';
-import {OutlinedInput} from '../../components/input';
 import {verify} from '../../assets/verify';
 
 
 const CELL_COUNT = 6;
 
-export function VerifyPhone({navigation, route}){
-    const {signIn} = route.params;
+export function VerifyPhone({navigation}){
     const {colors, dark} = useTheme();
     const [value, setValue] = useState('');
     const {navigate} = navigation;

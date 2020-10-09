@@ -32,6 +32,7 @@ function Corousel({data}){
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 ItemSeparatorComponent={_ => <View style={{width: 16,}} />}
+                contentContainerStyle={{paddingHorizontal: 20}}
             />
         </View>
     )
@@ -82,7 +83,6 @@ function Card({examBody, subject, progress, startDate, noQuestn, active, onPress
 const styles = StyleSheet.create({
     container:{
         width: '100%',
-        paddingLeft: 20,
     },
     card: {
         padding: 20,

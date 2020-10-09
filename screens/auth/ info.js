@@ -10,6 +10,8 @@ import {GradientButton} from '../../components/button';
 import {DateInput, OutlinedInput} from '../../components/input';
 import {DynamicPicker, LevelPicker, DynamicPickerIOS} from '../../components/input/picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
+import { signIn } from '../../store/reducers/auth';
 
 
 
@@ -105,7 +107,6 @@ export function CreateProfileCont({navigation}){
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
     const [country, setCountry] = useState('');
-    const [matricNo, setMatricNo] = useState('');
 
     
     const onCountryChange = (itemValue) => setCountry(itemValue);
@@ -172,18 +173,16 @@ export function CreateProfileCont({navigation}){
     )
 }
 
-export function AddGuardiansDetail({navigation}){
+export function AddGuardiansDetail(props){
     const fontLoaded = loadFonts();
     const {colors, dark} = useTheme();
     const [g1Email, setG1Email] = useState('');
     const [g2Email, setG2Email] = useState('');
     const [g1Phone, setG1Phone] = useState('');
     const [g2Phone, setG2Phone] = useState('');
-
+    const dispatch = useDispatch();
     
-    const onCountryChange = (itemValue) => setCountry(itemValue);
-    const onPress = e => navigation.navigate('profile-cont');
-    const DynaPicker = Platform.OS === 'ios' ? DynamicPickerIOS: DynamicPicker;
+    const onPress = e => dispatch(signIn({name: 'Ebubechukwu', email: 'preciousidam@gmail.com'}));
 
     return (
         fontLoaded ?
