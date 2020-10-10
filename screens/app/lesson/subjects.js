@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import {AppLoading} from 'expo';
-import {Text, Button, Badge, SearchBar} from 'react-native-elements';
+import {Text, Button, Badge} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '@react-navigation/native';
 import { loadFonts } from '../../../libs/fonts';
 import { useSelector } from 'react-redux';
-import {SearchInput} from '../../../components/input';
+import {OutlinedInput} from '../../../components/input';
 import { LinearGradient } from 'expo-linear-gradient';
 import FocusAwareStatusBar from '../../../components/StatusBar';
 import LessonList from '../../../components/corousel/lessons';
@@ -14,14 +14,14 @@ import LessonList from '../../../components/corousel/lessons';
 
 const colorBack = ['color-primary', 'color-success', 'color-info', 'color-warning', 'color-danger', ];
 
-export default function LessonScreen({navigation,route}){
+export default function SubjectScreen({navigation, route}){
     const {colors, dark} = useTheme();
     const fontLoaded = loadFonts();
     const {user} = useSelector(state => state.auth);
     const {navigate} = navigation;
     const {lessons} = useSelector(state => state.lessons);
     const subjects = useSelector(state => state.subjects);
-
+   
     return (
         fontLoaded ? <View style={styles.container}>
             <View style={styles.bar}>
@@ -39,6 +39,14 @@ export default function LessonScreen({navigation,route}){
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-evenly"}}>
                     <TouchableWithoutFeedback 
+                        onPress={_ => navigation.openDrawer()}
+                        style={styles.actionBar}
+                    >
+                        <View style={styles.actionBar}>
+                            <Ionicons name='md-search' size={24} color={colors.text} />
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback 
                         onPress={_ => navigate('Notifications')}
                         style={styles.actionBar}
                     >
@@ -49,53 +57,19 @@ export default function LessonScreen({navigation,route}){
                     </TouchableWithoutFeedback>
                 </View>
             </View>
-            <ScrollView>
-                <View style={styles.header}>
-                    <Text h3 h3Style={styles.h3} style={styles.h4}>Hey {user.name}</Text>
-                    <Text style={styles.h4}>Start Learning!</Text>
+            
+            <View style={styles.colors}>
+                <Subjects data={subjects} />
+            </View>
+            <View style={styles.sect}>
+                <View style={styles.sectHeader}>
+                    <Text style={styles.h4}>School Lesson</Text>
+                    <TouchableWithoutFeedback>
+                        <View><Text>more</Text></View>
+                    </TouchableWithoutFeedback>
                 </View>
-                <View style={styles.colors}>
-                    <SearchInput  
-                        placeholder="search for topics, subject, title"
-                    />
-                </View>
-                <View style={styles.sect}>
-                    <View style={styles.sectHeader}>
-                        <Text style={styles.h4}>School Lesson</Text>
-                        <TouchableWithoutFeedback>
-                            <View><Text>more</Text></View>
-                        </TouchableWithoutFeedback>
-                    </View>
-                    <LessonList data={lessons} />
-                </View>
-                <View style={styles.sect}>
-                    <View style={styles.sectHeader}>
-                        <Text style={styles.h4}>Tutorial Lesson</Text>
-                        <TouchableWithoutFeedback>
-                            <View><Text>more</Text></View>
-                        </TouchableWithoutFeedback>
-                    </View>
-                    <LessonList data={lessons} />
-                </View>
-                <View style={styles.sect}>
-                    <View style={styles.sectHeader}>
-                        <Text style={styles.h4}>Recommended Lesson</Text>
-                        <TouchableWithoutFeedback>
-                            <View><Text>more</Text></View>
-                        </TouchableWithoutFeedback>
-                    </View>
-                    <LessonList data={lessons} />
-                </View>
-                <View style={styles.sect}>
-                    <View style={styles.sectHeader}>
-                        <Text style={styles.h4}>Biology Lesson</Text>
-                        <TouchableWithoutFeedback>
-                            <View><Text>more</Text></View>
-                        </TouchableWithoutFeedback>
-                    </View>
-                    <LessonList data={lessons} />
-                </View>
-            </ScrollView>
+                <LessonList data={lessons} />
+            </View>
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.background} />
         </View>: <AppLoading />
     );
@@ -154,8 +128,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     colors: {
-        padding: 20,
-        width: '100%',
+        paddingVertical: 30,
     },
     card: {
         padding: 20,

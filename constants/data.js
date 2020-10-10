@@ -17,3 +17,11 @@ export const practise = [
     {id: '8', examBody: 'WAEC', subject: 'Literature', noQuestn: 50, duration: '60 mins', year: '2016'},
     {id: '9', examBody: 'NECO', subject: 'Agriculture', noQuestn: 50, duration: '60 mins', year: '2016'},
 ]
+
+export const lessons = [
+    {id: '1', topic: 'Photosynthesis', subject: 'Biology', noExercise: 5, duration: '60 mins', clipart: require('../assets/png/sorted/biology/0.png') },
+    {id: '2', topic: 'Motion Force', subject: 'Physics', noExercise: 9, duration: '60 mins', clipart: require('../assets/png/sorted/science/0.png') },
+    {id: '3', topic: 'Quadratic Equation', subject: 'Mathematics', noExercise: 4, duration: '60 mins', clipart: require('../assets/png/sorted/mathematics/0.png') },
+    {id: '4', topic: 'Chemical Equation', subject: 'Chemistry', noExercise: 3, duration: '60 mins', clipart: require('../assets/png/sorted/science/1.png') },
+    {id: '5', topic: 'Tenses', subject: 'English', noExercise: 1, duration: '60 mins', clipart: require('../assets/png/sorted/language/0.png') },
+]

@@ -14,7 +14,6 @@ import {store} from './store';
 
 export default function App() {
   const scheme = useColorScheme();
-
   
   const rnDefalt = scheme === 'dark' ? DarkTheme: DefaultTheme ;
   const theme = scheme === 'dark' ? dark: light;
@@ -28,14 +27,6 @@ export default function App() {
   }
 
   const componentTheme = {
-      Text: {
-        style: {
-          color: theme.text,
-        },
-        h4Style: {
-          fontSize: 20,
-        }
-      },
       Button: {
         buttonStyle: {
           backgroundColor: theme.secondary,

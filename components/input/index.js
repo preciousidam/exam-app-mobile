@@ -3,6 +3,7 @@ import {TextInput, View, StyleSheet} from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
 export const OutlinedInput = ({style, contProps, inputStyle, onChangeText, value, ...rest}) => {
     
@@ -30,6 +31,44 @@ export const OutlinedInput = ({style, contProps, inputStyle, onChangeText, value
                 onBlur={onBlur} 
                 value={value} 
                 style={{...styles.input, color: colors.text, ...inputStyle}} 
+                onChange={onChangeText}
+                blurOnSubmit={true}
+                {...rest} 
+            />
+        </View>
+    )
+}
+
+
+export const SearchInput = ({style, contProps, inputStyle, onChangeText, value, ...rest}) => {
+    
+    const {colors} = useTheme();
+    
+    const [focused, setFocused] = useState(false);
+    useEffect(() => {
+        if(focused) setBorderColor(colors.primary)
+        else setBorderColor('transparent');
+    }, [focused])
+
+    const [borderColor, setBorderColor] = useState('transparent')
+    
+
+    const onFocus = _ => setFocused(true);
+    const onBlur = _ => setFocused(false);
+
+    return (
+        <View 
+            {...contProps} 
+            style={{...styles.container, ...style, borderColor, backgroundColor: focused? 'transparent':'#d8d8d8'}}
+        >   
+            <View style={{marginRight: 10}}>
+                <Ionicon name='md-search' size={20} color={colors.highlight} />
+            </View>
+            <TextInput 
+                onFocus={onFocus} 
+                onBlur={onBlur} 
+                value={value} 
+                style={{...styles.input, color: colors.text, ...inputStyle,}} 
                 onChange={onChangeText}
                 blurOnSubmit={true}
                 {...rest} 
@@ -94,6 +133,8 @@ const styles = StyleSheet.create({
         padding: 15,
         borderWidth: 1,
         borderRadius: 10,
+        flexDirection: "row",
+        alignItems: "center",
     },
     input: {
         fontFamily: 'Montserrat_700Bold',
