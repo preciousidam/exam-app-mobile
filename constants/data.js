@@ -24,4 +24,9 @@ export const lessons = [
     {id: '3', topic: 'Quadratic Equation', subject: 'Mathematics', noExercise: 4, duration: '60 mins', clipart: require('../assets/png/sorted/mathematics/0.png') },
     {id: '4', topic: 'Chemical Equation', subject: 'Chemistry', noExercise: 3, duration: '60 mins', clipart: require('../assets/png/sorted/science/1.png') },
     {id: '5', topic: 'Tenses', subject: 'English', noExercise: 1, duration: '60 mins', clipart: require('../assets/png/sorted/language/0.png') },
+    {id: '6', topic: 'Photosynthesis', subject: 'Biology', noExercise: 5, duration: '60 mins', clipart: require('../assets/png/sorted/biology/0.png') },
+    {id: '7', topic: 'Motion Force', subject: 'Physics', noExercise: 9, duration: '60 mins', clipart: require('../assets/png/sorted/science/2.png') },
+    {id: '8', topic: 'Simultaneous Equation', subject: 'Mathematics', noExercise: 4, duration: '60 mins', clipart: require('../assets/png/sorted/mathematics/1.png') },
+    {id: '9', topic: 'Periodic Table', subject: 'Chemistry', noExercise: 3, duration: '60 mins', clipart: require('../assets/png/sorted/science/4.png') },
+    {id: '10', topic: 'English Reading', subject: 'English', noExercise: 1, duration: '60 mins', clipart: require('../assets/png/sorted/language/1.png') },
 ]

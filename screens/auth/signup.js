@@ -7,7 +7,7 @@ import { useTheme } from '@react-navigation/native';
 
 import {loadFonts} from '../../libs/fonts';
 import {GradientButton} from '../../components/button';
-import {DateInput, OutlinedInput} from '../../components/input';
+import {OutlinedInput} from '../../components/input';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 

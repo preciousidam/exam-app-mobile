@@ -1,16 +1,19 @@
 import React from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import {AppLoading} from 'expo';
-import {Text, Button, Badge, SearchBar} from 'react-native-elements';
+import {Text, Badge, SearchBar} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
-import { loadFonts } from '../../../libs/fonts';
 import { useSelector } from 'react-redux';
-import {SearchInput} from '../../../components/input';
 import { LinearGradient } from 'expo-linear-gradient';
+
+
 import FocusAwareStatusBar from '../../../components/StatusBar';
-import LessonList from '../../../components/corousel/lessons';
-//import {lessons} from '../../../constants/data';
+import LessonList from '../../../components/lesson';
+import { loadFonts } from '../../../libs/fonts';
+import {SearchInput} from '../../../components/input';
+
 
 const colorBack = ['color-primary', 'color-success', 'color-info', 'color-warning', 'color-danger', ];
 
@@ -21,9 +24,10 @@ export default function LessonScreen({navigation,route}){
     const {navigate} = navigation;
     const {lessons} = useSelector(state => state.lessons);
     const subjects = useSelector(state => state.subjects);
+    const {width, height} = useSafeAreaInsets();
 
     return (
-        fontLoaded ? <View style={styles.container}>
+        fontLoaded ? <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingVertical: height}]}>
             <View style={styles.bar}>
                 <View style={{flexDirection: "row", alignItems: "center"}}>
                     <TouchableWithoutFeedback onPress={_ => navigation.openDrawer()}>
@@ -97,7 +101,7 @@ export default function LessonScreen({navigation,route}){
                 </View>
             </ScrollView>
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.background} />
-        </View>: <AppLoading />
+        </SafeAreaView>: <AppLoading />
     );
 }
 

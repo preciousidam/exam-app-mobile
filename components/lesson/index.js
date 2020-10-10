@@ -12,7 +12,7 @@ function Corousel({data}){
     const [active, setActive] = useState(0);
     
     const renderItems = ({item, index}) => (
-        <Card 
+        <CardSquare
             {...item}
             onPress={_ => setActive(index)}
         />
@@ -35,7 +35,7 @@ function Corousel({data}){
 
 export default withTheme(Corousel);
 
-function Card({topic, clipart, noExercise,  onPress}){
+export function CardSquare({topic, clipart, noExercise, style, onPress}){
 
     const fontLoaded = loadFonts();
     const {colors} = useTheme();
@@ -43,7 +43,7 @@ function Card({topic, clipart, noExercise,  onPress}){
     
     return (
         fontLoaded ? <TouchableOpacity onPress={onPress} activeOpacity={0.8} >
-            <View style={{...styles.card, backgroundColor: colors.card}}>
+            <View style={[{...styles.card, backgroundColor: colors.card}, style]}>
                 <Image source={clipart} style={styles.image} resizeMethod='resize' resizeMode='contain' />
                 <View style={styles.wrap}>
                     <Text numberOfLines={1} tail style={styles.text}>{topic}</Text>
@@ -67,6 +67,30 @@ function Card({topic, clipart, noExercise,  onPress}){
     )
 }
 
+export function CardRect({topic, clipart, noExercise, style, onPress}){
+
+    const fontLoaded = loadFonts();
+    const {colors} = useTheme();
+    const [fav, setFav] = useState(false);
+    
+    return (
+        fontLoaded ? <TouchableOpacity onPress={onPress} activeOpacity={0.8} >
+            <View style={[{...styles.card, backgroundColor: colors.card}, {width: '100%'} ,style]}>
+                <View style={styles.rect}>
+                    <Image source={clipart} style={styles.imageRect} resizeMethod='resize' resizeMode='contain' />
+                    <View style={{flex: 8}}>
+                        <Text numberOfLines={1} tail style={styles.text}>{topic}</Text>
+                        <Text>{noExercise} Exercises</Text>
+                    </View>
+                    <View style={[{backgroundColor: colors.secondary, borderColor: colors.secondary}, styles.start]}>
+                        <Text style={[{color: '#ffffff'}]}>Start</Text>
+                    </View>   
+                </View>
+            </View>
+        </TouchableOpacity>: <AppLoading />
+    )
+}
+
 const styles = StyleSheet.create({
     container:{
         width: '100%',
@@ -74,7 +98,7 @@ const styles = StyleSheet.create({
     card: {
         borderRadius: 10,
         width: 160,
-        paddingTop: 10,
+        paddingVertical: 10,
     },
     h4: {
         fontFamily: 'OpenSans_700Bold',
@@ -91,6 +115,12 @@ const styles = StyleSheet.create({
         width: 160,
         height: 100,
     },
+    imageRect: {
+        width: 100,
+        height: 50,
+        flex: 2,
+        marginRight: 5,
+    },
     fav: {
         width: 40,
         height: 40,
@@ -106,6 +136,21 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         marginTop: 10,
+    },
+    start: {
+        paddingVertical: 5,
+        paddingHorizontal: 5,
+        flex: 2,
+        textAlign: "center",
+        borderRadius: 20,
+        borderWidth: 1,
+        alignItems: "center"
+    },
+    rect: {
+        flexDirection: "row", 
+        justifyContent: "space-between", 
+        alignItems: "center", 
+        paddingHorizontal: 10
     }
 });
 

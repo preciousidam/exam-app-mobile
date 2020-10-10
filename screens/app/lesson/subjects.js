@@ -1,29 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import {AppLoading} from 'expo';
-import {Text, Button, Badge} from 'react-native-elements';
+import {Text, Badge, SearchBar} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
-import { loadFonts } from '../../../libs/fonts';
 import { useSelector } from 'react-redux';
-import {OutlinedInput} from '../../../components/input';
 import { LinearGradient } from 'expo-linear-gradient';
+
+
 import FocusAwareStatusBar from '../../../components/StatusBar';
-import LessonList from '../../../components/corousel/lessons';
-//import {lessons} from '../../../constants/data';
+import { loadFonts } from '../../../libs/fonts';
+import List from '../../../components/lesson/list';
 
 const colorBack = ['color-primary', 'color-success', 'color-info', 'color-warning', 'color-danger', ];
 
 export default function SubjectScreen({navigation, route}){
     const {colors, dark} = useTheme();
     const fontLoaded = loadFonts();
-    const {user} = useSelector(state => state.auth);
     const {navigate} = navigation;
     const {lessons} = useSelector(state => state.lessons);
     const subjects = useSelector(state => state.subjects);
+    const {width, height} = useSafeAreaInsets();
+    const [selected, setSelected] = useState(0);
    
     return (
-        fontLoaded ? <View style={styles.container}>
+        fontLoaded ? <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingVertical: height}]}>
             <View style={styles.bar}>
                 <View style={{flexDirection: "row", alignItems: "center"}}>
                     <TouchableWithoutFeedback onPress={_ => navigation.openDrawer()}>
@@ -59,27 +61,23 @@ export default function SubjectScreen({navigation, route}){
             </View>
             
             <View style={styles.colors}>
-                <Subjects data={subjects} />
+                <Subjects data={subjects} selected={selected} onSelect={val => setSelected(val)} />
             </View>
             <View style={styles.sect}>
-                <View style={styles.sectHeader}>
-                    <Text style={styles.h4}>School Lesson</Text>
-                    <TouchableWithoutFeedback>
-                        <View><Text>more</Text></View>
-                    </TouchableWithoutFeedback>
-                </View>
-                <LessonList data={lessons} />
+                <List data={lessons} />
             </View>
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.background} />
-        </View>: <AppLoading />
+        </SafeAreaView>: <AppLoading />
     );
 }
 
-export const Subjects = ({data}) => {
+export const Subjects = ({data, selected, onSelect}) => {
     const {colors} = useTheme();
     const renderItems = ({item, index}) => (
         <TouchableOpacity
             activeOpacity={.8}
+            key={index}
+            onPress={_ => onSelect(index)}
         >
             <LinearGradient
                 key={index}
@@ -88,6 +86,7 @@ export const Subjects = ({data}) => {
                 style={[styles.card,{}]}
             >
                 <Text h4 h4Style={{fontSize: 16, color: '#ffffff'}}>{item}</Text>
+                {selected === index? <Ionicons name='ios-checkmark-circle' color='#ffffff' size={16} style={{position: 'absolute', left: 5, bottom: 10}} />: null}
             </LinearGradient>
         </TouchableOpacity>
     )
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
     },
     bar: {
         width: '100%',
-        paddingHorizontal: 20,
+        paddingHorizontal: 25,
         paddingVertical: 10,
         flexDirection: "row",
         justifyContent: "space-between",
@@ -128,10 +127,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     colors: {
-        paddingVertical: 30,
+        paddingVertical: 20,
     },
     card: {
-        padding: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
         borderWidth: 1,
         borderRadius: 10,
         borderColor: 'transparent'
