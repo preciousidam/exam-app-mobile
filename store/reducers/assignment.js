@@ -1,24 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {notifications} from '../../constants/data';
+import {assignments} from '../../constants/data';
 
 
-export const notificationSlice = createSlice({
-    name: 'notification',
-    initialState: notifications,
+export const assignmentSlice = createSlice({
+    name: 'lessons',
+    initialState: {assignments},
     reducers: {
         update(state, action){
-            const {notifications} =  action.payload;
-            return [
+            const {assignment} =  action.payload;
+            return {
                 ...state,
-                ...notifications
-            ];
+                assignment
+            };
         },
     }
 });
 
-export const {update} = notificationSlice.actions;
+export const {update} = assignmentSlice.actions;
 
-export default notificationSlice.reducer;
+export default assignmentSlice.reducer;
 
 export const updateAsync = details => async dispatch => {
     try{

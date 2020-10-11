@@ -13,7 +13,7 @@ export default function AssignmentNavigator({navigation}){
                 component={AssignmentScreen}
                 name="Assignments"
                 options={{
-                    headerShown: false,
+                    title: 'Assignments',
                 }}
             />
         </Navigator>

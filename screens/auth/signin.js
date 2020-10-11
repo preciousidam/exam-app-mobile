@@ -5,6 +5,8 @@ import { AppLoading } from 'expo';
 import { withTheme } from 'react-native-elements';
 import { useTheme } from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
+import { signIn } from '../../store/reducers/auth';
 
 import {loadFonts} from '../../libs/fonts';
 import {GradientButton} from '../../components/button';
@@ -13,13 +15,13 @@ import {OutlinedInput} from '../../components/input';
 
 
 export function SignIn({navigation, route}){
-    const {signIn} = route.params;
     const fontLoaded = loadFonts();
     const {colors, dark} = useTheme();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
 
-    const onPress = e => signIn({ type: 'SIGN_IN', token: email });
+    const onPress = e => dispatch(signIn({name: 'Ebubechukwu', email: email}));
 
     return (
         fontLoaded ? 

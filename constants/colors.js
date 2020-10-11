@@ -8,6 +8,7 @@ const primaryTint = '#F8C964';
 const textDarkBg = '#ffffff';
 const textLightBg = '#232B28';
 const highlight = '#8d8d8d';
+const seperator = '#1d1d1d';
 const bgHighlight = 'rgba(245, 175, 25, .2)';
 const card = '#1D263B';
 
@@ -24,6 +25,7 @@ export const dark = {
     primaryLight,
     highlight,
     bgHighlight,
+    seperator,
 };
 
 export const light = {
@@ -38,5 +40,6 @@ export const light = {
     primaryLight,
     highlight,
     bgHighlight,
+    seperator,
 };
 

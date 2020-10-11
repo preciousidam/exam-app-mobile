@@ -66,7 +66,7 @@ export default function LessonScreen({navigation,route}){
                 <View style={styles.sect}>
                     <View style={styles.sectHeader}>
                         <Text style={styles.h4}>School Lesson</Text>
-                        <TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => navigate('List')}>
                             <View><Text>more</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -75,7 +75,7 @@ export default function LessonScreen({navigation,route}){
                 <View style={styles.sect}>
                     <View style={styles.sectHeader}>
                         <Text style={styles.h4}>Tutorial Lesson</Text>
-                        <TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => navigate('List')}>
                             <View><Text>more</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -84,7 +84,7 @@ export default function LessonScreen({navigation,route}){
                 <View style={styles.sect}>
                     <View style={styles.sectHeader}>
                         <Text style={styles.h4}>Recommended Lesson</Text>
-                        <TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => navigate('List')}>
                             <View><Text>more</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -93,7 +93,7 @@ export default function LessonScreen({navigation,route}){
                 <View style={styles.sect}>
                     <View style={styles.sectHeader}>
                         <Text style={styles.h4}>Biology Lesson</Text>
-                        <TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => navigate('List')}>
                             <View><Text>more</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -105,34 +105,7 @@ export default function LessonScreen({navigation,route}){
     );
 }
 
-export const Subjects = ({data}) => {
-    const {colors} = useTheme();
-    const renderItems = ({item, index}) => (
-        <TouchableOpacity
-            activeOpacity={.8}
-        >
-            <LinearGradient
-                key={index}
-                start={[1,.2]}
-                colors={[colors[`${colorBack[index % colorBack.length]}-500`], colors[`${colorBack[index % colorBack.length]}-500`],]} 
-                style={[styles.card,{}]}
-            >
-                <Text h4 h4Style={{fontSize: 16, color: '#ffffff'}}>{item}</Text>
-            </LinearGradient>
-        </TouchableOpacity>
-    )
-    return (
-        <FlatList
-            data={data}
-            keyExtractor={(item,index) => `${index}`}
-            renderItem={renderItems}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            ItemSeparatorComponent={_ => <View style={{width: 16,}} />}
-            contentContainerStyle={{paddingHorizontal: 20}}
-        />
-    )
-}
+
 
 const styles = StyleSheet.create({
     container: {

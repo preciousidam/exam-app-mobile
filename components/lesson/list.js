@@ -6,42 +6,40 @@ import {useTheme} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import {loadFonts} from '../../libs/fonts';
 import {CardSquare, CardRect} from './index';
 
 export default function List({data, useGrid=false}){
-    const [active, setActive] = useState(0);
+
     const [grid, setGrid] = useState(useGrid);
+    const {colors} = useTheme();
     
     const renderItems = ({item, index}) => (
         grid ?<CardSquare
             {...item}
             onPress={_ => setActive(index)}
-            
         /> : <CardRect
             {...item}
             onPress={_ => setActive(index)}
-            
         />
     );
 
     const toggle = value => setGrid(value)
 
     const renderToggle = _ => (<View style={styles.header} >
-            <Text style={styles.h4}>All Lessons</Text>
-            <View style={{flexDirection: "row"}}>
-                <TouchableOpacity onPress={e => toggle(false)} style={styles.toggle}>
-                    <View>
-                        <Ionicons name='md-list' size={20} />
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={e => toggle(true)} style={styles.toggle}>
-                    <View>
-                        <MaterialCommunityIcons name='view-grid' size={20} />
-                    </View>
-                </TouchableOpacity>
-            </View>
-        </View>)
+        <Text style={styles.h4}>All Lessons</Text>
+        <View style={{flexDirection: "row"}}>
+            <TouchableOpacity onPress={e => toggle(false)} style={styles.toggle}>
+                <View>
+                    <Ionicons name='md-list' size={20} color={colors.text} />
+                </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={e => toggle(true)} style={styles.toggle}>
+                <View>
+                    <MaterialCommunityIcons name='view-grid' size={20} color={colors.text} />
+                </View>
+            </TouchableOpacity>
+        </View>
+    </View>);
 
     return(
         <View style={styles.container}>

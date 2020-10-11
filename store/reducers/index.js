@@ -3,10 +3,12 @@ import authReducer from './auth';
 import notificationReducer from './notification';
 import lessonReducer from './lesson';
 import subjectReducer from './subjects';
+import assignmentReducer from './assignment';
 
 export default combineReducers({
     auth: authReducer,
     notifications: notificationReducer,
     lessons: lessonReducer,
     subjects: subjectReducer,
+    assignments: assignmentReducer,
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import NotificationScreen from '../../../screens/app/notification';
-import { Notifications } from 'expo';
+import ReadNotificationScreen from '../../../screens/app/notification/read';
 
 const Stack = createStackNavigator();
 
@@ -13,6 +13,13 @@ export default function NoteNavigator({navigation}){
             <Screen 
                 component={NotificationScreen}
                 name="Notifications"
+                options={{
+                    title: 'Notifications'
+                }}
+            />
+            <Screen 
+                component={ReadNotificationScreen}
+                name="ReadNotifications"
                 options={{
                     title: 'Notifications'
                 }}

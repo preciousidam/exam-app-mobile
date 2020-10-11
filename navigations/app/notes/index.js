@@ -13,7 +13,7 @@ export default function NoteNavigator({navigation}){
                 component={NoteScreen}
                 name="Notes"
                 options={{
-                    headerShown: false,
+                    title: 'Notes',
                 }}
             />
         </Navigator>
