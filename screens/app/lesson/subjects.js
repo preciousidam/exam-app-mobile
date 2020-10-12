@@ -85,8 +85,8 @@ export const Subjects = ({data, selected, onSelect}) => {
                 colors={[colors[`${colorBack[index % colorBack.length]}-500`], colors[`${colorBack[index % colorBack.length]}-500`],]} 
                 style={[styles.card,{}]}
             >
-                <Text h4 h4Style={{fontSize: 16, color: '#ffffff'}}>{item}</Text>
-                {selected === index? <Ionicons name='ios-checkmark-circle' color='#ffffff' size={16} style={{position: 'absolute', left: 5, bottom: 10}} />: null}
+                <Text style={{fontSize: 16, color: '#ffffff', fontFamily: 'Montserrat_700Bold'}}>{item}</Text>
+                {selected === index? <Ionicons name='ios-checkmark-circle' color='#ffffff' size={16} style={{position: 'absolute', left: 5, top: 15}} />: null}
             </LinearGradient>
         </TouchableOpacity>
     )

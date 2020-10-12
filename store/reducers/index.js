@@ -4,6 +4,7 @@ import notificationReducer from './notification';
 import lessonReducer from './lesson';
 import subjectReducer from './subjects';
 import assignmentReducer from './assignment';
+import noteReducer from './note';
 
 export default combineReducers({
     auth: authReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
     lessons: lessonReducer,
     subjects: subjectReducer,
     assignments: assignmentReducer,
+    notes: noteReducer,
 });

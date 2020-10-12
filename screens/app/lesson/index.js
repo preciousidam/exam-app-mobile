@@ -6,7 +6,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { LinearGradient } from 'expo-linear-gradient';
 
 
 import FocusAwareStatusBar from '../../../components/StatusBar';

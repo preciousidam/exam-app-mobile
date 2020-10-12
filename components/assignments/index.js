@@ -6,10 +6,10 @@ import {useTheme} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import {CardSquare, CardRect} from '../lesson';
+import {CardRect} from '../lesson';
+
 
 export default function List({data}){
-    console.log
    
     const {colors} = useTheme();
     
@@ -20,11 +20,9 @@ export default function List({data}){
         />
     );
 
-    const renderHeader = ({section: {title}}) => {
-        console.log(title)
-    return (<View style={styles.header} >
+    const renderHeader = ({section: {title}}) => (<View style={styles.header} >
         <Text style={styles.h4}>{title}</Text>
-    </View>)};
+    </View>);
 
     return(
         <View style={styles.container}>
@@ -36,6 +34,7 @@ export default function List({data}){
                 ItemSeparatorComponent={_ => <View style={{width: 16, height: 16}} />}
                 SectionSeparatorComponent={_ => <View style={{width: 16, height: 10}} />}
                 renderSectionHeader={renderHeader}
+                showsVerticalScrollIndicator={false}
             />
         </View>
     )

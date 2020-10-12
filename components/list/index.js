@@ -12,7 +12,7 @@ export default function List({data, onPress}){
     const {colors} = useTheme();
     
     const renderItems = ({item, index}) => (
-        <ListItem {...item} onPress={_ => onPress(index)} />
+        <ListItem {...item} onPress={_ => onPress(item.id)} />
     );
 
     return(

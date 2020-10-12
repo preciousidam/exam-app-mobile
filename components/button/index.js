@@ -38,6 +38,17 @@ export const GradientButton = ({text, onPress, style, textStyle}) => {
     )
 }
 
+export const FloatingActionButton = ({icon, onPress}) => {
+    const {colors} = useTheme();
+    return (
+        <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+            <View style={[styles.actionBtn, {backgroundColor: colors.primary}]}>
+                {icon}
+            </View>
+        </TouchableOpacity>
+    )
+}
+
 const styles = StyleSheet.create({
     container: {
         width: '100%',
@@ -63,5 +74,16 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: 'center',
         borderRadius: 30,
+    },
+    actionBtn: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        borderWidth: 1,
+        borderColor: 'transparent',
+        padding: 20,
+        elevation: 10,
+        alignItems: "center",
+        justifyContent: "center"
     }
 })
