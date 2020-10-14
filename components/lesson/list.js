@@ -17,10 +17,10 @@ export default function List({data, useGrid=false}){
     const renderItems = ({item, index}) => (
         grid ?<CardSquare
             {...item}
-            onPress={_ => navigate('Detail', {id: item.id})}
+            onPress={_ => navigate('Overview', {id: item.id})}
         /> : <CardRect
             {...item}
-            onPress={_ => navigate('Detail', {id: item.id})}
+            onPress={_ => navigate('Overview', {id: item.id})}
         />
     );
 

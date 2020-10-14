@@ -15,7 +15,7 @@ function Corousel({data}){
     const renderItems = ({item, index}) => (
         <CardSquare
             {...item}
-            onPress={_ => navigate('Detail', {id: item.id})}
+            onPress={_ => navigate('Overview', {id: item.id})}
         />
     );
 

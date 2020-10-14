@@ -10,6 +10,7 @@ import LessonScreen from '../../../screens/app/lesson';
 import SubjectScreen from '../../../screens/app/lesson/subjects';
 import ListScreen from '../../../screens/app/lesson/list';
 import OverviewScreen from '../../../screens/app/lesson/overview';
+import DetailScreen from '../../../screens/app/lesson/detail';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -149,9 +150,16 @@ export default function MainNavigator({navigation}){
             />
             <Screen 
                 component={OverviewScreen}
-                name="Detail"
+                name="Overview"
                 options={{
                     headerShown: false,
+                }}
+            />
+            <Screen 
+                component={DetailScreen}
+                name="Detail"
+                options={{
+                    title: "Lesson"
                 }}
             />
         </Navigator>

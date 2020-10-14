@@ -49,10 +49,14 @@ export const GradientButton = ({text, onPress, style, textStyle}) => {
     )
 }
 
-export const FloatingActionButton = ({icon, onPress}) => {
+export const FloatingActionButton = ({icon, onPress, style}) => {
     const {colors} = useTheme();
     return (
-        <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+        <TouchableOpacity 
+            onPress={onPress} 
+            activeOpacity={0.8} 
+            style={[{position: "absolute", bottom: 30, right: 30}, style]}
+        >
             <View style={[styles.actionBtn, {backgroundColor: colors.primary}]}>
                 {icon}
             </View>

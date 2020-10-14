@@ -7,7 +7,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { LinearGradient } from 'expo-linear-gradient';
 
 
 import FocusAwareStatusBar from '../../../components/StatusBar';
@@ -26,6 +25,9 @@ export default function OverviewScreen({navigation, route}){
     const {width, height} = useSafeAreaInsets();
     const {id} = route.params;
     const lesson = useSelector(state => state.lessons.find(({id: lessonId}) => id === lessonId));
+
+    const detailsActive = startFrom => navigate('Detail', {id, startFrom});
+    const exerciseActive = _ => navigate('', {id});
     
     return (
         fontLoaded ? <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingTop: height}]}>
@@ -55,14 +57,15 @@ export default function OverviewScreen({navigation, route}){
                     ))}
                </View>
                <View style={styles.content}>
-                    {active === 0 && <Details data={lesson?.details} />}
+                    {active === 0 && <Details data={lesson?.details} onPress={detailsActive} />}
                     {active === 1 && <Exercises data={lesson?.details} />}
                     {active === 2 && <Highlights data={lesson?.highlights}  />}
                </View>
                {active !== 2 && <View style={styles.start}>
                     <SolidbuttonWithIcon 
                         text='Start'
-                        icon={<MaterialCommunityIcons name='arrow-right' size={16} color='#ffffff' />} 
+                        icon={<MaterialCommunityIcons name='arrow-right' size={16} color='#ffffff' />}
+                        onPress={active === 0? _ => detailsActive(0) : exerciseActive}
                     />
                 </View>}
             </View>
@@ -200,12 +203,16 @@ const styles = StyleSheet.create({
     },
 });
 
-export function Details({data}){
-    const {colors} = useTheme()
+export function Details({data, onPress}){
+    const {colors} = useTheme();
     return(
         <View style={styles.innerView}>
             <ScrollView contentContainerStyle={{}}>
-                {data?.map(({subHeader, body}, index) => (<TouchableOpacity activeOpacity={0.8} key={`${index}`}>
+                {data?.map(({subHeader, body}, index) => (
+                <TouchableOpacity 
+                    activeOpacity={0.8} key={`${index}`}
+                    onPress={_ => onPress(index)}
+                >
                     <View style={[styles.listItem, {backgroundColor: colors.card}]}>
                         <View style={styles.numbering}>
                             <Text style={styles.numbers}>{'0'+(index+1)}</Text>
@@ -229,7 +236,7 @@ export function Exercises({data}){
     return(
         <View style={styles.innerView}>
             <ScrollView contentContainerStyle={{}}>
-                {data?.map(({subHeader, body}, index) => (<TouchableOpacity activeOpacity={0.8} key={`${index}`}>
+                {data?.map(({subHeader}, index) => (<TouchableOpacity activeOpacity={0.8} key={`${index}`}>
                     <View style={[styles.listItem, {backgroundColor: colors.card}]}>
                         <View style={styles.numbering}>
                             <Text style={styles.numbers}>{'0'+(index+1)}</Text>
@@ -252,7 +259,7 @@ export function Highlights({data}){
     const {colors} = useTheme()
     return(
         <View style={styles.innerView}>
-            <ScrollView contentContainerStyle={{}}>
+            <ScrollView contentContainerStyle={{paddingBottom: 300}}>
                 {data?.map(({section, paragraphs, color, time}, index) => (<TouchableOpacity activeOpacity={0.8} key={`${index}`}>
                     <View style={[styles.highlightsItem, {backgroundColor: colors.card}]}>
                         <View style={styles.titleView}>
