@@ -19,7 +19,7 @@ export default function SubjectScreen({navigation, route}){
     const {colors, dark} = useTheme();
     const fontLoaded = loadFonts();
     const {navigate} = navigation;
-    const {lessons} = useSelector(state => state.lessons);
+    const lessons = useSelector(state => state.lessons);
     const subjects = useSelector(state => state.subjects);
     const {width, height} = useSafeAreaInsets();
     const [selected, setSelected] = useState(0);

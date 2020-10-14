@@ -18,17 +18,32 @@ export const practise = [
     {id: '9', examBody: 'NECO', subject: 'Agriculture', noQuestn: 50, duration: '60 mins', year: '2016'},
 ]
 
+export const details = [
+    {id: 1,  subHeader: 'Lightening', body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."},
+    {id: 2,  subHeader: 'Sun Drying', body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."},
+    {id: 3,  subHeader: 'Malnourished', body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."},
+    {id: 4,  subHeader: 'Decomposition', body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."},
+    {id: 5,  subHeader: 'Dead Plant', body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."},
+]
+
+export const highlights = [
+    { time: '2w', color: "color-primary-400", section: 'Lightening', paragraphs: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.']},
+    { time: '30m', color: "color-info-400", section: 'Malnourished', paragraphs: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.','Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.']},
+    { time: '2w', color: "color-success-400", section: 'Decomposition', paragraphs: ['Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.']},
+    { time: '2h', color: "color-danger-400", section: 'Sun Drying', paragraphs: ['Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.']},
+]
+
 export const lessons = [
-    {id: '1', topic: 'Photosynthesis', subject: 'Biology', noExercise: 5, duration: '60 mins', clipart: require('../assets/png/sorted/biology/0.png') },
-    {id: '2', topic: 'Motion Force', subject: 'Physics', noExercise: 9, duration: '60 mins', clipart: require('../assets/png/sorted/science/0.png') },
-    {id: '3', topic: 'Quadratic Equation', subject: 'Mathematics', noExercise: 4, duration: '60 mins', clipart: require('../assets/png/sorted/mathematics/0.png') },
-    {id: '4', topic: 'Chemical Equation', subject: 'Chemistry', noExercise: 3, duration: '60 mins', clipart: require('../assets/png/sorted/science/1.png') },
-    {id: '5', topic: 'Tenses', subject: 'English', noExercise: 1, duration: '60 mins', clipart: require('../assets/png/sorted/language/0.png') },
-    {id: '6', topic: 'Photosynthesis', subject: 'Biology', noExercise: 5, duration: '60 mins', clipart: require('../assets/png/sorted/biology/0.png') },
-    {id: '7', topic: 'Motion Force', subject: 'Physics', noExercise: 9, duration: '60 mins', clipart: require('../assets/png/sorted/science/2.png') },
-    {id: '8', topic: 'Simultaneous Equation', subject: 'Mathematics', noExercise: 4, duration: '60 mins', clipart: require('../assets/png/sorted/mathematics/1.png') },
-    {id: '9', topic: 'Periodic Table', subject: 'Chemistry', noExercise: 3, duration: '60 mins', clipart: require('../assets/png/sorted/science/4.png') },
-    {id: '10', topic: 'English Reading', subject: 'English', noExercise: 1, duration: '60 mins', clipart: require('../assets/png/sorted/language/1.png') },
+    {id: '1', topic: 'Photosynthesis', subject: 'Biology', noExercise: 5, duration: '60 mins', clipart: require('../assets/png/sorted/biology/0.png'), details, highlights,},
+    {id: '2', topic: 'Motion Force', subject: 'Physics', noExercise: 9, duration: '60 mins', clipart: require('../assets/png/sorted/science/0.png'), details, highlights,},
+    {id: '3', topic: 'Quadratic Equation', subject: 'Mathematics', noExercise: 4, duration: '60 mins', clipart: require('../assets/png/sorted/mathematics/0.png'), details, highlights,},
+    {id: '4', topic: 'Chemical Equation', subject: 'Chemistry', noExercise: 3, duration: '60 mins', clipart: require('../assets/png/sorted/science/1.png'), details, highlights,},
+    {id: '5', topic: 'Tenses', subject: 'English', noExercise: 1, duration: '60 mins', clipart: require('../assets/png/sorted/language/0.png'), details, highlights,},
+    {id: '6', topic: 'Photosynthesis', subject: 'Biology', noExercise: 5, duration: '60 mins', clipart: require('../assets/png/sorted/biology/0.png'), details, highlights,},
+    {id: '7', topic: 'Motion Force', subject: 'Physics', noExercise: 9, duration: '60 mins', clipart: require('../assets/png/sorted/science/2.png'), details, highlights,},
+    {id: '8', topic: 'Simultaneous Equation', subject: 'Mathematics', noExercise: 4, duration: '60 mins', clipart: require('../assets/png/sorted/mathematics/1.png'), details, highlights,},
+    {id: '9', topic: 'Periodic Table', subject: 'Chemistry', noExercise: 3, duration: '60 mins', clipart: require('../assets/png/sorted/science/4.png'), details, highlights,},
+    {id: '10', topic: 'English Reading', subject: 'English', noExercise: 1, duration: '60 mins', clipart: require('../assets/png/sorted/language/1.png'), details, highlights,},
 ]
 
 export const assignments = [

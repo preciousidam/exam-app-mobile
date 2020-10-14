@@ -21,7 +21,7 @@ export default function LessonScreen({navigation,route}){
     const fontLoaded = loadFonts();
     const {user} = useSelector(state => state.auth);
     const {navigate} = navigation;
-    const {lessons} = useSelector(state => state.lessons);
+    const lessons = useSelector(state => state.lessons);
     const subjects = useSelector(state => state.subjects);
     const {width, height} = useSafeAreaInsets();
 
@@ -65,7 +65,7 @@ export default function LessonScreen({navigation,route}){
                 <View style={styles.sect}>
                     <View style={styles.sectHeader}>
                         <Text style={styles.h4}>School Lesson</Text>
-                        <TouchableWithoutFeedback onPress={() => navigate('List')}>
+                        <TouchableWithoutFeedback onPress={() => navigate('List', {title: 'School'})}>
                             <View><Text>more</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -74,7 +74,7 @@ export default function LessonScreen({navigation,route}){
                 <View style={styles.sect}>
                     <View style={styles.sectHeader}>
                         <Text style={styles.h4}>Tutorial Lesson</Text>
-                        <TouchableWithoutFeedback onPress={() => navigate('List')}>
+                        <TouchableWithoutFeedback onPress={() => navigate('List', {title: 'Tutorial'})}>
                             <View><Text>more</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -83,7 +83,7 @@ export default function LessonScreen({navigation,route}){
                 <View style={styles.sect}>
                     <View style={styles.sectHeader}>
                         <Text style={styles.h4}>Recommended Lesson</Text>
-                        <TouchableWithoutFeedback onPress={() => navigate('List')}>
+                        <TouchableWithoutFeedback onPress={() => navigate('List', {title: 'Recommended'})}>
                             <View><Text>more</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -92,7 +92,7 @@ export default function LessonScreen({navigation,route}){
                 <View style={styles.sect}>
                     <View style={styles.sectHeader}>
                         <Text style={styles.h4}>Biology Lesson</Text>
-                        <TouchableWithoutFeedback onPress={() => navigate('List')}>
+                        <TouchableWithoutFeedback onPress={() => navigate('List', {title: 'Biology'})}>
                             <View><Text>more</Text></View>
                         </TouchableWithoutFeedback>
                     </View>

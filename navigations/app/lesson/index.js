@@ -9,6 +9,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import LessonScreen from '../../../screens/app/lesson';
 import SubjectScreen from '../../../screens/app/lesson/subjects';
 import ListScreen from '../../../screens/app/lesson/list';
+import OverviewScreen from '../../../screens/app/lesson/overview';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -112,6 +113,21 @@ export function SubjectNavigator({navigation}){
     )
 }
 
+export function OverviewNavigator({navigation}){
+    const {Navigator, Screen} = Stack;
+    return (
+        <Navigator>
+            <Screen 
+                component={OverviewScreen}
+                name="Overview"
+                options={{
+                    headerShown: false,
+                }}
+            />
+        </Navigator>
+    )
+}
+
 export default function MainNavigator({navigation}){
     const {Navigator, Screen} = Stack;
     
@@ -129,6 +145,13 @@ export default function MainNavigator({navigation}){
                 name="List"
                 options={{
                     title: 'Lessons',
+                }}
+            />
+            <Screen 
+                component={OverviewScreen}
+                name="Detail"
+                options={{
+                    headerShown: false,
                 }}
             />
         </Navigator>

@@ -25,6 +25,17 @@ export const Solidbutton = ({text, onPress, style, textStyle}) =>{
     )
 }
 
+export const SolidbuttonWithIcon = ({text, onPress, style, textStyle, icon}) =>{
+    return (
+        <TouchableOpacity onPress={onPress} style={{...styles.container}} activeOpacity={0.8}>
+                <LinearGradient start={[0.7,0.2]} colors={['#f5af19', '#FF9D14',]} style={[{...styles.grad, borderRadius: 25},style]} >
+                    <Text style={{...styles.text, ...textStyle}}>{text}</Text>
+                    <View style={styles.icon}>{icon}</View>
+                </LinearGradient>
+        </TouchableOpacity>
+    )
+}
+
 export const GradientButton = ({text, onPress, style, textStyle}) => {
 
     return (
@@ -65,6 +76,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         justifyContent: "center",
         alignItems: 'center',
+        flexDirection: "row"
     },
     outlined: {
         padding: 15,
@@ -85,5 +97,13 @@ const styles = StyleSheet.create({
         elevation: 10,
         alignItems: "center",
         justifyContent: "center"
-    }
+    },
+    icon: {
+        position: "absolute",
+        right: 8,
+        backgroundColor: '#000000',
+        padding: 10,
+        borderWidth: 1,
+        borderRadius: 20,
+    },
 })

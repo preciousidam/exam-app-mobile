@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, TouchableOpacity, FlatList, StyleSheet, Image} from 'react-native';
 import {Text, Avatar, withTheme} from 'react-native-elements';
 import { AppLoading } from 'expo';
-import {useTheme} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {loadFonts} from '../../libs/fonts';
@@ -10,11 +10,12 @@ import {loadFonts} from '../../libs/fonts';
 
 function Corousel({data}){
     const [active, setActive] = useState(0);
+    const {navigate} = useNavigation();
     
     const renderItems = ({item, index}) => (
         <CardSquare
             {...item}
-            onPress={_ => setActive(index)}
+            onPress={_ => navigate('Detail', {id: item.id})}
         />
     );
 
@@ -27,7 +28,7 @@ function Corousel({data}){
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 ItemSeparatorComponent={_ => <View style={{width: 16,}} />}
-                contentContainerStyle={{paddingHorizontal: 20}}
+                contentContainerStyle={{paddingHorizontal: 20, paddingVertical: 10}}
             />
         </View>
     )
@@ -82,9 +83,15 @@ export function CardRect({topic, clipart, noExercise, style, onPress}){
                         <Text numberOfLines={1} tail style={styles.text}>{topic}</Text>
                         <Text>{noExercise} Exercises</Text>
                     </View>
-                    <View style={[{backgroundColor: colors.secondary, borderColor: colors.secondary}, styles.start]}>
-                        <Text style={[{color: '#ffffff'}]}>Start</Text>
-                    </View>   
+                    <TouchableOpacity onPress={e => setFav(!fav)}>
+                        <View style={[styles.fav,{backgroundColor: fav? colors.notification: "transparent"}]}>
+                            <Ionicons 
+                                name="ios-heart" 
+                                size={16} 
+                                color={fav? colors.card: colors.highlight} 
+                            />
+                        </View>
+                    </TouchableOpacity>  
                 </View>
             </View>
         </TouchableOpacity>: <AppLoading />
@@ -99,6 +106,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: 160,
         paddingVertical: 10,
+        elevation: 5,
     },
     h4: {
         fontFamily: 'OpenSans_700Bold',

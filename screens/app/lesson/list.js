@@ -19,13 +19,13 @@ export default function ListScreen({navigation, route}){
     const {colors, dark} = useTheme();
     const fontLoaded = loadFonts();
     const {navigate} = navigation;
-    const {lessons} = useSelector(state => state.lessons);
-    const subjects = useSelector(state => state.subjects);
+    const lessons = useSelector(state => state.lessons);
     const {width, height} = useSafeAreaInsets();
-    const [selected, setSelected] = useState(0);
+    const {title} = route.params;
 
     useEffect(() => {
         navigation.setOptions({
+            title,
             headerRight: () => (
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-evenly", paddingRight: 10}}>
                     <TouchableWithoutFeedback 
@@ -61,37 +61,6 @@ export default function ListScreen({navigation, route}){
     );
 }
 
-export const Subjects = ({data, selected, onSelect}) => {
-    const {colors} = useTheme();
-    const renderItems = ({item, index}) => (
-        <TouchableOpacity
-            activeOpacity={.8}
-            key={index}
-            onPress={_ => onSelect(index)}
-        >
-            <LinearGradient
-                key={index}
-                start={[1,.2]}
-                colors={[colors[`${colorBack[index % colorBack.length]}-500`], colors[`${colorBack[index % colorBack.length]}-500`],]} 
-                style={[styles.card,{}]}
-            >
-                <Text h4 h4Style={{fontSize: 16, color: '#ffffff'}}>{item}</Text>
-                {selected === index? <Ionicons name='ios-checkmark-circle' color='#ffffff' size={16} style={{position: 'absolute', left: 5, bottom: 10}} />: null}
-            </LinearGradient>
-        </TouchableOpacity>
-    )
-    return (
-        <FlatList
-            data={data}
-            keyExtractor={(item,index) => `${index}`}
-            renderItem={renderItems}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            ItemSeparatorComponent={_ => <View style={{width: 16,}} />}
-            contentContainerStyle={{paddingHorizontal: 20}}
-        />
-    )
-}
 
 const styles = StyleSheet.create({
     container: {
@@ -134,7 +103,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     sect: {
-        marginBottom: 40,
+        
     },
     actionBar: {
         marginHorizontal: 10,

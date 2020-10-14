@@ -4,7 +4,7 @@ import {lessons} from '../../constants/data';
 
 export const lessonSlice = createSlice({
     name: 'lessons',
-    initialState: {lessons},
+    initialState: [...lessons],
     reducers: {
         update(state, action){
             const {lessons} =  action.payload;

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, TouchableOpacity, FlatList, StyleSheet, Image} from 'react-native';
 import {Text, Avatar, withTheme} from 'react-native-elements';
 import { AppLoading } from 'expo';
-import {useTheme} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
@@ -12,14 +12,15 @@ export default function List({data, useGrid=false}){
 
     const [grid, setGrid] = useState(useGrid);
     const {colors} = useTheme();
+    const {navigate} = useNavigation()
     
     const renderItems = ({item, index}) => (
         grid ?<CardSquare
             {...item}
-            onPress={_ => setActive(index)}
+            onPress={_ => navigate('Detail', {id: item.id})}
         /> : <CardRect
             {...item}
-            onPress={_ => setActive(index)}
+            onPress={_ => navigate('Detail', {id: item.id})}
         />
     );
 
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: 160,
         paddingTop: 10,
+        elevation: 5,
     },
     h4: {
         fontFamily: 'Montserrat_700Bold',
