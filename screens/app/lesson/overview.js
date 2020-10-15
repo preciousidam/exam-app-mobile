@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     content: {
-        paddingHorizontal: 20,
+        paddingVertical: 10,
     },
     listItem: {
         padding: 10,
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     innerView: {
-        flexGrow: 1
+        flexGrow: 1,
     },
     highlightsItem: {
         padding: 15,
@@ -207,7 +207,7 @@ export function Details({data, onPress}){
     const {colors} = useTheme();
     return(
         <View style={styles.innerView}>
-            <ScrollView contentContainerStyle={{}}>
+            <ScrollView contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 300}}>
                 {data?.map(({subHeader, body}, index) => (
                 <TouchableOpacity 
                     activeOpacity={0.8} key={`${index}`}
@@ -235,8 +235,10 @@ export function Exercises({data}){
     const {colors} = useTheme()
     return(
         <View style={styles.innerView}>
-            <ScrollView contentContainerStyle={{}}>
-                {data?.map(({subHeader}, index) => (<TouchableOpacity activeOpacity={0.8} key={`${index}`}>
+            <ScrollView contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 300}}>
+                {data?.map(({subHeader}, index) => (<TouchableOpacity 
+                    activeOpacity={0.8} key={`${index}`}
+                >
                     <View style={[styles.listItem, {backgroundColor: colors.card}]}>
                         <View style={styles.numbering}>
                             <Text style={styles.numbers}>{'0'+(index+1)}</Text>
@@ -259,7 +261,7 @@ export function Highlights({data}){
     const {colors} = useTheme()
     return(
         <View style={styles.innerView}>
-            <ScrollView contentContainerStyle={{paddingBottom: 300}}>
+            <ScrollView contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 300}}>
                 {data?.map(({section, paragraphs, color, time}, index) => (<TouchableOpacity activeOpacity={0.8} key={`${index}`}>
                     <View style={[styles.highlightsItem, {backgroundColor: colors.card}]}>
                         <View style={styles.titleView}>
