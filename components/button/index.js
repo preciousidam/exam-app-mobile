@@ -2,6 +2,10 @@ import React from 'react';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '@react-navigation/native';
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 
 export const Outlinedbutton = ({text, onPress, style, textStyle}) =>{
@@ -18,7 +22,7 @@ export const Outlinedbutton = ({text, onPress, style, textStyle}) =>{
 export const Solidbutton = ({text, onPress, style, textStyle}) =>{
     return (
         <TouchableOpacity onPress={onPress} style={{...styles.container}} activeOpacity={0.8}>
-                <LinearGradient start={[0.7,0.2]} colors={['#f5af19', '#FF9D14',]} style={[{...styles.grad, borderRadius: 25},style]} >
+                <LinearGradient start={[0.7,0.2]} colors={['#f5af19', '#FF9D14',]} style={[{...styles.grad, borderRadius: wp('2%')},style]} >
                     <Text style={{...styles.text, ...textStyle}}>{text}</Text>
                 </LinearGradient>
         </TouchableOpacity>
@@ -70,34 +74,35 @@ const styles = StyleSheet.create({
     },
     text: {
         fontFamily: 'Montserrat_700Bold',
-        fontWeight: 'bold',
+        color: '#ffffff',
+        fontSize: wp("3.5%")
     },
     grad: {
         width: '100%',
-        padding: 15,
+        padding: wp("3.5%"),
         borderWidth: 1,
         borderColor: 'transparent',
-        borderRadius: 10,
+        borderRadius: wp('2%'),
         justifyContent: "center",
         alignItems: 'center',
         flexDirection: "row"
     },
     outlined: {
-        padding: 15,
+        padding: wp("3.5%"),
         borderWidth: 1,
         borderColor: 'transparent',
-        borderRadius: 10,
+        borderRadius: wp("5%"),
         justifyContent: "center",
         alignItems: 'center',
-        borderRadius: 30,
+        borderRadius: wp(30),
     },
     actionBtn: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
+        width: wp(60),
+        height: hp(60),
+        borderRadius: wp(30),
         borderWidth: 1,
         borderColor: 'transparent',
-        padding: 20,
+        padding: wp(20),
         elevation: 10,
         alignItems: "center",
         justifyContent: "center"
@@ -106,8 +111,8 @@ const styles = StyleSheet.create({
         position: "absolute",
         right: 8,
         backgroundColor: '#000000',
-        padding: 10,
+        padding: wp("2.5%"),
         borderWidth: 1,
-        borderRadius: 20,
+        borderRadius: wp("5%"),
     },
 })

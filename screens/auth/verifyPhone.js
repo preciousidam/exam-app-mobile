@@ -9,6 +9,9 @@ import {CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell} from 'react-na
 
 import {GradientButton} from '../../components/button';
 import {verify} from '../../assets/verify';
+import { useDispatch, useSelector } from 'react-redux';
+import { sendVerify, verifyEmail } from '../../store/reducers/auth';
+import { ActInd } from '../../components/activityIndicator';
 
 
 const CELL_COUNT = 6;
@@ -19,8 +22,16 @@ export function VerifyPhone({navigation}){
     const {navigate} = navigation;
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT})
     const [props, getCellOnLayoutHandler] = useClearByFocusCell({value, setValue});
+    const dispatch = useDispatch();
+    const {user, isLoading} = useSelector(state => state.auth);
 
-    const onPress = e => navigation.navigate('Profile');
+    const onPress = _ => {
+        dispatch(verifyEmail(value, user?.pk));
+    }
+
+    useEffect(() => {
+        dispatch(sendVerify(user?.pk));
+    },[])
 
     return (
         <ScrollView contentContainerStyle={styles.scroll}>
@@ -33,7 +44,7 @@ export function VerifyPhone({navigation}){
                     <Typography 
                         style={{textAlign: "center", marginVertical: 30, width: 250}}
                     >
-                        Please enter the six digit code we sent to your phone phone number
+                        Please enter the six digit code we sent to your email.
                     </Typography>
 
                     <CodeField 
@@ -63,6 +74,7 @@ export function VerifyPhone({navigation}){
                 </View>
                 
             </KeyboardAvoidingView>
+            <ActInd status={isLoading} />
             <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
         </ScrollView>
     )

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, ScrollView, FlatList, TouchableOpacity} from 'react-native';
-import {AppLoading} from 'expo';
 import {Text, Badge, SearchBar} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -25,7 +24,7 @@ export default function SubjectScreen({navigation, route}){
     const [selected, setSelected] = useState(0);
    
     return (
-        fontLoaded ? <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingVertical: height}]}>
+        <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingVertical: height}]}>
             <View style={styles.bar}>
                 <View style={{flexDirection: "row", alignItems: "center"}}>
                     <TouchableWithoutFeedback onPress={_ => navigation.openDrawer()}>
@@ -67,7 +66,7 @@ export default function SubjectScreen({navigation, route}){
                 <List data={lessons} />
             </View>
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.background} />
-        </SafeAreaView>: <AppLoading />
+        </SafeAreaView>
     );
 }
 

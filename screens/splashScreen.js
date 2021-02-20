@@ -1,28 +1,36 @@
 import React, {useEffect} from 'react';
-import {Text, StatusBar, View, StyleSheet} from 'react-native';
-import { withTheme } from 'react-native-elements';
+import {Text, View, StyleSheet, Image, StatusBar} from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useDispatch} from 'react-redux';
 
-import {loadFonts} from '../libs/fonts';
+
 import { restore } from '../store/reducers/auth';
+import {bootstrap} from '../store/reducers/app';
+
+import { loadFonts } from '../libs/fonts';
+import { withTheme } from 'react-native-elements';
 
 
 export function SplashScreen({theme}){
     const {colors, dark} = useTheme();
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const fontLoaded = loadFonts();
 
+    const setup = async () => {
+        const user = await AsyncStorage.getItem('harrp-user');
+        const app = await AsyncStorage.getItem('apps')
+       
+        dispatch(bootstrap(JSON.parse(app)));
+        //dispatch(restore({user: JSON.parse(user)}));
+        dispatch(restore({user: null}));
+    }
+
     useEffect(() => {
-        setTimeout( async () => {
-            const user = await AsyncStorage.getItem('user');
-            
-            dispatch(restore({user: JSON.parse(user)}));
-        }, 3000);
-    })
+        setup();
+    },[])
 
     return (
         fontLoaded && (<View style={{...styles.container, backgroundColor: colors.primary}}>

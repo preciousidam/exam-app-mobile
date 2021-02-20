@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, ScrollView, FlatList, TouchableOpacity} from 'react-native';
-import {AppLoading} from 'expo';
 import {Text, Badge, SearchBar} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -26,7 +25,7 @@ export default function LessonScreen({navigation,route}){
     const {width, height} = useSafeAreaInsets();
 
     return (
-        fontLoaded ? <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingVertical: height}]}>
+        <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingVertical: height}]}>
             <View style={styles.bar}>
                 <View style={{flexDirection: "row", alignItems: "center"}}>
                     <TouchableWithoutFeedback onPress={_ => navigation.openDrawer()}>
@@ -54,7 +53,7 @@ export default function LessonScreen({navigation,route}){
             </View>
             <ScrollView>
                 <View style={styles.header}>
-                    <Text h3 h3Style={styles.h3} style={styles.h4}>Hey {user.name}</Text>
+                    <Text h3 h3Style={styles.h3} style={styles.h4}>Hey {user?.name}</Text>
                     <Text style={styles.h4}>Start Learning!</Text>
                 </View>
                 <View style={styles.colors}>
@@ -100,7 +99,7 @@ export default function LessonScreen({navigation,route}){
                 </View>
             </ScrollView>
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.background} />
-        </SafeAreaView>: <AppLoading />
+        </SafeAreaView>
     );
 }
 

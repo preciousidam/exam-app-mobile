@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, ScrollView, FlatList, TouchableOpacity} from 'react-native';
-import {AppLoading} from 'expo';
 import {Text, Badge, SearchBar} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -51,13 +50,13 @@ export default function ListScreen({navigation, route}){
     })
    
     return (
-        fontLoaded ? <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingTop: height}]}>
+        <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingTop: height}]}>
             
             <View style={styles.sect}>
                 <List data={lessons} />
             </View>
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.background} />
-        </SafeAreaView>: <AppLoading />
+        </SafeAreaView>
     );
 }
 

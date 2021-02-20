@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, ScrollView, FlatList, TouchableOpacity} from 'react-native';
-import {AppLoading} from 'expo';
 import {Text, Badge, SearchBar} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -30,7 +29,7 @@ export default function OverviewScreen({navigation, route}){
     const exerciseActive = _ => navigate('', {id});
     
     return (
-        fontLoaded ? <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingTop: height}]}>
+        <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingTop: height}]}>
             
             <View style={styles.sect}>
                <View style={styles.header}>
@@ -70,7 +69,7 @@ export default function OverviewScreen({navigation, route}){
                 </View>}
             </View>
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.background} />
-        </SafeAreaView>: <AppLoading />
+        </SafeAreaView>
     );
 }
 

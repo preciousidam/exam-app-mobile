@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, TouchableOpacity, FlatList, StyleSheet, ProgressBarAndroid} from 'react-native';
 import {Text, Avatar, withTheme} from 'react-native-elements';
-import { AppLoading } from 'expo';
 import {useTheme} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -46,7 +45,7 @@ function Card({examBody, subject, progress, startDate, noQuestn, active, onPress
     const {colors} = useTheme();
 
     return (
-        fontLoaded ? <TouchableOpacity onPress={onPress} activeOpacity={0.8} >
+        <TouchableOpacity onPress={onPress} activeOpacity={0.8} >
             <View style={{...styles.card, backgroundColor: active ? colors.primary : colors.card}}>
                 <View>
                     <Text style={styles.text}>{examBody}</Text>
@@ -76,7 +75,7 @@ function Card({examBody, subject, progress, startDate, noQuestn, active, onPress
                     <Text style={{fontSize: 12, fontWeight: "bold", flex: 2}}>{progress * 100}% complete</Text>
                 </View>
             </View>
-        </TouchableOpacity>: <AppLoading />
+        </TouchableOpacity>
     )
 }
 

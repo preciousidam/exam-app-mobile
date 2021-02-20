@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, TouchableOpacity, FlatList, StyleSheet, Image} from 'react-native';
 import {Text, Avatar, withTheme} from 'react-native-elements';
-import { AppLoading } from 'expo';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -43,7 +42,7 @@ export function CardSquare({topic, clipart, noExercise, style, onPress}){
     const [fav, setFav] = useState(false);
     
     return (
-        fontLoaded ? <TouchableOpacity onPress={onPress} activeOpacity={0.8} >
+        <TouchableOpacity onPress={onPress} activeOpacity={0.8} >
             <View style={[{...styles.card, backgroundColor: colors.card}, style]}>
                 <Image source={clipart} style={styles.image} resizeMethod='resize' resizeMode='contain' />
                 <View style={styles.wrap}>
@@ -64,7 +63,7 @@ export function CardSquare({topic, clipart, noExercise, style, onPress}){
                     </View>
                 </View>
             </View>
-        </TouchableOpacity>: <AppLoading />
+        </TouchableOpacity>
     )
 }
 
@@ -75,7 +74,7 @@ export function CardRect({topic, clipart, noExercise, style, onPress}){
     const [fav, setFav] = useState(false);
     
     return (
-        fontLoaded ? <TouchableOpacity onPress={onPress} activeOpacity={0.8} >
+        <TouchableOpacity onPress={onPress} activeOpacity={0.8} >
             <View style={[{...styles.card, backgroundColor: colors.card}, {width: '100%'} ,style]}>
                 <View style={styles.rect}>
                     <Image source={clipart} style={styles.imageRect} resizeMethod='resize' resizeMode='contain' />
@@ -94,7 +93,7 @@ export function CardRect({topic, clipart, noExercise, style, onPress}){
                     </TouchableOpacity>  
                 </View>
             </View>
-        </TouchableOpacity>: <AppLoading />
+        </TouchableOpacity>
     )
 }
 

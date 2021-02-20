@@ -1,88 +1,89 @@
 import React, { useEffect, useState } from 'react';
 import {KeyboardAvoidingView, Text, View, StyleSheet, ScrollView, StatusBar, Platform } from 'react-native';
 import { Text as Typography } from 'react-native-elements';
-import { AppLoading } from 'expo';
 import { withTheme } from 'react-native-elements';
 import { useTheme } from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { MaterialIcons } from '@expo/vector-icons';
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+
 import { signIn } from '../../store/reducers/auth';
 
-import {loadFonts} from '../../libs/fonts';
 import {GradientButton} from '../../components/button';
-import {OutlinedInput} from '../../components/input';
+import {EmailOutlinedInputWithIcon, PasswordOutlinedInputWithIcon} from '../../components/input';
+import { ActInd } from '../../components/activityIndicator';
+import { Pressable } from 'react-native';
 
 
 
 export function SignIn({navigation, route}){
-    const fontLoaded = loadFonts();
     const {colors, dark} = useTheme();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
+    const {isLoading} = useSelector(state => state.auth);
 
-    const onPress = e => dispatch(signIn({name: 'Ebubechukwu', email: email}));
+    const onPress = _ => {
+        dispatch(signIn({username: email.toLowerCase(),password}));
+    }
 
     return (
-        fontLoaded ? 
-            <SafeAreaView style={{flex: 1, backgroundColor: colors.card}}>
-                <ScrollView contentContainerStyle={[styles.scroll, {backgroundColor: colors.card}]}>
-                    <KeyboardAvoidingView 
-                        style={{...styles.container, backgroundColor: colors.card}}
-                        style={{...styles.container, backgroundColor: colors.card}}
-                        behavior={Platform.OS === 'ios'? "padding": "position"}
-                        keyboardVerticalOffset={Platform.OS === 'ios' ? 100: 10}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.header}>
-                                <Typography h3 h3Style={{...styles.h3, color: colors.text}}>Welcome,</Typography>
-                                <Typography h4 h4Style={styles.h4}>Sign in to continue!</Typography>
-                            </View>
-                            <OutlinedInput 
-                                placeholder="Email" 
-                                value={email} 
-                                onChangeText={({nativeEvent}) =>setEmail(nativeEvent.text)} 
-                                style={styles.textInput}
-                                textContentType='emailAddress'
-                                keyboardType="email-address"
-                            />
-                            <OutlinedInput 
-                                placeholder="Password" 
-                                value={password} 
-                                onChangeText={({nativeEvent}) => setPassword(nativeEvent.text)}
-                                style={styles.textInput} 
-                                textContentType='password'
-                                secureTextEntry={true}
-                            />
-                            <Text 
-                                style={{...styles.reset, color: colors.text}} 
-                                onPress={_ => navigation.navigate('Reset')} 
-                            >
-                                Forgot Password
-                            </Text>
-                            <GradientButton 
-                                text="Login" 
-                                style={styles.btn}
-                                onPress={onPress}
-                            />
+        
+        <SafeAreaView style={{flex: 1, backgroundColor: colors.card}}>
+            <ScrollView contentContainerStyle={[styles.scroll, {backgroundColor: colors.card}]}>
+                <KeyboardAvoidingView 
+                    style={{...styles.container, backgroundColor: colors.card}}
+                    style={{...styles.container, backgroundColor: colors.card}}
+                    behavior={Platform.OS === 'ios'? "padding": "position"}
+                    keyboardVerticalOffset={Platform.OS === 'ios' ? 100: 10}
+                >
+                    <View style={styles.centeredView}>
+                        <View style={styles.header}>
+                            <Typography h3 h3Style={{...styles.h3, color: colors.text}}>Welcome,</Typography>
+                            <Typography h4 h4Style={styles.h4}>Sign in to continue!</Typography>
                         </View>
-                    </KeyboardAvoidingView>
-                    
-                    <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
-                </ScrollView>
-                <View style={styles.bottom}>
-                        <Text style={{color: colors.text}}>
-                            I'm a new user,{" "}  
-                            <Text 
-                                style={{color: colors.primary}}
-                                onPress={e => navigation.navigate('Register')}
-                            > 
-                                Create Account
-                            </Text>
+                        <EmailOutlinedInputWithIcon 
+                            value={email} 
+                            onChangeText={({nativeEvent}) =>setEmail(nativeEvent.text)} 
+                            style={styles.textInput}
+                            icon={<MaterialIcons name="mail-outline" color={colors.primary} size={wp("5%")} />}
+                        />
+                        <PasswordOutlinedInputWithIcon
+                            icon={<MaterialIcons name="lock-outline" color={colors.primary} size={24} />}
+                            value={password} 
+                            onChangeText={({nativeEvent}) => setPassword(nativeEvent.text)}
+                            style={styles.textInput}  
+                        />
+                        <Text 
+                            style={{...styles.reset, color: colors.text}} 
+                            onPress={_ => navigation.navigate('Reset')} 
+                        >
+                            Forgot Password
                         </Text>
+                        <GradientButton 
+                            text="Login" 
+                            style={styles.btn}
+                            onPress={onPress}
+                        />
                     </View>
-            </SafeAreaView>
-        : <AppLoading />
+                </KeyboardAvoidingView>
+                
+                <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
+            </ScrollView>
+            <Pressable onPress={e => navigation.navigate('Register')}>
+                <View style={styles.bottom}>
+                    <Text style={[styles.link, {color: colors.text}]}>
+                        I'm a new user, 
+                        <Text style={{color: colors.primary}}>  Create Account</Text>
+                    </Text>
+                </View>
+            </Pressable>
+            <ActInd status={isLoading} />
+        </SafeAreaView>
     )
 }
 
@@ -94,41 +95,47 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        width: '100%',
-        height: '100%',
-        paddingTop: 60,
-        paddingHorizontal: 20,
-        paddingBottom: 40,
+        width: wp('100%'),
+        height: hp('100%'),
+        paddingTop: hp('11%'),
+        paddingHorizontal: wp('4%'),
+        paddingBottom: hp('6%'),
         flexDirection: 'column',
         justifyContent: 'space-between'
     },
     header: {
-        marginBottom: 70,
+        marginBottom: hp('10%'),
     },
     h3: {
         fontFamily: 'Montserrat_700Bold',
+        fontSize: wp('7%'),
     },
     h4: {
         color: '#8d8d8d',
-        fontSize: 24,
+        fontSize: wp('5%'),
     },
     centeredView: {
         justifyContent: "center",
-        paddingTop: 60,
+        paddingTop: hp('8%'),
     },
     textInput: {
-        marginVertical: 10,
+        marginVertical: hp('1.3%'),
     },
     reset: {
         alignSelf: "flex-end",
         fontFamily: 'OpenSans_400Regular',
+        fontSize: wp('3.3%')
     },
     btn: {
-        marginTop: 50,
+        marginTop: hp('6%'),
+    },
+    link: {
+        fontFamily: 'OpenSans_400Regular',
+        fontSize: wp("3%"),
     },
     bottom: {
         alignItems: "center",
         justifyContent: 'center',
-        paddingBottom: 30,
+        paddingBottom: hp('4%'),
     },
 })

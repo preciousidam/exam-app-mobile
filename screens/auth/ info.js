@@ -1,251 +1,272 @@
 import React, { useEffect, useState } from 'react';
 import {KeyboardAvoidingView, Text, View, StyleSheet, ScrollView, Platform, StatusBar } from 'react-native';
 import { Text as Typography, Divider } from 'react-native-elements';
-import { AppLoading } from 'expo';
 import { withTheme } from 'react-native-elements';
 import { useTheme } from '@react-navigation/native';
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
-import {loadFonts} from '../../libs/fonts';
+
 import {GradientButton} from '../../components/button';
-import {DateInput, OutlinedInput} from '../../components/input';
+import { OutlinedInput} from '../../components/input';
+import { OutlinedDatePicker } from '../../components/input/datepicker';
 import {DynamicPicker, LevelPicker, DynamicPickerIOS} from '../../components/input/picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useDispatch } from 'react-redux';
-import { signIn } from '../../store/reducers/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { NoticeModal } from '../../components/modal';
+import { createProfile, edit } from '../../store/reducers/auth';
+import {ActInd} from '../../components/activityIndicator';
 
-
+const Picker = Platform.OS === 'ios' ? DynamicPickerIOS: DynamicPicker;
 
 export function CreateProfile({navigation}){
-    const fontLoaded = loadFonts();
+    
     const {colors, dark} = useTheme();
-    const [dob, setDOB] = useState('');
-    const [gender, setGender] = useState('Select Gender');
-    const [school, setSchool] = useState('Select School');
-    const [level, setLevel] = useState('Select Level');
-    const [matricNo, setMatricNo] = useState('');
+    const [show, setShow] = useState(false);
+    const {form} = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
-    const onLevelChange = (itemValue) => setLevel(itemValue);
-    const onSchoolChange = (itemValue) => setSchool(itemValue);
-    const onGenderChange = (itemValue) => setGender(itemValue);
-    const onPress = e => navigation.navigate('profile-cont');
-    const DynaPicker = Platform.OS === 'ios' ? DynamicPickerIOS: DynamicPicker;
+    const onLevelChange = (itemValue) => dispatch(edit({...form, level: itemValue}));
+    const onSchoolChange = (itemValue) => dispatch(edit({...form, school: itemValue}));
+    const onGenderChange = (itemValue) => dispatch(edit({...form, gender: itemValue}));
+    const onPress = _ => navigation.navigate('profile-cont')
+    
+    useEffect(() => {
+        setShow(true);
+    }, [])
 
     return (
-        fontLoaded ?
-            <SafeAreaView style={{flex: 1, backgroundColor: colors.card}}>
-                <ScrollView contentContainerStyle={{...styles.scroll, backgroundColor: colors.card}}>
-                    <KeyboardAvoidingView 
-                        style={{...styles.container, backgroundColor: colors.card}}
-                        behavior={Platform.OS === 'ios'? "padding": "padding"}
-                        keyboardVerticalOffset={Platform.OS === 'ios' ? 100: 100}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.header}>
-                                <Typography h4 h4Style={[styles.h4, {color: colors['color-info-500']}]}>Please provide the details below if applicable</Typography>
-                            </View>
-                            <OutlinedInput 
-                                placeholder="DOB eg 02/02/2020" 
-                                value={dob} 
-                                onChangeText={({nativeEvent}) =>setDOB(nativeEvent.text)} 
-                                style={styles.textInput}
-                                textContentType="name"
-                                keyboardType='phone-pad'
-                            />
-                            <DynaPicker 
-                                value={gender}
-                                onValueChange={onGenderChange}
-                                style={styles.picker}
-                                pickerStyle={{color: colors.text}}
-                                options={['Select Gender', 'male', 'female']}
-                            />
-                            <DynaPicker 
-                                value={school}
-                                onValueChange={onSchoolChange}
-                                style={styles.picker}
-                                pickerStyle={{color: '#000'}}
-                                options={['Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge']}
-                            />
-                            <DynaPicker 
-                                value={school}
-                                onValueChange={onLevelChange}
-                                style={styles.picker}
-                                pickerStyle={{color: '#000'}}
-                                options={['Select Level', 'Senior secondary', 'Junior secondary']}
-                            />
-                            <OutlinedInput 
-                                placeholder="Matric no / Exam No/ Registration No" 
-                                value={matricNo} 
-                                onChangeText={({nativeEvent}) => setMatricNo(nativeEvent.text)}
-                                style={styles.textInput}
-                                textContentType="newPassword"
-                                keyboardType='phone-pad'
-                                textContentType='telephoneNumber'
-                            />
-
-                            
-                            
-                            <GradientButton 
-                                text="Continue" 
-                                style={styles.btn}
-                                onPress={onPress}
-                            />
+        
+        <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
+            <ScrollView contentContainerStyle={{...styles.scroll, backgroundColor: colors.background}}>
+                <KeyboardAvoidingView 
+                    style={{...styles.container, backgroundColor: colors.background}}
+                    behavior={Platform.OS === 'ios'? "padding": "padding"}
+                    keyboardVerticalOffset={Platform.OS === 'ios' ? 100: 100}
+                >
+                    <View style={styles.centeredView}>
+                        <View style={styles.header}>
+                            <Typography h4 h4Style={[styles.h4, {color: colors.info}]}>Please provide the details below if applicable</Typography>
                         </View>
+                        <Text style={[styles.help, {color: colors.text}]}>Date of Birth</Text>
+                        <OutlinedDatePicker
+                            placeholder="YYYY-MM-DD"
+                            style={styles.picker}
+                            value={form?.dob || new Date()}
+                            onChangeText={value => dispatch(edit({...form, dob: value}))}
+                        />
+                        <Picker 
+                            value={form?.gender}
+                            onValueChange={onGenderChange}
+                            style={styles.picker}
+                            pickerStyle={{color: colors.text}}
+                            options={['Select Gender', 'Male', 'Female']}
+                        />
+                        {/*<Picker 
+                            value={form?.school}
+                            onValueChange={onSchoolChange}
+                            style={styles.picker}
+                            pickerStyle={{color: '#000'}}
+                            options={['Select School', 'Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge']}
+                        />*/}
+                        <Picker 
+                            value={form?.level}
+                            onValueChange={onLevelChange}
+                            style={styles.picker}
+                            pickerStyle={{color: '#000'}}
+                            options={['Select Level', 'Senior Secondary', 'Junior Secondary']}
+                        />
+                        <OutlinedInput 
+                            placeholder="Matric no / Exam No/ Registration No" 
+                            value={form?.matricNo} 
+                            onChangeText={({nativeEvent}) => dispatch(edit({...form, id_number: nativeEvent.text}))}
+                            style={styles.textInput}
+                            textContentType="newPassword"
+                            keyboardType='phone-pad'
+                            textContentType='telephoneNumber'
+                        />
+
                         
-                    </KeyboardAvoidingView>
+                        
+                        <GradientButton 
+                            text="Continue" 
+                            style={styles.btn}
+                            onPress={onPress}
+                        />
+                    </View>
                     
-                </ScrollView>
-                <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
-            </SafeAreaView>
-        : <AppLoading />
+                </KeyboardAvoidingView>
+                
+            </ScrollView>
+            <NoticeModal show={show} onSubmit={_ => setShow(false)} />
+            <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
+        </SafeAreaView>
     )
 }
 
 export function CreateProfileCont({navigation}){
-    const fontLoaded = loadFonts();
+    
     const {colors, dark} = useTheme();
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
-    const [country, setCountry] = useState('');
+    
+    const {form} = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
     
-    const onCountryChange = (itemValue) => setCountry(itemValue);
+    const onCountryChange = (itemValue) => dispatch(edit({...form, country: itemValue}));
+    const onStateChange = (itemValue) => dispatch(edit({...form, state: itemValue}));
     const onPress = e => navigation.navigate('guardian');
-    const DynaPicker = Platform.OS === 'ios' ? DynamicPickerIOS: DynamicPicker;
+    
 
     return (
-        fontLoaded ?
-            <SafeAreaView style={{flex: 1, backgroundColor: colors.card}}>
-                <ScrollView contentContainerStyle={{...styles.scroll, backgroundColor: colors.card}}>
-                    <KeyboardAvoidingView 
-                        style={{...styles.container, backgroundColor: colors.card}}
-                        behavior="padding"
-                        keyboardVerticalOffset={100}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.header}>
-                                <Typography h4 h4Style={styles.h4}>Please provide the details below if applicable</Typography>
-                            </View>
-                            <OutlinedInput 
-                                placeholder="Address" 
-                                value={address} 
-                                onChangeText={({nativeEvent}) =>setAddress(nativeEvent.text)} 
-                                style={styles.textInput}
-                                textContentType="fullStreetAddress"
-                            />
-                            <OutlinedInput 
-                                placeholder="City" 
-                                value={city} 
-                                onChangeText={({nativeEvent}) =>setCity(nativeEvent.text)} 
-                                style={styles.textInput}
-                                textContentType="addressCity"
-                            />
-                            <OutlinedInput 
-                                placeholder="State" 
-                                value={state} 
-                                onChangeText={({nativeEvent}) =>setState(nativeEvent.text)} 
-                                style={styles.textInput}
-                                textContentType="addressState"
-                            />
-                            <DynaPicker 
-                                value={country}
-                                onValueChange={onCountryChange}
-                                style={styles.picker}
-                                pickerStyle={{color: '#000'}}
-                                options={['Select Country', 'Nigeria', 'Ghana', 'Togo', 'Benin']}
-                            />
-
-                            
-                            
-                            <GradientButton 
-                                text="Continue" 
-                                style={styles.btn}
-                                onPress={onPress}
-                            />
-                        </View>
+        
+        <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
+            <ScrollView contentContainerStyle={{...styles.scroll, backgroundColor: colors.background}}>
+                <KeyboardAvoidingView 
+                    style={{...styles.container, backgroundColor: colors.background}}
+                    behavior="padding"
+                    keyboardVerticalOffset={100}
+                >
+                    <View style={styles.centeredView}>
                         
-                    </KeyboardAvoidingView>
+                        <OutlinedInput 
+                            placeholder="Address" 
+                            value={form?.address} 
+                            onChangeText={({nativeEvent}) => dispatch(edit({...form, address: nativeEvent.text}))} 
+                            style={styles.textInput}
+                            textContentType="fullStreetAddress"
+                        />
+                        <OutlinedInput 
+                            placeholder="City" 
+                            value={form?.city} 
+                            onChangeText={({nativeEvent}) => dispatch(edit({...form, city: nativeEvent.text}))} 
+                            style={styles.textInput}
+                            textContentType="addressCity"
+                        />
+                        <Picker 
+                            placeholder="State" 
+                            value={form?.state} 
+                            onValueChange={onStateChange} 
+                            style={styles.picker}
+                            pickerStyle={{color: '#000'}}
+                            options={['Abia',
+                            'Abuja',
+                            'Adamawa',
+                            'Akwa Ibom',
+                            'Anambra',
+                            'Bauchi','Bayelsa',
+                            'Benue','Borno',
+                            'Cross River','Delta',
+                            'Ebonyi','Edo',
+                            'Ekiti','Enugu',
+                            'Gombe','Imo',
+                            'Jigawa','Kaduna',
+                            'Kano','Katsina',
+                            'Kebbi','Kogi',
+                            'Kwara','Lagos',
+                            'Nasarawa','Niger',
+                            'Ogun','Ondo',
+                            'Osun','Oyo',
+                            'Plateau','Rivers',
+                            'Sokoto','Taraba',
+                            'Yobe','Zamfara']}
+                        />
+                        <Picker 
+                            value={form?.country}
+                            onValueChange={onCountryChange}
+                            style={styles.picker}
+                            pickerStyle={{color: '#000'}}
+                            options={['Select Country', 'Nigeria', 'Ghana', 'Togo', 'Benin']}
+                        />
+
+                        
+                        
+                        <GradientButton 
+                            text="Continue" 
+                            style={styles.btn}
+                            onPress={onPress}
+                        />
+                    </View>
                     
-                </ScrollView>
-                <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
-            </SafeAreaView>
-        : <AppLoading />
+                </KeyboardAvoidingView>
+                
+            </ScrollView>
+            <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
+        </SafeAreaView>
     )
 }
 
 export function AddGuardiansDetail(props){
-    const fontLoaded = loadFonts();
+    
     const {colors, dark} = useTheme();
-    const [g1Email, setG1Email] = useState('');
-    const [g2Email, setG2Email] = useState('');
-    const [g1Phone, setG1Phone] = useState('');
-    const [g2Phone, setG2Phone] = useState('');
+    
+    const {form, user, isLoading} = useSelector(state => state.auth);
     const dispatch = useDispatch();
     
-    const onPress = e => dispatch(signIn({name: 'Ebubechukwu', email: 'preciousidam@gmail.com'}));
+    const onPress = e => dispatch(createProfile(user,form));
 
     return (
-        fontLoaded ?
-            <SafeAreaView style={{flex: 1, backgroundColor: colors.card}}>
-                <ScrollView contentContainerStyle={{...styles.scroll, backgroundColor: colors.card}}>
-                    <KeyboardAvoidingView 
-                        style={{...styles.container, backgroundColor: colors.card}}
-                        behavior="padding"
-                        keyboardVerticalOffset={100}
-                    >
-                        <View style={styles.centeredView}>
-                            <Text style={{color: colors.text}}>Guardian 1</Text>
-                            <Divider  />
-                            <OutlinedInput 
-                                placeholder="email address" 
-                                value={g1Email} 
-                                onChangeText={({nativeEvent}) =>setG1Email(nativeEvent.text)} 
-                                style={styles.textInput}
-                                textContentType="emailAddress"
-                                keyboardType="email-address"
-                            />
-                            <OutlinedInput 
-                                placeholder="phone number" 
-                                value={g1Phone} 
-                                onChangeText={({nativeEvent}) =>setG1Phone(nativeEvent.text)} 
-                                style={styles.textInput}
-                                textContentType="telephoneNumber"
-                                keyboardType="phone-pad"
-                            />
-                            <Text style={{color: colors.text}}>Guardian 2</Text>
-                            <Divider  />
-                            <OutlinedInput 
-                                placeholder="email address" 
-                                value={g2Email} 
-                                onChangeText={({nativeEvent}) =>setG2Email(nativeEvent.text)} 
-                                style={styles.textInput}
-                                textContentType="emailAddress"
-                                keyboardType="email-address"
-                            />
-                            <OutlinedInput 
-                                placeholder="phone number" 
-                                value={g2Phone} 
-                                onChangeText={({nativeEvent}) =>setG2Phone(nativeEvent.text)} 
-                                style={styles.textInput}
-                                textContentType="telephoneNumber"
-                                keyboardType="phone-pad"
-                            />
-
-                            
-                            
-                            <GradientButton 
-                                text="Continue" 
-                                style={styles.btn}
-                                onPress={onPress}
-                            />
-                        </View>
+        
+        <SafeAreaView style={{flex: 1, backgroundColor: colors.card}}>
+            <ScrollView contentContainerStyle={{...styles.scroll, backgroundColor: colors.background}}>
+                <KeyboardAvoidingView 
+                    style={{...styles.container, backgroundColor: colors.background}}
+                    behavior="padding"
+                    keyboardVerticalOffset={100}
+                >
+                    <View style={styles.centeredView}>
+                        <Text style={{color: colors.text}}>Guardian 1</Text>
+                        <Divider  />
+                        <OutlinedInput 
+                            placeholder="email address" 
+                            value={form?.guard_one_email} 
+                            onChangeText={({nativeEvent}) => dispatch(edit({...form, guard_one_email: nativeEvent.text}))} 
+                            style={styles.textInput}
+                            textContentType="emailAddress"
+                            keyboardType="email-address"
+                        />
+                        <OutlinedInput 
+                            placeholder="phone number" 
+                            value={form?.guard_one_phone} 
+                            onChangeText={({nativeEvent}) => dispatch(edit({...form, guard_one_phone: nativeEvent.text}))} 
+                            style={styles.textInput}
+                            textContentType="telephoneNumber"
+                            keyboardType="phone-pad"
+                        />
+                        <Text style={{color: colors.text}}>Guardian 2</Text>
+                        <Divider  />
+                        <OutlinedInput 
+                            placeholder="email address" 
+                            value={form?.guard_two_email} 
+                            onChangeText={({nativeEvent}) => dispatch(edit({...form, guard_two_email: nativeEvent.text}))} 
+                            style={styles.textInput}
+                            textContentType="emailAddress"
+                            keyboardType="email-address"
+                        />
+                        <OutlinedInput 
+                            placeholder="phone number" 
+                            value={form?.guard_two_phone} 
+                            onChangeText={({nativeEvent}) => dispatch(edit({...form, guard_two_phone: nativeEvent.text}))} 
+                            style={styles.textInput}
+                            textContentType="telephoneNumber"
+                            keyboardType="phone-pad"
+                        />
                         
-                    </KeyboardAvoidingView>
+                        <GradientButton 
+                            text="Continue" 
+                            style={styles.btn}
+                            onPress={onPress}
+                        />
+                    </View>
                     
-                </ScrollView>
-                <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
-            </SafeAreaView>
-        : <AppLoading />
+                </KeyboardAvoidingView>
+                
+            </ScrollView>
+            <ActInd status={isLoading} />
+            <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
+        </SafeAreaView>
+       
     )
 }
 
@@ -261,9 +282,9 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
-        paddingTop: 10,
-        paddingHorizontal: 10,
-        paddingBottom: 40,
+        paddingTop: hp(1),
+        paddingHorizontal: wp(0.5),
+        paddingBottom: hp(2),
         flexDirection: 'column',
         justifyContent: 'space-between'
     },
@@ -272,21 +293,28 @@ const styles = StyleSheet.create({
     },
     h4: {
         color: '#8d8d8d',
-        fontSize: 18,
-        marginBottom: 20,
+        fontSize: wp(3.2),
+        marginBottom: hp(1.2),
+        fontFamily: "Montserrat_400Regular"
     },
     centeredView: {
         justifyContent: "center",
         paddingTop: 10,
-        paddingHorizontal: 15,
+        paddingHorizontal: wp(2),
     },
     textInput: {
-        marginVertical: 20,
+        marginVertical: hp(1.3),
+        paddingHorizontal: wp('3%')
     },
     btn: {
-        marginTop: 50,
+        marginTop: hp(3),
     },
     picker: {
-        marginVertical: 20
+        marginVertical: hp(1.3),
+        paddingHorizontal: wp('3%'),
+        paddingVertical: hp(.5)
+    },
+    help: {
+        fontSize: wp(3),
     },
 })

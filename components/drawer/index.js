@@ -4,13 +4,23 @@ import {View, Alert, StyleSheet} from 'react-native';
 import {Avatar, Text} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Picker } from '@react-native-community/picker';
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import { logout } from '../../store/reducers/auth';
 
 export default function DrawerCustom(props){
     const {colors} = useTheme();
-    const {user: {name, email}} = useSelector(state => state.auth)
+    const {user} = useSelector(state => state.auth);
+    const dispatch = useDispatch();
     const {Item} = Picker;
+
+    const signOut = _ => {
+        dispatch(logout());
+    }
     
     return (
         <DrawerContentScrollView {...props} contentContainerStyle={{height: '100%'}}>
@@ -23,9 +33,13 @@ export default function DrawerCustom(props){
                         containerStyle={{backgroundColor: colors.primary, marginTop: 10}} 
                     />
                     <View style={{flexDirection: "column", padding: 10}}>
-                        <Text style={styles.h4}>{name}</Text>
-                        <Text>{email}</Text>
-                        <Picker>
+                        <Text style={styles.h4}>{`${user?.first_name} ${user?.last_name}`}</Text>
+                        <Text style={styles.email} ellipsizeMode='tail' numberOfLines={1}>{user?.email}</Text>
+                        <Picker 
+                            itemStyle={{color: colors.text}} 
+                            style={{color: colors.text}}
+                            dropdownIconColor="#ffffff"
+                        >
                             <Item label="Corona School" value="Corona" />
                             <Item label="Tokunbo" value="tokunbo" />
                         </Picker>
@@ -50,6 +64,9 @@ export default function DrawerCustom(props){
                     onPress={_ => Alert.alert('Settings')}
                 />
             </View>
+            <View style={[styles.bottom,{bottom: 40}]}>
+                <Text onPress={signOut} style={{color: '#8d8d8d'}}>Logout</Text>  
+            </View>
             <View style={styles.bottom}>
                 <Text style={{color: '#8d8d8d'}}>Version 0.0.1</Text>
             </View>
@@ -67,11 +84,14 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     headerprofile: {
-        flexDirection: "row",
+        flexDirection: "column",
         justifyContent: "space-evenly",
     },
     h4: {
-        fontSize: 20,
+        fontSize: wp('4%'),
+    },
+    email: {
+        
     },
     bottom: {
         position: "absolute",

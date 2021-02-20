@@ -82,3 +82,41 @@ export default function AuthFlow(props){
         </Navigator>
     )
 }
+
+export function ProfileFlow(props){
+    
+    const {Screen, Navigator} = Stack;
+    const {isSignOut} = useSelector( state => state.auth);
+
+
+    return (
+        <Navigator initialRouteName='Register'>  
+            
+            <Screen 
+                component={ScreenOne}
+                name="Profile"
+                options={{
+                    title: 'Create Profile',
+                    animationTypeForReplace: isSignOut ? 'pop' : 'push',
+                }}
+            />
+            <Screen 
+                component={ScreenTwo}
+                name="profile-cont"
+                options={{
+                    title: 'Location',
+                    animationTypeForReplace: isSignOut ? 'pop' : 'push',
+                }}
+            />
+            <Screen 
+                component={ScreenThree}
+                name="guardian"
+                options={{
+                    title: 'Guardian Details',
+                    animationTypeForReplace: isSignOut ? 'pop' : 'push',
+                }}
+            />
+        </Navigator>
+    )
+}
+

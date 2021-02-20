@@ -5,6 +5,7 @@ import {ThemeProvider } from 'react-native-elements';
 import {ActionSheetProvider} from '@expo/react-native-action-sheet';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import {Provider} from 'react-redux';
+import FlashMessage from 'react-native-flash-message';
 
 import MainNavigator from './navigations';
 import {dark, light} from './constants/colors';
@@ -50,6 +51,7 @@ export default function App() {
           </ActionSheetProvider>
         </ThemeProvider>
       </AppearanceProvider>
+      <FlashMessage position="top" />
     </Provider>
   );
 }

@@ -3,25 +3,23 @@ import {View, Modal, StyleSheet, Image} from 'react-native';
 import {Text} from 'react-native-elements';
 import {useTheme} from '@react-navigation/native';
 import {loadFonts} from '../../libs/fonts';
-import {AppLoading} from 'expo';
 import LottieView from 'lottie-react-native';
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 import {Solidbutton} from '../button';
-import {LevelPicker} from '../input/picker';
 
-export function LevelModal({show, onSubmit}){
+
+export function NoticeModal({show, onSubmit}){
     const {colors} = useTheme();
     const fontLoaded = loadFonts();
     const [level, setLevel] = useState('Junior Secondary');
 
-    const onValueChange = (itemValue) => setLevel(itemValue);
-    const submit = _ => {
-        //setvalue
-        onSubmit()
-    }
 
     return (
-        fontLoaded ? <Modal
+        <Modal
             visible={show}
             animationType='fade'
             transparent={true}
@@ -29,20 +27,15 @@ export function LevelModal({show, onSubmit}){
             <View style={styles.overlay}>
                 <View style={styles.container}>
                     <Image source={require('../../assets/welcome.png')} style={styles.image} />
-                    <Text h4 h4Style={styles.h4} >Welcome to Exam PMP</Text>
-                    <Text style={styles.text}>Update your level before starting the next step</Text>
-                    <LevelPicker 
-                        value={level}
-                        onValueChange={onValueChange}
-                        style={styles.picker}
-                        pickerStyle={{color: '#000'}}
-                    />
-                    <Text style={{...styles.highlight, color: colors.secondary}}>You can make changes in profile </Text>
-                    <Solidbutton onPress={submit} text="Continue" style={styles.button} />
+                    <Text h4 h4Style={styles.h4} >Welcome to HARRP</Text>
+                    <Text style={styles.text}>Please take a moment to update your profile.</Text>
+                    
+                    <Text style={{...styles.highlight, color: colors.secondary}}>You can edit the details any time in profile </Text>
+                    <Solidbutton onPress={onSubmit} text="Continue" style={styles.button} />
                 </View>
             </View>
             
-        </Modal>: <AppLoading />
+        </Modal>
     );
 }
 
@@ -55,7 +48,7 @@ export function CompletedModal({show, onPress}){
     }
 
     return (
-        fontLoaded ? <Modal
+        <Modal
             visible={show}
             animationType='fade'
             transparent={true}
@@ -82,7 +75,7 @@ export function CompletedModal({show, onPress}){
                 </View>
             </View>
             
-        </Modal>: <AppLoading />
+        </Modal>
     );
 }
 
@@ -93,10 +86,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: 'rgba(1,1,1, 0.3)'
+        backgroundColor: 'rgba(1,1,1, 0.4)'
     },
     container: {
-        borderRadius: 10,
+        borderRadius: wp(2),
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "flex-start",
@@ -115,18 +108,16 @@ const styles = StyleSheet.create({
     },
     text: {
         textAlign: 'center',
-        color: '#121212'
+        color: '#121212',
+        fontSize: wp(3.2)
     },
     button: {
         marginVertical: 20,
     },
-    picker: {
-        marginTop: 20,
-    },
     highlight: {
         fontFamily: 'OpenSans_400Regular',
-        fontSize: 12,
-        alignSelf: "flex-start"
+        fontSize: wp('3%'),
+        alignSelf: "center"
     },
     lottie: {
         width: 250,

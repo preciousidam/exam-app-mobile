@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, TouchableOpacity, FlatList, StyleSheet, Image} from 'react-native';
 import {Text, Avatar, withTheme} from 'react-native-elements';
-import { AppLoading } from 'expo';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
