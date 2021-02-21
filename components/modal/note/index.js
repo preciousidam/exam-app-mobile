@@ -51,7 +51,7 @@ export default function CreateNoteModal({show, close}){
             visible={show}
             transparent={true}
         >
-            <View style={{flex: 1, backgroundColor: dark? color.background :colors.card}}>
+            <View style={{flex: 1, backgroundColor: dark? colors.background :colors.card}}>
                 <Header />
                 <View style={{paddingHorizontal: 20, paddingTop: 20,}}>
                     <TextInput 

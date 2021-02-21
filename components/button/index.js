@@ -59,7 +59,7 @@ export const FloatingActionButton = ({icon, onPress, style}) => {
         <TouchableOpacity 
             onPress={onPress} 
             activeOpacity={0.8} 
-            style={[{position: "absolute", bottom: 30, right: 30}, style]}
+            style={[{position: "absolute", bottom: 30, right: 30, zIndex: 100}, style]}
         >
             <View style={[styles.actionBtn, {backgroundColor: colors.primary}]}>
                 {icon}
@@ -97,12 +97,12 @@ const styles = StyleSheet.create({
         borderRadius: wp(30),
     },
     actionBtn: {
-        width: wp(60),
-        height: hp(60),
-        borderRadius: wp(30),
+        width: 60,
+        height: 60,
+        borderRadius: 30,
         borderWidth: 1,
         borderColor: 'transparent',
-        padding: wp(20),
+        padding: 20,
         elevation: 10,
         alignItems: "center",
         justifyContent: "center"
