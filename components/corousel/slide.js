@@ -27,10 +27,11 @@ export default function Slider({data}){
 
 function Card({image}){
     const {colors} = useTheme();
+    
     return (
         <View style={styles.view}>
             <Image 
-                source={image}
+                source={{uri: image?.image}}
                 resizeMode='cover'
                 resizeMethod='scale'
                 style={styles.image}

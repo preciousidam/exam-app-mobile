@@ -5,20 +5,21 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { LinearGradient } from 'expo-linear-gradient';
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 
 import FocusAwareStatusBar from '../../../components/StatusBar';
 import { loadFonts } from '../../../libs/fonts';
 import List from '../../../components/lesson/list';
 
-const colorBack = ['color-primary', 'color-success', 'color-info', 'color-warning', 'color-danger', ];
-
 export default function ListScreen({navigation, route}){
     const {colors, dark} = useTheme();
     const fontLoaded = loadFonts();
     const {navigate} = navigation;
-    const lessons = useSelector(state => state.lessons);
+    const {lessons} = useSelector(state => state.lessons);
     const {width, height} = useSafeAreaInsets();
     const {title} = route.params;
 
@@ -32,7 +33,7 @@ export default function ListScreen({navigation, route}){
                         style={styles.actionBar}
                     >
                         <View style={styles.actionBar}>
-                            <Ionicons name='md-search' size={24} color={colors.text} />
+                            <Ionicons name='md-search' size={wp(5)} color={colors.text} />
                         </View>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback 
@@ -40,7 +41,7 @@ export default function ListScreen({navigation, route}){
                         style={styles.actionBar}
                     >
                         <View style={styles.actionBar}>
-                            <Ionicons name='ios-notifications-outline' size={30} color={colors.text} />
+                            <Ionicons name='ios-notifications-outline' size={wp(5)} color={colors.text} />
                             {<Badge status='error' containerStyle={{ position: 'absolute', top: 2, right: 1 }} />}
                         </View>
                     </TouchableWithoutFeedback>

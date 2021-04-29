@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, ScrollView, FlatList, TouchableOpacity} from 'react-native';
-import {Text, Badge, SearchBar} from 'react-native-elements';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { View, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
+import {Text,} from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import {SvgXml} from 'react-native-svg';
 
 
 import FocusAwareStatusBar from '../../../components/StatusBar';
 import { loadFonts } from '../../../libs/fonts';
 import { HeaderBackButton } from '@react-navigation/stack';
 import { SolidbuttonWithIcon } from '../../../components/button';
+import {Empty} from '../../../assets/empty';
 
 const colorBack = ['color-primary', 'color-success', 'color-info', 'color-warning', 'color-danger', ];
 const sections = ['Details', 'Exercises', 'Highlights']
@@ -22,10 +27,10 @@ export default function OverviewScreen({navigation, route}){
     const {navigate} = navigation;
     const [active, setActive] = useState(0)
     const {width, height} = useSafeAreaInsets();
-    const {id} = route.params;
-    const lesson = useSelector(state => state.lessons.find(({id: lessonId}) => id === lessonId));
+    const {topic, subject} = route.params;
+    const lessons = useSelector(state => state.lessons.lessons?.filter(({topic: topicId}) => topic.id === topicId));
 
-    const detailsActive = startFrom => navigate('Detail', {id, startFrom});
+    const detailsActive = (id) => navigate('Detail', {id, lessons});
     const exerciseActive = _ => navigate('', {id});
     
     return (
@@ -37,14 +42,14 @@ export default function OverviewScreen({navigation, route}){
                         <Text 
                             style={[styles.headerText, {fontFamily: 'Montserrat_700Bold'}]}
                         >
-                            {lesson?.subject} Lesson
+                            {subject} Lesson
                         </Text>
                     </View>
                     <HeaderBackButton onPress={_ => navigation.goBack()} />
                </View>
                <View style={styles.topicView}>
-                    <Text style={styles.topic}>{lesson?.topic}</Text>
-                    <Text style={styles.exercise}>{lesson?.noExercise} Exercises</Text>
+                    <Text style={styles.topic}>{topic?.title}</Text>
+                    <Text style={styles.exercise}>{topic?.exercises?.length || 0} Exercises</Text>
                </View>
                <View style={styles.tab}>
                     {sections.map((x,i) => (
@@ -56,9 +61,10 @@ export default function OverviewScreen({navigation, route}){
                     ))}
                </View>
                <View style={styles.content}>
-                    {active === 0 && <Details data={lesson?.details} onPress={detailsActive} />}
-                    {active === 1 && <Exercises data={lesson?.details} />}
-                    {active === 2 && <Highlights data={lesson?.highlights}  />}
+                    {active === 0 && <Details data={lessons} onPress={detailsActive} />}
+                    {active === 1 && <Exercises data={[]} />}
+                    {active === 2 && <Highlights data={[]}  />}
+                    
                </View>
                {active !== 2 && <View style={styles.start}>
                     <SolidbuttonWithIcon 
@@ -200,26 +206,36 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: "center",
     },
+    comSoon: {
+        width: '100%',
+        height: hp(60),
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
 export function Details({data, onPress}){
     const {colors} = useTheme();
+    if (data.length <= 0)
+        return (<ComingSoon />);
+        
     return(
         <View style={styles.innerView}>
             <ScrollView contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 300}}>
-                {data?.map(({subHeader, body}, index) => (
+                {data?.map(({id, title, paragraphs}, index) => (
                 <TouchableOpacity 
                     activeOpacity={0.8} key={`${index}`}
-                    onPress={_ => onPress(index)}
+                    onPress={_ => onPress(id)}
                 >
                     <View style={[styles.listItem, {backgroundColor: colors.card}]}>
                         <View style={styles.numbering}>
                             <Text style={styles.numbers}>{'0'+(index+1)}</Text>
                         </View>
                         <View style={styles.listContent}>
-                            <Text style={styles.subHeader}>{subHeader}</Text>
+                            <Text style={styles.subHeader}>{title}</Text>
                             <Text numberOfLines={1} ellipsizeMode='tail' style={styles.body} >
-                                {body}
+                                {paragraphs[0].body}
                             </Text>
                         </View>
                     </View>
@@ -231,7 +247,10 @@ export function Details({data, onPress}){
 }
 
 export function Exercises({data}){
-    const {colors} = useTheme()
+    const {colors} = useTheme();
+    if (data.length <= 0)
+        return (<ComingSoon />);
+
     return(
         <View style={styles.innerView}>
             <ScrollView contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 300}}>
@@ -257,7 +276,9 @@ export function Exercises({data}){
 }
 
 export function Highlights({data}){
-    const {colors} = useTheme()
+    const {colors} = useTheme();
+    if (data.length <= 0)
+        return (<ComingSoon />);
     return(
         <View style={styles.innerView}>
             <ScrollView contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 300}}>
@@ -277,6 +298,17 @@ export function Highlights({data}){
                 </TouchableOpacity>
                 ))}
             </ScrollView>
+        </View>
+    )
+}
+
+export const ComingSoon = ({}) => {
+    const {colors} = useTheme();
+
+    return (
+        <View style={styles.comSoon}>
+            <SvgXml xml={Empty} width={wp(70)} height={hp(30)} />
+            <Text style={styles.body}>Nothing to see here</Text>
         </View>
     )
 }

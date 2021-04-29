@@ -20,6 +20,27 @@ import { createProfile, edit } from '../../store/reducers/auth';
 import {ActInd} from '../../components/activityIndicator';
 
 const Picker = Platform.OS === 'ios' ? DynamicPickerIOS: DynamicPicker;
+const NIGERIA_STATE = ['Abia',
+'Abuja',
+'Adamawa',
+'Akwa Ibom',
+'Anambra',
+'Bauchi','Bayelsa',
+'Benue','Borno',
+'Cross River','Delta',
+'Ebonyi','Edo',
+'Ekiti','Enugu',
+'Gombe','Imo',
+'Jigawa','Kaduna',
+'Kano','Katsina',
+'Kebbi','Kogi',
+'Kwara','Lagos',
+'Nasarawa','Niger',
+'Ogun','Ondo',
+'Osun','Oyo',
+'Plateau','Rivers',
+'Sokoto','Taraba',
+'Yobe','Zamfara']
 
 export function CreateProfile({navigation}){
     
@@ -144,34 +165,7 @@ export function CreateProfileCont({navigation}){
                             style={styles.textInput}
                             textContentType="addressCity"
                         />
-                        <Picker 
-                            placeholder="State" 
-                            value={form?.state} 
-                            onValueChange={onStateChange} 
-                            style={styles.picker}
-                            pickerStyle={{color: '#000'}}
-                            options={['Abia',
-                            'Abuja',
-                            'Adamawa',
-                            'Akwa Ibom',
-                            'Anambra',
-                            'Bauchi','Bayelsa',
-                            'Benue','Borno',
-                            'Cross River','Delta',
-                            'Ebonyi','Edo',
-                            'Ekiti','Enugu',
-                            'Gombe','Imo',
-                            'Jigawa','Kaduna',
-                            'Kano','Katsina',
-                            'Kebbi','Kogi',
-                            'Kwara','Lagos',
-                            'Nasarawa','Niger',
-                            'Ogun','Ondo',
-                            'Osun','Oyo',
-                            'Plateau','Rivers',
-                            'Sokoto','Taraba',
-                            'Yobe','Zamfara']}
-                        />
+
                         <Picker 
                             value={form?.country}
                             onValueChange={onCountryChange}
@@ -180,7 +174,14 @@ export function CreateProfileCont({navigation}){
                             options={['Select Country', 'Nigeria', 'Ghana', 'Togo', 'Benin']}
                         />
 
-                        
+                        <Picker 
+                            placeholder="State" 
+                            value={form?.state} 
+                            onValueChange={onStateChange} 
+                            style={styles.picker}
+                            pickerStyle={{color: '#000'}}
+                            options={form?.country === 'Nigeria'? NIGERIA_STATE: ['Select State']}
+                        />
                         
                         <GradientButton 
                             text="Continue" 

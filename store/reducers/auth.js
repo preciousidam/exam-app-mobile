@@ -4,7 +4,6 @@ import client from '../../apiAuth/tokenClient';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { isAvailableAsync, setItemAsync } from "expo-secure-store";
 import getLoginClient from "../../apiAuth/loggedInClient";
-import { details } from "../../constants/data";
 
 
 
@@ -290,7 +289,7 @@ export const createProfile = (user, form) => async dispatch => {
                     message: item.toUpperCase(),
                     description: data[item][0],
                     icon: 'auto',
-                    duration: 3000,
+                    duration: 7000,
                     hideStatusBar: true,
                 })
             }

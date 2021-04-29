@@ -3,31 +3,35 @@ import {View, TouchableOpacity, FlatList, StyleSheet, Image} from 'react-native'
 import {Text, Avatar, withTheme} from 'react-native-elements';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { FontAwesome } from '@expo/vector-icons';
 
 import {loadFonts} from '../../libs/fonts';
+import { useSelector } from 'react-redux';
 
 
-function Corousel({data}){
-    const [active, setActive] = useState(0);
+function Corousel({subjectId}){
+    const {topics, title} = useSelector(state => state.subjects.subjects?.find(({id}) => id ===subjectId));
     const {navigate} = useNavigation();
-    
+
     const renderItems = ({item, index}) => (
         <CardSquare
             {...item}
-            onPress={_ => navigate('Overview', {id: item.id})}
+            onPress={_ => navigate('Overview', {topic: item, subject: title})}
         />
     );
 
     return(
         <View style={styles.container}>
             <FlatList 
-                data={data}
-                keyExtractor={item => item.id}
+                data={topics}
+                keyExtractor={item => item.id+item.title}
                 renderItem={renderItems}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 ItemSeparatorComponent={_ => <View style={{width: 16,}} />}
                 contentContainerStyle={{paddingHorizontal: 20, paddingVertical: 10}}
+                ListFooterComponent={<More />}
+                ListEmptyComponent={<Text>This list is loading</Text>}
             />
         </View>
     )
@@ -35,18 +39,35 @@ function Corousel({data}){
 
 export default withTheme(Corousel);
 
-export function CardSquare({topic, clipart, noExercise, style, onPress}){
 
-    const fontLoaded = loadFonts();
+
+export const More = ({onPress}) => {
+    const {colors} = useTheme();
+    return (
+        <TouchableOpacity onPress={onPress} activeOpacity={0.9} >
+            <View 
+                style={[{...styles.card, 
+                    backgroundColor: colors.card}, 
+                    styles.more
+                ]}
+            >
+                <Text style={styles.text}>View All</Text>
+                <FontAwesome name="angle-right" size={24} color="black" />
+            </View>
+        </TouchableOpacity>);
+}
+
+export const CardSquare = ({title, icon, noExercise, style, onPress}) => {
+
     const {colors} = useTheme();
     const [fav, setFav] = useState(false);
     
     return (
-        <TouchableOpacity onPress={onPress} activeOpacity={0.8} >
+        <TouchableOpacity onPress={onPress} activeOpacity={0.9} >
             <View style={[{...styles.card, backgroundColor: colors.card}, style]}>
-                <Image source={clipart} style={styles.image} resizeMethod='resize' resizeMode='contain' />
+                <Image source={{uri: icon}} style={styles.image} resizeMethod='resize' resizeMode='contain' />
                 <View style={styles.wrap}>
-                    <Text numberOfLines={1} tail style={styles.text}>{topic}</Text>
+                    <Text numberOfLines={1} tail style={styles.text}>{title}</Text>
                     <View style={styles.favCont}>
                         <View>
                             <Text>{noExercise} Exercises</Text>
@@ -66,6 +87,8 @@ export function CardSquare({topic, clipart, noExercise, style, onPress}){
         </TouchableOpacity>
     )
 }
+
+
 
 export function CardRect({topic, clipart, noExercise, style, onPress}){
 
@@ -158,6 +181,14 @@ const styles = StyleSheet.create({
         justifyContent: "space-between", 
         alignItems: "center", 
         paddingHorizontal: 10
+    },
+    more: {
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginLeft: 15,
+        padding: 15,
+        height: 223,
     }
 });
 

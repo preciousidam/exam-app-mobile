@@ -266,8 +266,8 @@ export const SearchInput = ({style, contProps, inputStyle, onChangeText, value, 
             {...contProps} 
             style={{...styles.container, ...style, borderColor, backgroundColor: focused? 'transparent':'#d8d8d8'}}
         >   
-            <View style={{marginRight: 10}}>
-                <Ionicon name='md-search' size={20} color={colors.highlight} />
+            <View style={{marginHorizontal: wp(2)}}>
+                <Ionicon name='md-search' size={wp(5)} color={colors.highlight} />
             </View>
             <TextInput 
                 onFocus={onFocus} 
@@ -286,7 +286,7 @@ export const SearchInput = ({style, contProps, inputStyle, onChangeText, value, 
 export const DateInput = ({style, contProps, inputStyle, onChangeText, value, ...rest}) => {
     
     const {colors} = useTheme();
-    console.log(value)
+    
     const [focused, setFocused] = useState(false);
     useEffect(() => {
         if(focused) setBorderColor(colors.secondary)

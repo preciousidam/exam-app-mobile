@@ -1,35 +1,27 @@
 import React, {useState, useEffect} from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
-import { WebView } from 'react-native-webview';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import { useSelector } from 'react-redux';
 import { useTheme } from '@react-navigation/native';
 
 
 import FocusAwareStatusBar from '../../../components/StatusBar';
-import { paragraphs } from '../../../constants/data';
 import Slider from '../../../components/corousel/slide';
 import { FloatingActionButton } from '../../../components/button';
 import CreateNoteModal from '../../../components/modal/note';
 
 export default function DetailScreen({navigation, route}) {
     const {colors, dark} = useTheme();
-    const {id, startFrom} = route.params;
-    const {details} = useSelector(state => state.lessons.find(({id: lessonId}) => id === lessonId));
-    const [start, setStart] = useState(startFrom);
-    const [section, setSection] = useState({});
+    const {id: lID, lessons} = route.params;
+    const [id, setID] = useState(lID);
+    const details = lessons?.find(({id: lessonId}) => id === lessonId);
     const [fav, setFav] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
 
-    useEffect(() =>{
-        setSection(details[start]);
-    }, [section,start]);
-
     useEffect(() => {
         navigation.setOptions({
-            title: section.subHeader,
+            title: details?.title,
             headerRight: _ => (<TouchableOpacity onPress={ _ => setFav(prev => addfav(!prev))}>
                     <View style={styles.fav}>
                         {fav === true ? <Ionicon 
@@ -45,11 +37,15 @@ export default function DetailScreen({navigation, route}) {
                     </View>
                 </TouchableOpacity>)
         });
-    }, [start, section]);
+    }, [id]);
 
     const getNext = _ => {
-        const next = details[start+1] || {};
-        return {index: start+1, text: next?.subHeader};
+        const currentIndex = lessons?.findIndex(({id: lId}) => id === lId  );
+        
+        if (currentIndex == lessons.length - 1) return undefined;
+        const next = lessons[currentIndex+1];
+        
+        return next;
     }
 
     const addfav = val => {
@@ -58,21 +54,22 @@ export default function DetailScreen({navigation, route}) {
     }
 
     const getPrev = _ => {
-        const prev = details[start-1] || {};
-        return {index: start-1, text: prev?.subHeader};
+        const currentIndex = lessons?.findIndex(({id: lId}) => id === lId  );
+       
+        if (currentIndex == 0) return undefined;
+        const prev = lessons[currentIndex-1];
+        
+        return prev;
     }
 
-    const onPress = inc => {
-        if (inc === 'next') setStart(prev => prev + 1);
-        else if(inc === 'prev') setStart(prev => prev -1);
-    }
+    const onPress = current => setID(current);
 
     return (
         <View style={{flex: 1, height: '100%', backgroundColor: dark? colors.background: colors.card}}>
             <ScrollView>
                 <View>
                     <Image 
-                        source={require('../../../assets/hero/plant3.jpg')}
+                        source={{uri: details?.feature_image}}
                         style={styles.image}
                         resizeMode='cover'
                         resizeMethod='scale'
@@ -81,15 +78,15 @@ export default function DetailScreen({navigation, route}) {
                         <Text 
                             style={[styles.subHeader, {fontFamily: 'Montserrat_700Bold'}]}
                         >
-                            {section.subHeader}
+                            {details?.title}
                         </Text>
-                        {paragraphs.map(({id, header, body}, i) => (
-                            <View key={i}>
+                        {details?.paragraphs?.map(({id, heading, body, images}, i) => (
+                            <View key={id}>
                                 <View  style={styles.paragraphs}>
                                     <Text 
                                         style={[styles.subtitle, {color: colors.text, fontFamily: 'Montserrat_700Bold'}]}
                                     >
-                                        {header}
+                                        {heading}
                                     </Text>
                                     <Text 
                                         style={[styles.sectBody, {color: colors.text, fontFamily: 'OpenSans_400Regular'}]}
@@ -98,7 +95,8 @@ export default function DetailScreen({navigation, route}) {
                                     </Text>
                                 
                                 </View>
-                                <Slider data={[require('../../../assets/hero/plant.webp'), require('../../../assets/hero/plant2.jpeg'), require('../../../assets/hero/plant3.jpg'),]} />
+                                
+                                <Slider data={images} />
                             </View>
                         ))}
                         <Text 
@@ -110,7 +108,7 @@ export default function DetailScreen({navigation, route}) {
                 </View>
             </ScrollView>
             <View style={[{backgroundColor: colors.card}, styles.bottomBar]}>
-                <BottomNav last={details.length - 1} prev={getPrev()} next={getNext()} onPress={onPress} />
+                <BottomNav  prev={getPrev()} next={getNext()} onPress={onPress} />
             </View>
             <FocusAwareStatusBar 
                 barStyle={dark? 'light-content': 'dark-content' } 
@@ -128,13 +126,14 @@ export default function DetailScreen({navigation, route}) {
     )
 }
 
-export function BottomNav({onPress, prev, next, last}){
+export function BottomNav({onPress, prev, next}){
     const {colors} = useTheme()
-    
+    console.log(prev)
+    console.log(next)
     return(
         <View style={styles.bottomNav}>
-            <TouchableOpacity onPress={_ => onPress('prev')} style={{width: '48%', alignItems: "flex-start"}}>
-                {prev?.index >= 0 && <View style={styles.navView}>
+            <TouchableOpacity onPress={_ => onPress(prev?.id)} style={{width: '48%', alignItems: "flex-start"}}>
+                {prev && <View style={styles.navView}>
                     <View style={[styles.pointer, {backgroundColor: colors.secondary}]}>
                         <MaterialCommunityIcons name='arrow-left' size={16} color='#ffffff' />
                     </View>
@@ -143,21 +142,21 @@ export function BottomNav({onPress, prev, next, last}){
                         ellipsizeMode='tail'
                         style={[styles.label, {fontFamily: 'Montserrat_700Bold', color: colors.text}]}
                     >
-                        {prev?.text}
+                        {prev?.title}
                     </Text>
                 </View>}
             </TouchableOpacity>
             <View style={{width: 1, height: '100%', backgroundColor: '#d8d8d8'}}>
 
             </View>
-            <TouchableOpacity onPress={_ => onPress('next')} style={{width: '48%', alignItems: "flex-end"}}>
-                {next?.index <= last && <View style={styles.navView}>
+            <TouchableOpacity onPress={_ => onPress(next.id)} style={{width: '48%', alignItems: "flex-end"}}>
+                {next && <View style={styles.navView}>
                     <Text 
                         numberOfLines={2}
                         ellipsizeMode='tail'
                         style={[styles.label, {fontFamily: 'Montserrat_700Bold', color: colors.text}]}
                     >
-                        {next?.text}
+                        {next?.title}
                     </Text>
                     <View style={[styles.pointer, {backgroundColor: colors.secondary}]}>
                         <MaterialCommunityIcons name='arrow-right' size={16} color='#ffffff' />
@@ -184,6 +183,8 @@ const styles = StyleSheet.create({
     },
     bottomNav: {
         width: '100%',
+        minWidth: '100%',
+        minHeight: 50,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",

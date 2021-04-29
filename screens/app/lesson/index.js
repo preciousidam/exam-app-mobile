@@ -1,28 +1,44 @@
-import React from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, ScrollView, FlatList, TouchableOpacity} from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, TouchableWithoutFeedback, ScrollView, RefreshControl} from 'react-native';
 import {Text, Badge, SearchBar} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 
 import FocusAwareStatusBar from '../../../components/StatusBar';
 import LessonList from '../../../components/lesson';
 import { loadFonts } from '../../../libs/fonts';
 import {SearchInput} from '../../../components/input';
+import {updateSubjectsAsync} from '../../../store/reducers/subjects';
+import { updateLessonsAsync } from '../../../store/reducers/lesson';
 
 
 const colorBack = ['color-primary', 'color-success', 'color-info', 'color-warning', 'color-danger', ];
 
 export default function LessonScreen({navigation,route}){
     const {colors, dark} = useTheme();
-    const fontLoaded = loadFonts();
     const {user} = useSelector(state => state.auth);
     const {navigate} = navigation;
-    const lessons = useSelector(state => state.lessons);
-    const subjects = useSelector(state => state.subjects);
+    const {lessons, loading} = useSelector(state => state.lessons);
+    const {subjects} = useSelector(state => state.subjects);
     const {width, height} = useSafeAreaInsets();
+    const dispatch = useDispatch();
+    const refresh = _ => {
+        dispatch(updateSubjectsAsync());
+        dispatch(updateLessonsAsync());
+    }
+
+    useEffect(() => {
+        refresh();
+    },[])
+
+    
 
     return (
         <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingVertical: height}]}>
@@ -30,11 +46,11 @@ export default function LessonScreen({navigation,route}){
                 <View style={{flexDirection: "row", alignItems: "center"}}>
                     <TouchableWithoutFeedback onPress={_ => navigation.openDrawer()}>
                         <View>
-                            <Ionicons name='md-menu' size={24} color={colors.text} />
+                            <Ionicons name='md-menu' size={wp(6)} color={colors.text} />
                         </View>
                     </TouchableWithoutFeedback>
                     <Text 
-                        style={[styles.h4, {marginHorizontal: 20, fontFamily: 'OpenSans_700Bold'}]}
+                        style={[styles.h4, {marginHorizontal: wp(5), fontFamily: 'OpenSans_700Bold'}]}
                     >
                         {route.name}
                     </Text>
@@ -45,13 +61,17 @@ export default function LessonScreen({navigation,route}){
                         style={styles.actionBar}
                     >
                         <View style={styles.actionBar}>
-                            <Ionicons name='ios-notifications-outline' size={30} color={colors.text} />
+                            <Ionicons name='ios-notifications-outline' size={wp(6)} color={colors.text} />
                             {<Badge status='error' containerStyle={{ position: 'absolute', top: 2, right: 1 }} />}
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
             </View>
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl refreshing={loading} onRefresh={_ => refresh()} />
+                }
+            >
                 <View style={styles.header}>
                     <Text h3 h3Style={styles.h3} style={styles.h4}>Hey {user?.name}</Text>
                     <Text style={styles.h4}>Start Learning!</Text>
@@ -61,42 +81,19 @@ export default function LessonScreen({navigation,route}){
                         placeholder="search for topics, subject, title"
                     />
                 </View>
-                <View style={styles.sect}>
-                    <View style={styles.sectHeader}>
-                        <Text style={styles.h4}>School Lesson</Text>
-                        <TouchableWithoutFeedback onPress={() => navigate('List', {title: 'School'})}>
-                            <View><Text>more</Text></View>
-                        </TouchableWithoutFeedback>
-                    </View>
-                    <LessonList data={lessons} />
-                </View>
-                <View style={styles.sect}>
-                    <View style={styles.sectHeader}>
-                        <Text style={styles.h4}>Tutorial Lesson</Text>
-                        <TouchableWithoutFeedback onPress={() => navigate('List', {title: 'Tutorial'})}>
-                            <View><Text>more</Text></View>
-                        </TouchableWithoutFeedback>
-                    </View>
-                    <LessonList data={lessons} />
-                </View>
-                <View style={styles.sect}>
-                    <View style={styles.sectHeader}>
-                        <Text style={styles.h4}>Recommended Lesson</Text>
-                        <TouchableWithoutFeedback onPress={() => navigate('List', {title: 'Recommended'})}>
-                            <View><Text>more</Text></View>
-                        </TouchableWithoutFeedback>
-                    </View>
-                    <LessonList data={lessons} />
-                </View>
-                <View style={styles.sect}>
-                    <View style={styles.sectHeader}>
-                        <Text style={styles.h4}>Biology Lesson</Text>
-                        <TouchableWithoutFeedback onPress={() => navigate('List', {title: 'Biology'})}>
-                            <View><Text>more</Text></View>
-                        </TouchableWithoutFeedback>
-                    </View>
-                    <LessonList data={lessons} />
-                </View>
+                {
+                    subjects?.map(({title, id}, index) => (
+                        <View style={styles.sect} key={id}>
+                            <View style={styles.sectHeader}>
+                                <Text style={styles.h4}>{title} Lesson</Text>
+                                <TouchableWithoutFeedback onPress={() => navigate('List', {title: 'School'})}>
+                                    <View><Text>more</Text></View>
+                                </TouchableWithoutFeedback>
+                            </View>
+                            <LessonList data={lessons} subjectId={id} />
+                        </View>
+                    ))
+                }
             </ScrollView>
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.background} />
         </SafeAreaView>
