@@ -58,13 +58,13 @@ export function PracticeScreen({navigation}){
                     </View>
                 </View>
             </ScrollView>
-            <LevelModal show={showModal} onSubmit={onSubmit} />
+            
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.background} />
         </View>
     )
 }
 
-export default withTheme(PracticeScreen);
+export default PracticeScreen;
 
 
 function Header({name}){

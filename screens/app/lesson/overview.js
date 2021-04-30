@@ -5,6 +5,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import moment from 'moment';
+import { Ionicons } from '@expo/vector-icons';
 import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp,
@@ -17,6 +19,7 @@ import { loadFonts } from '../../../libs/fonts';
 import { HeaderBackButton } from '@react-navigation/stack';
 import { SolidbuttonWithIcon } from '../../../components/button';
 import {Empty} from '../../../assets/empty';
+import { Modal } from 'react-native';
 
 const colorBack = ['color-primary', 'color-success', 'color-info', 'color-warning', 'color-danger', ];
 const sections = ['Details', 'Exercises', 'Highlights']
@@ -31,7 +34,7 @@ export default function OverviewScreen({navigation, route}){
     const lessons = useSelector(state => state.lessons.lessons?.filter(({topic: topicId}) => topic.id === topicId));
 
     const detailsActive = (id) => navigate('Detail', {id, lessons});
-    const exerciseActive = _ => navigate('', {id});
+    const exerciseActive = _ => navigate('Exercise', {exercises: topic?.exercises });
     
     return (
         <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingTop: height}]}>
@@ -49,7 +52,7 @@ export default function OverviewScreen({navigation, route}){
                </View>
                <View style={styles.topicView}>
                     <Text style={styles.topic}>{topic?.title}</Text>
-                    <Text style={styles.exercise}>{topic?.exercises?.length || 0} Exercises</Text>
+                    <Text style={styles.exercise}>{topic?.exercises?.length} Exercises</Text>
                </View>
                <View style={styles.tab}>
                     {sections.map((x,i) => (
@@ -62,8 +65,8 @@ export default function OverviewScreen({navigation, route}){
                </View>
                <View style={styles.content}>
                     {active === 0 && <Details data={lessons} onPress={detailsActive} />}
-                    {active === 1 && <Exercises data={[]} />}
-                    {active === 2 && <Highlights data={[]}  />}
+                    {active === 1 && <Exercises data={topic?.exercises} onPress={exerciseActive} />}
+                    {active === 2 && <Highlights data={topic?.adminnote_notes}  />}
                     
                </View>
                {active !== 2 && <View style={styles.start}>
@@ -213,13 +216,27 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    noteHead: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 15,
+        elevation: 10,
+        shadowColor: '#000',
+        backgroundColor: '#fff'
+    },
+    noteTitle: {
+        fontFamily: 'Montserrat_700Bold',
+        fontSize: 16,
+    }
 });
 
 export function Details({data, onPress}){
+    console.log(data);
     const {colors} = useTheme();
     if (data.length <= 0)
         return (<ComingSoon />);
-        
+
     return(
         <View style={styles.innerView}>
             <ScrollView contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 300}}>
@@ -254,17 +271,17 @@ export function Exercises({data}){
     return(
         <View style={styles.innerView}>
             <ScrollView contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 300}}>
-                {data?.map(({subHeader}, index) => (<TouchableOpacity 
-                    activeOpacity={0.8} key={`${index}`}
+                {data?.map(({question, score}, index) => (<TouchableOpacity 
+                    activeOpacity={1} key={`${index}`}
                 >
                     <View style={[styles.listItem, {backgroundColor: colors.card}]}>
                         <View style={styles.numbering}>
                             <Text style={styles.numbers}>{'0'+(index+1)}</Text>
                         </View>
                         <View style={styles.listContent}>
-                            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.subHeader}>{subHeader}</Text>
+                            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.subHeader}>{question}</Text>
                             <Text style={styles.body} >
-                                5 Points
+                                {score} Points
                             </Text>
                         </View>
                     </View>
@@ -277,27 +294,51 @@ export function Exercises({data}){
 
 export function Highlights({data}){
     const {colors} = useTheme();
+    const [selected, setSelected] = useState({});
+    const [show, setShow] = useState(false);
+
+    const onPress = text => {
+        setSelected(text);
+        setShow(true);
+    }
+
     if (data.length <= 0)
         return (<ComingSoon />);
     return(
         <View style={styles.innerView}>
             <ScrollView contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 300}}>
-                {data?.map(({section, paragraphs, color, time}, index) => (<TouchableOpacity activeOpacity={0.8} key={`${index}`}>
+                {data?.map(({title, body, color, last_modified}, index) => (<TouchableOpacity activeOpacity={0.8} key={`${index}`} onPress={_ => onPress({body, title})}>
                     <View style={[styles.highlightsItem, {backgroundColor: colors.card}]}>
                         <View style={styles.titleView}>
-                            <Text style={styles.subHeader}>{section}</Text>
+                            <Text style={styles.subHeader}>{title}</Text>
                             <View style={{alignItems: "center", justifyContent: "center"}}>
-                                <Text style={styles.body}>{time}</Text>
-                                <View style={{backgroundColor: colors[color], width: 15, height: 15}}></View>
+                                {/*<Text style={styles.body}>{moment(last_modified).fromNow()}</Text>*/}
+                                <View style={{backgroundColor: colors.info, width: 15, height: 15}}></View>
                             </View>
                         </View>
                         <View style={{}}>
-                            <Text style={styles.body}>{paragraphs[0]}</Text>
+                            <Text style={styles.body}>{body}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
                 ))}
             </ScrollView>
+            <Modal
+                visible={show}
+                onRequestClose={_ => setShow(false)}
+                transparent={false}
+                presentationStyle="overFullScreen"
+            >
+                <View >
+                    <View style={styles.noteHead}>
+                        <Text style={styles.noteTitle}>{selected.title}</Text>
+                        <Text style={styles.notePress} onPress={_ => setShow(false)}>
+                            <Ionicons name="ios-close" size={24} color="#a3a3a3" />
+                        </Text>
+                    </View>
+                    <Text style={{padding: 15}}>{selected.body}</Text>
+                </View>
+            </Modal>
         </View>
     )
 }

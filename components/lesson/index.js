@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 
 
 function Corousel({subjectId}){
-    const {topics, title} = useSelector(state => state.subjects.subjects?.find(({id}) => id ===subjectId));
+    const {topics, title} = useSelector(state => state.subjects.subjects?.find(({id}) => id === subjectId));
     const {navigate} = useNavigation();
 
     const renderItems = ({item, index}) => (

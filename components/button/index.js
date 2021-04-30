@@ -91,10 +91,9 @@ const styles = StyleSheet.create({
         padding: wp("3.5%"),
         borderWidth: 1,
         borderColor: 'transparent',
-        borderRadius: wp("5%"),
         justifyContent: "center",
         alignItems: 'center',
-        borderRadius: wp(30),
+        borderRadius: wp('2%'),
     },
     actionBtn: {
         width: 60,
