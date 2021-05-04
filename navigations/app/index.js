@@ -22,6 +22,7 @@ import NoteNavigation from './notes';
 import NotificationNavigation from './notification';
 import DrawerCustom from '../../components/drawer';
 import { WithBadge } from '../../components/badge';
+import { SubscriptionScreen } from '../../screens/app/subscription';
 
 
 const Tab = createBottomTabNavigator();
@@ -108,6 +109,13 @@ export default function HomeNavigation({navigation}){
             <Screen 
                 component={TestNavigator}
                 name="Test"
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Screen 
+                component={SubscriptionScreen}
+                name="Subscription"
                 options={{
                     headerShown: false,
                 }}

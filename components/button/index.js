@@ -29,6 +29,16 @@ export const Solidbutton = ({text, onPress, style, textStyle}) =>{
     )
 }
 
+export const SolidbuttonNoGradient = ({text, onPress, style, textStyle}) =>{
+    return (
+        <TouchableOpacity onPress={onPress} style={{...styles.container}} activeOpacity={0.8}>
+                <View style={[{...styles.grad, borderRadius: wp('2%')}, style]} >
+                    <Text style={{...styles.text, ...textStyle}}>{text}</Text>
+                </View>
+        </TouchableOpacity>
+    )
+}
+
 export const SolidbuttonWithIcon = ({text, onPress, style, textStyle, icon}) =>{
     return (
         <TouchableOpacity onPress={onPress} style={{...styles.container}} activeOpacity={0.8}>

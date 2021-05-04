@@ -7,7 +7,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FocusAwareStatusBar from '../../../components/StatusBar';
 import {Solidbutton, Outlinedbutton} from '../../../components/button';
 import {Question} from '../../../components/question';
-import {CompletedModal} from '../../../components/modal';
+import {CompletedModal, InfoModal} from '../../../components/modal';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 export default function ExercisesScreen({navigation, route}){
     const {exercises} = route?.params;
@@ -19,6 +20,10 @@ export default function ExercisesScreen({navigation, route}){
     
 
     const onSelect = value => setAttempted(prev => ({...prev, [qNo]: value}))
+    const onSubmit = _ => {
+        if (Object.keys(attempted).length === exercises.length)
+            setShowModal(true);
+    }
     
 
     return (
@@ -56,22 +61,70 @@ export default function ExercisesScreen({navigation, route}){
                 </View>
                 <View style={styles.buttonCont}>
                     <Solidbutton 
-                        text="Continue" 
-                        onPress={_ => qNo < (exercises.length -1) && setQNo(prev => prev + 1)}
+                        text={qNo < (exercises.length -1)?"Continue": "Submit" }
+                        onPress={
+                            qNo < (exercises.length -1) ?
+                            _ => setQNo(prev => prev + 1): 
+                            onSubmit
+                        }
+                             
                         style={styles.button}
                     />
                 </View>
             </View>
+            
             <CompletedModal 
                 show={showModal} 
-                onPress={() => {
-                    setShowModal(false)
-                    navigation.navigate('home')
-                }} 
-            />
+                close={() => {
+                    setShowModal(false);
+                    navigation.goBack();
+                }}
+            >
+                <View>
+                    <View style={styles.noteHead}>
+                        <Text style={styles.noteTitle}>Summary</Text>
+                        <Text style={styles.notePress} onPress={() => {
+                            setShowModal(false);
+                            navigation.goBack();
+                        }}
+                    >
+                            <Ionicons name="ios-close" size={24} color="#a3a3a3" />
+                        </Text>
+                    </View>
+                    <View>
+                        {Object.entries(attempted)?.map((attempt, index) => (
+                            <Result
+                                key={index}
+                                passed={exercises[index].answer === attempt[1]}
+                                ans={exercises[index].answer}
+                                pt={exercises[index].score}
+                                qNo={index+1}
+                            />
+                        ))}
+                    </View>
+                </View>
+            </CompletedModal>
+    
             <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
         </View>
     )
+}
+
+const Result = ({passed, ans, pt, qNo}) => {
+    const {colors} = useTheme();
+    
+    return (
+        <View style={styles.result}>
+            <Text style={styles.icon}>
+                {!passed? <MaterialIcons name="cancel" size={40} color={colors.danger} />:
+                    <Ionicons name="checkmark-circle" size={40} color={colors.success} />}
+            </Text>
+            <View style={styles.other}>
+                <Text style={{fontFamily: "Montserrat_700Bold"}}>Question {qNo}</Text>
+                <Text style={{fontFamily: "OpenSans_400Regular"}}>Answer: {ans}</Text>
+            </View>
+        </View>
+    );
 }
 
 
@@ -190,6 +243,29 @@ const styles = StyleSheet.create({
     },
     headerButton: {
         marginHorizontal: 10,
+    },
+    noteHead: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 15,
+        elevation: 10,
+        shadowColor: '#000',
+        backgroundColor: '#fff'
+    },
+    noteTitle: {
+        fontFamily: 'Montserrat_700Bold',
+        fontSize: 16,
+    },
+    result: {
+        padding: 15,
+        flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderBottomColor: "#c6c6c6",
+        alignItems: 'center'
+    },
+    icon: {
+        marginRight: 15,
     }
 });
 

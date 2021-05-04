@@ -4,8 +4,7 @@ import {Text,} from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
-import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import {
 	widthPercentageToDP as wp,
@@ -20,6 +19,7 @@ import { HeaderBackButton } from '@react-navigation/stack';
 import { SolidbuttonWithIcon } from '../../../components/button';
 import {Empty} from '../../../assets/empty';
 import { Modal } from 'react-native';
+import { updateViewed } from '../../../store/reducers/subjects';
 
 const colorBack = ['color-primary', 'color-success', 'color-info', 'color-warning', 'color-danger', ];
 const sections = ['Details', 'Exercises', 'Highlights']
@@ -30,11 +30,17 @@ export default function OverviewScreen({navigation, route}){
     const {navigate} = navigation;
     const [active, setActive] = useState(0)
     const {width, height} = useSafeAreaInsets();
-    const {topic, subject} = route.params;
-    const lessons = useSelector(state => state.lessons.lessons?.filter(({topic: topicId}) => topic.id === topicId));
+    const {topic} = route.params;
+    const dispatch = useDispatch();
+   
 
-    const detailsActive = (id) => navigate('Detail', {id, lessons});
-    const exerciseActive = _ => navigate('Exercise', {exercises: topic?.exercises });
+    const detailsActive = async (id) => {
+        dispatch(updateViewed({id: topic?.id}));
+        navigate('Detail', {lID: id||topic?.lessons[0]?.id, lessons: topic?.lessons});
+    }
+    const exerciseActive = _ => {
+        navigate('Exercise', {exercises: topic?.exercises });
+    }
     
     return (
         <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingTop: height}]}>
@@ -45,7 +51,7 @@ export default function OverviewScreen({navigation, route}){
                         <Text 
                             style={[styles.headerText, {fontFamily: 'Montserrat_700Bold'}]}
                         >
-                            {subject} Lesson
+                            {topic?.subject_title} Lesson
                         </Text>
                     </View>
                     <HeaderBackButton onPress={_ => navigation.goBack()} />
@@ -64,16 +70,23 @@ export default function OverviewScreen({navigation, route}){
                     ))}
                </View>
                <View style={styles.content}>
-                    {active === 0 && <Details data={lessons} onPress={detailsActive} />}
+                    {active === 0 && <Details data={topic?.lessons} onPress={detailsActive} />}
                     {active === 1 && <Exercises data={topic?.exercises} onPress={exerciseActive} />}
                     {active === 2 && <Highlights data={topic?.adminnote_notes}  />}
                     
                </View>
-               {active !== 2 && <View style={styles.start}>
+               {active === 0 && topic?.lessons?.length > 0 && <View style={styles.start}>
                     <SolidbuttonWithIcon 
-                        text='Start'
+                        text='Start Lessons'
                         icon={<MaterialCommunityIcons name='arrow-right' size={16} color='#ffffff' />}
-                        onPress={active === 0? _ => detailsActive(0) : exerciseActive}
+                        onPress={_ => detailsActive()}
+                    />
+                </View>}
+                {active === 1 && topic?.exercises?.length > 0 && <View style={styles.start}>
+                    <SolidbuttonWithIcon 
+                        text='Start Exercises'
+                        icon={<MaterialCommunityIcons name='arrow-right' size={16} color='#ffffff' />}
+                        onPress={exerciseActive}
                     />
                 </View>}
             </View>
@@ -232,8 +245,9 @@ const styles = StyleSheet.create({
 });
 
 export function Details({data, onPress}){
-    console.log(data);
+   
     const {colors} = useTheme();
+    
     if (data.length <= 0)
         return (<ComingSoon />);
 

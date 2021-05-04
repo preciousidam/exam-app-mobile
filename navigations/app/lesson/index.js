@@ -1,10 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicon from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 import LessonScreen from '../../../screens/app/lesson';
 import SubjectScreen from '../../../screens/app/lesson/subjects';
@@ -12,6 +9,7 @@ import ListScreen from '../../../screens/app/lesson/list';
 import OverviewScreen from '../../../screens/app/lesson/overview';
 import DetailScreen from '../../../screens/app/lesson/detail';
 import ExercisesScreen  from '../../../screens/app/lesson/exercise';
+import BookmarkScreen from '../../../screens/app/lesson/bookmark';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,26 +25,15 @@ export function LessonTabNavigator({navigation}){
 
                     if (route.name === 'Lessons'){
                         
-                        iconType = <Ionicon name='ios-home' size={size} color={color} />
+                        iconType = <Ionicons name='ios-home' size={size} color={color} />
                     }else if (route.name === 'Subjects'){
-                        iconName = 'md-bookmarks';
-                        iconType = <Ionicon name={iconName} size={size} color={color} />;
+                        iconName = 'subject';
+                        iconType = <MaterialIcons name={iconName} size={size} color={color} />;
                     }
-                    else if (route.name === 'History'){
-                        iconName = 'history';
-                        iconType = <MaterialCommunityIcons name={iconName} size={size} color={color} />;
-                    }
-                    else if (route.name === 'Profile'){
-                        iconType = (<Avatar 
-                            rounded 
-                            size="small" 
-                            icon={{name: 'person', type: 'ionicons', color: colors.secondary}} 
-                            containerStyle={{backgroundColor: colors.primary, width: 25, height: 25}}
-                        />);
-                    }
-                    else if (route.name === 'Favourite'){
-                        iconType = focused ? <Ionicon name='ios-heart' size={size} color={color} />:
-                                                <Ionicon name='ios-heart-empty' size={size} color={color} />;
+                   
+                    else if (route.name === 'Bookmarked'){
+                        iconType = focused ? <Ionicons name="bookmarks" size={size} color={color} />:
+                                                <Ionicons name='bookmarks-outline' size={size} color={color} />;
                     }
 
                     return iconType;
@@ -68,17 +55,10 @@ export function LessonTabNavigator({navigation}){
                 }}
             />
             <Screen 
-                component={LessonNavigator}
-                name="History"
+                component={BookmarkScreen}
+                name="Bookmarked"
                 options={{
-                    tabBarLabel: "History",
-                }}
-            />
-            <Screen 
-                component={LessonNavigator}
-                name="Favourite"
-                options={{
-                    tabBarLabel: "Favourite",
+                    tabBarLabel: "Bookmarks",
                 }}
             />
         </Navigator>

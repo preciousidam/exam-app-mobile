@@ -19,9 +19,7 @@ export function MainNavigation(props){
     const {isRestoring, user} = useSelector(state => state.auth);
     const {terms} = useSelector(state => state.app);
 
-	useEffect(() => {
-		console.log(user)
-	},[user])
+	
     
     return(
 		fontLoaded && <Navigator>

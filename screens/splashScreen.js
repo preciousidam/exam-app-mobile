@@ -20,6 +20,7 @@ export function SplashScreen({theme}){
     const fontLoaded = loadFonts();
 
     const setup = async () => {
+        
         const user = await AsyncStorage.getItem('harrp-user');
         const app = await AsyncStorage.getItem('apps')
        

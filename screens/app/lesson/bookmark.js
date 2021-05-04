@@ -4,7 +4,7 @@ import {Text, Badge, SearchBar} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp,
@@ -13,47 +13,37 @@ import {
 
 import FocusAwareStatusBar from '../../../components/StatusBar';
 import List from '../../../components/lesson/list';
+import { Bookmarks } from '../../../components/lesson/bookmarks';
+import { getBookmarkAsync } from '../../../store/reducers/subjects';
 
-export default function ListScreen({navigation, route}){
+export default function BookmarkScreen({navigation, route}){
     const {colors, dark} = useTheme();
     const {navigate} = navigation;
     const {width, height} = useSafeAreaInsets();
-    const {title, id} = route.params;
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        navigation.setOptions({
-            title,
-            headerRight: () => (
-                <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-evenly", paddingRight: 10}}>
-                    <TouchableWithoutFeedback 
-                        onPress={_ => navigation.openDrawer()}
-                        style={styles.actionBar}
-                    >
-                        <View style={styles.actionBar}>
-                            <Ionicons name='md-search' size={wp(5)} color={colors.text} />
-                        </View>
-                    </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback 
-                        onPress={_ => navigate('Notifications')}
-                        style={styles.actionBar}
-                    >
-                        <View style={styles.actionBar}>
-                            <Ionicons name='ios-notifications-outline' size={wp(5)} color={colors.text} />
-                            {<Badge status='error' containerStyle={{ position: 'absolute', top: 2, right: 1 }} />}
-                        </View>
-                    </TouchableWithoutFeedback>
-                </View>
-            ),
-        })
-    })
-   
+        dispatch(getBookmarkAsync());
+    },[])
+
+    
     return (
         <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingTop: height}]}>
             
             <View style={styles.sect}>
-                <List subjectId={id} />
+                <View style={[styles.header, {backgroundColor: colors.card}]}>
+                    <Text style={styles.headerText}>Bookmarks</Text>
+                </View>
+                <View style={[styles.notice, {backgroundColor: colors.card}]}>
+                    <Text style={styles.noticeText}>
+                        All bookmarked topic can be view when offline 
+                        {`  `} <Ionicons name="cloud-download-outline" size={18} color={colors.info} />
+                    </Text>
+
+                </View>
+                <Bookmarks />
             </View>
-            <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.background} />
+            <FocusAwareStatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
         </SafeAreaView>
     );
 }
@@ -73,6 +63,14 @@ const styles = StyleSheet.create({
     },
     header: {
         paddingHorizontal: 20,
+        alignItems: 'center',
+        flexDirection: 'row',
+        paddingVertical: 15,
+        elevation: 5
+    },
+    headerText: {
+        fontFamily: "Montserrat_700Bold",
+        fontSize: wp(4)
     },
     h3: {
         fontFamily: 'Montserrat_400Regular',
@@ -104,5 +102,12 @@ const styles = StyleSheet.create({
     },
     actionBar: {
         marginHorizontal: 10,
+    },
+    notice: {
+        padding: 15,
+    },
+    noticeText: {
+        fontFamily: "OpenSans_400Regular",
+        textAlignVertical: 'center'
     }
 });

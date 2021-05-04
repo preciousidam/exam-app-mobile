@@ -39,7 +39,6 @@ export const updateLessonsAsync = _ => async dispatch => {
         const {data, status} = await client.get('lessons/');
         dispatch(loading({loading: false}));
         if(status === 200){
-            console.log(data)
             dispatch(update({lessons: data}));
             return
         }

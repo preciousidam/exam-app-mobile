@@ -14,7 +14,9 @@ export const authSlice = createSlice({
         isRestoring: true,
         isSignOut: true,
         user: null,
-        form: {}
+        form: {},
+        levels: [],
+        subscription_active: false,
     },
     reducers: {
         login(state, action){
@@ -51,11 +53,15 @@ export const authSlice = createSlice({
             return {
                 ...state, isLoading: loading,
             }
+        },
+        level(state, action){
+            const {levels} = action.payload;
+            return {...state, levels}
         }
     }
 });
 
-export const {login, logout, restore, processing, edit} = authSlice.actions;
+export const {login, logout, restore, processing, edit, level} = authSlice.actions;
 
 export default authSlice.reducer;
 
@@ -150,7 +156,7 @@ export const verifyEmail = (otp, pk) => async dispatch => {
         dispatch(processing({loading: false}));
         
         if (status === 201 || status === 200 ){
-            
+            AsyncStorage.setItem('harrp-user', JSON.stringify(data.user));
             dispatch(login({user: data.user}));
             return
         }
@@ -231,6 +237,7 @@ export const signUp = details => async dispatch => {
         dispatch(processing({loading: true}));
         
         const {data, status} = await client.post('users/', {...details})
+        
         dispatch(processing({loading: false}));
         
         if (status === 201 || status === 200 ){
@@ -383,5 +390,43 @@ export const changePassword = details => async dispatch => {
             duration: 3000,
             hideStatusBar: true,
         });
+    }
+}
+
+export const updateLevelsAsync = _ => async dispatch => {
+    try{
+        const client = await getLoginClient();
+        const {data, status} = await client.get(`levels/`);
+        
+        if(status === 200){
+            dispatch(level({levels: data}));
+            return
+        }
+
+        if (status === 400){
+            for (let item in data){
+                showMessage({
+                    type: 'danger',
+                    message: item.toUpperCase(),
+                    description: data[item][0],
+                    icon: 'auto',
+                    duration: 7000,
+                    hideStatusBar: true,
+                })
+            }
+        }
+        if(status === 500) throw 'Someone happen please check back later or contact support'
+        
+        return
+    }catch (err){
+        console.log(err)
+        showMessage({
+            type: 'danger',
+            message: "Something happened",
+            description: err.message,
+            icon: 'auto',
+            duration: 3000,
+            hideStatusBar: true,
+        })
     }
 }

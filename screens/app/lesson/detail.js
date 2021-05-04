@@ -12,7 +12,7 @@ import CreateNoteModal from '../../../components/modal/note';
 
 export default function DetailScreen({navigation, route}) {
     const {colors, dark} = useTheme();
-    const {id: lID, lessons} = route.params;
+    const {lID, lessons} = route.params;
     const [id, setID] = useState(lID);
     const details = lessons?.find(({id: lessonId}) => id === lessonId);
     const [fav, setFav] = useState(false);
@@ -49,7 +49,6 @@ export default function DetailScreen({navigation, route}) {
     }
 
     const addfav = val => {
-        console.log(val);
         setFav(val)
     }
 
@@ -128,8 +127,7 @@ export default function DetailScreen({navigation, route}) {
 
 export function BottomNav({onPress, prev, next}){
     const {colors} = useTheme()
-    console.log(prev)
-    console.log(next)
+   
     return(
         <View style={styles.bottomNav}>
             <TouchableOpacity onPress={_ => onPress(prev?.id)} style={{width: '48%', alignItems: "flex-start"}}>

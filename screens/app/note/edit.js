@@ -23,7 +23,6 @@ export default function EditNoteScreen({navigation, route}){
     const note = useSelector(state => state.notes.find(({id: noteId}) => noteId === id ));
 
     useEffect(() => {
-        console.log(note)
         setBody(note?.body);
         setTitle(note?.title);
         setCategory(note?.category)

@@ -16,7 +16,7 @@ import {DynamicPicker, LevelPicker, DynamicPickerIOS} from '../../components/inp
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { NoticeModal } from '../../components/modal';
-import { createProfile, edit } from '../../store/reducers/auth';
+import { createProfile, edit, updateLevelsAsync } from '../../store/reducers/auth';
 import {ActInd} from '../../components/activityIndicator';
 
 const Picker = Platform.OS === 'ios' ? DynamicPickerIOS: DynamicPicker;
@@ -46,17 +46,24 @@ export function CreateProfile({navigation}){
     
     const {colors, dark} = useTheme();
     const [show, setShow] = useState(false);
-    const {form} = useSelector(state => state.auth);
+    const {form, levels} = useSelector(state => state.auth);
+    const [level, setLevel] = useState();
     const dispatch = useDispatch();
 
-    const onLevelChange = (itemValue) => dispatch(edit({...form, level: itemValue}));
+    const onLevelChange = (itemValue) => {
+        const {id} = levels.find(({title}) => title == itemValue);
+        setLevel(itemValue);
+        dispatch(edit({...form, level:id}));
+    }
     const onSchoolChange = (itemValue) => dispatch(edit({...form, school: itemValue}));
     const onGenderChange = (itemValue) => dispatch(edit({...form, gender: itemValue}));
     const onPress = _ => navigation.navigate('profile-cont')
     
     useEffect(() => {
         setShow(true);
+        dispatch(updateLevelsAsync());
     }, [])
+
 
     return (
         
@@ -93,11 +100,11 @@ export function CreateProfile({navigation}){
                             options={['Select School', 'Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge','Lekki British School', 'Penny Internation colledge', 'Dowen Colledge', 'Children International colledge']}
                         />*/}
                         <Picker 
-                            value={form?.level}
+                            value={level}
                             onValueChange={onLevelChange}
                             style={styles.picker}
                             pickerStyle={{color: '#000'}}
-                            options={['Select Level', 'Senior Secondary', 'Junior Secondary']}
+                            options={['Select level',...levels?.map(({title}) => title)]}
                         />
                         <OutlinedInput 
                             placeholder="Matric no / Exam No/ Registration No" 

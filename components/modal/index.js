@@ -3,7 +3,6 @@ import {View, Modal, StyleSheet, Image} from 'react-native';
 import {Text} from 'react-native-elements';
 import {useTheme} from '@react-navigation/native';
 import {loadFonts} from '../../libs/fonts';
-import LottieView from 'lottie-react-native';
 import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp,
@@ -39,39 +38,36 @@ export function NoticeModal({show, onSubmit}){
     );
 }
 
-export function CompletedModal({show, onPress}){
+export function CompletedModal({show, close, children}){
+    
+    return (
+        <Modal
+            visible={show}
+            animationType='fade'
+            transparent={false}
+            onRequestClose={close}
+        >
+            {children}   
+        </Modal>
+    );
+}
+
+export function InfoModal({show, close, children}){
     const {colors} = useTheme();
     const fontLoaded = loadFonts();
-    
-    const cont = _ => {
-        onPress()
-    }
+    const [level, setLevel] = useState('Junior Secondary');
+
 
     return (
         <Modal
             visible={show}
             animationType='fade'
             transparent={true}
+            onRequestClose={close}
         >
             <View style={styles.overlay}>
                 <View style={styles.container}>
-                    <View style={styles.lottieCont}>
-                        <Image 
-                            style={{...styles.image, position: 'absolute'}}
-                            source={require('../../assets/confetti.gif')}
-                        />
-                        <LottieView
-                            source={require('../../assets/success.json')} 
-                            style={styles.lottie}
-                            autoPlay
-                            loop={false} 
-                        />
-                    </View>
-                    
-                    <Text h4 h4Style={styles.h4} >Thanks for completing</Text>
-                    <Text style={styles.text}>you score will be saved and you can view them later.</Text>
-                    
-                    <Solidbutton onPress={cont} text="Continue" style={styles.button} />
+                    {children}
                 </View>
             </View>
             

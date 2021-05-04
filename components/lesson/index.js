@@ -4,19 +4,71 @@ import {Text, Avatar, withTheme} from 'react-native-elements';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FontAwesome } from '@expo/vector-icons';
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import {SvgXml} from 'react-native-svg';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {loadFonts} from '../../libs/fonts';
-import { useSelector } from 'react-redux';
+import {Empty} from '../../assets/empty';
+import { addBookmark, getViewedAsync } from '../../store/reducers/subjects';
+import { showMessage } from 'react-native-flash-message';
+import AsyncStorage from '@react-native-community/async-storage';
+import { PaymentModal } from '../modal/payment';
 
 
-function Corousel({subjectId}){
-    const {topics, title} = useSelector(state => state.subjects.subjects?.find(({id}) => id === subjectId));
+function Corousel({subjectId, more}){
+    const {topics} = useSelector(state => state.subjects.subjects?.find(({id}) => id === subjectId));
+    const {viewed} = useSelector(state => state.subjects);
+    const {subscription_active} = useSelector(state => state.auth);
+    const [showModal, setShowModal] = useState(false);
     const {navigate} = useNavigation();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getViewedAsync());
+    }, [])
+
+    const canAccess = async (id) => {
+        return (viewed.length < 3 || viewed.includes(id));
+    }
+
+    const onPress = async item => {
+        
+        let access = await canAccess(item?.id);
+
+        if(subscription_active || (false &&access)){
+            navigate('Overview', {topic: item});
+            return;
+        }
+        setShowModal(true);
+    }
+
+    const bookmark = item => {
+        dispatch(addBookmark({topic: item}));
+        showMessage({
+            autoHide: true,
+            message: "Bookmarked",
+            description: "Topic added to your bookmark",
+            duration: 4000,
+            type: 'info',
+            hideStatusBar: true,
+            icon: 'auto'
+        })
+    }
+
+    const sub = _ => {
+        setShowModal(false);
+        navigate('Subscription');
+    }
 
     const renderItems = ({item, index}) => (
         <CardSquare
             {...item}
-            onPress={_ => navigate('Overview', {topic: item, subject: title})}
+            onPress={_ => onPress(item)}
+            addBookmark={_ => bookmark(item)}
         />
     );
 
@@ -30,8 +82,13 @@ function Corousel({subjectId}){
                 showsHorizontalScrollIndicator={false}
                 ItemSeparatorComponent={_ => <View style={{width: 16,}} />}
                 contentContainerStyle={{paddingHorizontal: 20, paddingVertical: 10}}
-                ListFooterComponent={<More />}
+                ListFooterComponent={<More onPress={more} />}
                 ListEmptyComponent={<Text>This list is loading</Text>}
+            />
+            <PaymentModal 
+                show={showModal} 
+                close={_ => setShowModal(false)}
+                pay={sub}
             />
         </View>
     )
@@ -57,10 +114,9 @@ export const More = ({onPress}) => {
         </TouchableOpacity>);
 }
 
-export const CardSquare = ({title, icon, noExercise, style, onPress}) => {
+export const CardSquare = ({title, icon, exercises, style, onPress, addBookmark, fav}) => {
 
     const {colors} = useTheme();
-    const [fav, setFav] = useState(false);
     
     return (
         <TouchableOpacity onPress={onPress} activeOpacity={0.9} >
@@ -70,12 +126,12 @@ export const CardSquare = ({title, icon, noExercise, style, onPress}) => {
                     <Text numberOfLines={1} tail style={styles.text}>{title}</Text>
                     <View style={styles.favCont}>
                         <View>
-                            <Text>{noExercise} Exercises</Text>
+                            <Text>{exercises.length} Exercises</Text>
                         </View>
-                        <TouchableOpacity onPress={e => setFav(!fav)}>
+                        <TouchableOpacity onPress={addBookmark}>
                             <View style={[styles.fav,{backgroundColor: fav? colors.notification: "transparent"}]}>
                                 <Ionicons 
-                                    name="ios-heart" 
+                                    name="bookmarks" 
                                     size={16} 
                                     color={fav? colors.card: colors.highlight} 
                                 />
@@ -90,25 +146,23 @@ export const CardSquare = ({title, icon, noExercise, style, onPress}) => {
 
 
 
-export function CardRect({topic, clipart, noExercise, style, onPress}){
+export function CardRect({title, icon, exercises, style, onPress, addBookmark, fav}){
 
-    const fontLoaded = loadFonts();
     const {colors} = useTheme();
-    const [fav, setFav] = useState(false);
     
     return (
         <TouchableOpacity onPress={onPress} activeOpacity={0.8} >
             <View style={[{...styles.card, backgroundColor: colors.card}, {width: '100%'} ,style]}>
                 <View style={styles.rect}>
-                    <Image source={clipart} style={styles.imageRect} resizeMethod='resize' resizeMode='contain' />
+                    <Image source={{uri: icon}} style={styles.imageRect} resizeMethod='resize' resizeMode='contain' />
                     <View style={{flex: 8}}>
-                        <Text numberOfLines={1} tail style={styles.text}>{topic}</Text>
-                        <Text>{noExercise} Exercises</Text>
+                        <Text numberOfLines={1} tail style={styles.text}>{title}</Text>
+                        <Text>{exercises?.length} Exercises</Text>
                     </View>
-                    <TouchableOpacity onPress={e => setFav(!fav)}>
+                    <TouchableOpacity onPress={addBookmark}>
                         <View style={[styles.fav,{backgroundColor: fav? colors.notification: "transparent"}]}>
                             <Ionicons 
-                                name="ios-heart" 
+                                name="bookmarks" 
                                 size={16} 
                                 color={fav? colors.card: colors.highlight} 
                             />
@@ -117,6 +171,17 @@ export function CardRect({topic, clipart, noExercise, style, onPress}){
                 </View>
             </View>
         </TouchableOpacity>
+    )
+}
+
+export const ComingSoon = ({}) => {
+    const {colors} = useTheme();
+
+    return (
+        <View style={styles.comSoon}>
+            <SvgXml xml={Empty} width={wp(70)} height={hp(30)} />
+            <Text style={styles.body}>Nothing to see here</Text>
+        </View>
     )
 }
 
@@ -189,6 +254,13 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         padding: 15,
         height: 223,
+    },
+    comSoon: {
+        width: '100%',
+        height: hp(80),
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 });
 

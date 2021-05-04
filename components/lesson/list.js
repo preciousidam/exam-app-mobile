@@ -1,25 +1,69 @@
 import React, {useState, useEffect} from 'react';
-import {View, TouchableOpacity, FlatList, StyleSheet, Image} from 'react-native';
-import {Text, Avatar, withTheme} from 'react-native-elements';
+import {View, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
+import {Text} from 'react-native-elements';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {CardSquare, CardRect} from './index';
+import {CardSquare, CardRect, ComingSoon} from './index';
+import { addBookmark } from '../../store/reducers/subjects';
+import { showMessage } from 'react-native-flash-message';
+import { PaymentModal } from '../modal/payment';
 
-export default function List({data, useGrid=false}){
 
+
+export default function List({subjectId, useGrid=false}){
+    const {topics} = useSelector(state => state.subjects.subjects?.find(({id}) => id === subjectId));
+    const {subscription_active} = useSelector(state => state.auth);
+    const {viewed} = useSelector(state => state.subjects);
     const [grid, setGrid] = useState(useGrid);
     const {colors} = useTheme();
-    const {navigate} = useNavigation()
+    const {navigate} = useNavigation();
+    const dispatch = useDispatch();
+    const [showModal, setShowModal] = useState(false);
+
+    useEffect(() => {
+        dispatch(getViewedAsync());
+    }, [])
+
+    const canAccess = async (id) => {
+        return (viewed?.length < 3 || viewed?.includes(id));
+    }
+
+    const onPress = async item => {
+        let access = await canAccess(item?.id);
+
+        if(subscription_active || access){
+            navigate('Overview', {topic: item});
+            return;
+        }
+        setShowModal(true);
+    }
+
+    const bookmark = item => {
+        dispatch(addBookmark({topic: item}));
+        showMessage({
+            autoHide: true,
+            message: "Bookmarked",
+            description: "Topic added to your bookmark",
+            duration: 4000,
+            type: 'info',
+            hideStatusBar: true,
+            icon: 'auto'
+        })
+    }
+    const sub = _ => navigate('Subscription')
     
     const renderItems = ({item, index}) => (
-        grid ?<CardSquare
+        grid ? <CardSquare
             {...item}
-            onPress={_ => navigate('Overview', {id: item.id})}
+            onPress={_ => onPress(item)}
+            addBookmark={_ => bookmark(item)}
         /> : <CardRect
             {...item}
-            onPress={_ => navigate('Overview', {id: item.id})}
+            onPress={_ => onPress(item)}
+            addBookmark={_ => bookmark(item)}
         />
     );
 
@@ -30,12 +74,12 @@ export default function List({data, useGrid=false}){
         <View style={{flexDirection: "row"}}>
             <TouchableOpacity onPress={e => toggle(false)} style={styles.toggle}>
                 <View>
-                    <Ionicons name='md-list' size={20} color={colors.text} />
+                    <Ionicons name='md-list' size={20} color={!grid? colors.secondary:colors.text} />
                 </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={e => toggle(true)} style={styles.toggle}>
                 <View>
-                    <MaterialCommunityIcons name='view-grid' size={20} color={colors.text} />
+                    <MaterialCommunityIcons name='view-grid' size={20} color={grid? colors.secondary:colors.text} />
                 </View>
             </TouchableOpacity>
         </View>
@@ -45,18 +89,19 @@ export default function List({data, useGrid=false}){
         <View style={styles.container}>
             {!grid ? <FlatList
                 key={1}
-                data={data}
-                keyExtractor={item => item.id}
+                data={topics}
+                keyExtractor={item => item.id+item.title}
                 renderItem={renderItems}
                 showsHorizontalScrollIndicator={false}
                 ItemSeparatorComponent={_ => <View style={{width: 16, height: 16}} />}
                 contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 120}}
                 ListHeaderComponent={renderToggle()}
-            />:
+                ListEmptyComponent={<ComingSoon />}
+            /> :
             <FlatList
                 key={2}
-                data={data}
-                keyExtractor={item => item.id}
+                data={topics}
+                keyExtractor={item => item.id+item.title}
                 renderItem={renderItems}
                 showsHorizontalScrollIndicator={false}
                 ItemSeparatorComponent={_ => <View style={{width: 16, height: 16}} />}
@@ -64,7 +109,13 @@ export default function List({data, useGrid=false}){
                 ListHeaderComponent={renderToggle()}
                 numColumns={2}
                 columnWrapperStyle={{justifyContent: "space-around", alignItems: 'flex-start'}}
-            />}
+                ListEmptyComponent={<ComingSoon />}
+            /> }
+            <PaymentModal
+                show={showModal} 
+                close={_ => setShowModal(false)}
+                pay={sub}
+            />
         </View>
     )
 }

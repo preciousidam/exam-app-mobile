@@ -13,13 +13,12 @@ import {
 
 import FocusAwareStatusBar from '../../../components/StatusBar';
 import LessonList from '../../../components/lesson';
-import { loadFonts } from '../../../libs/fonts';
 import {SearchInput} from '../../../components/input';
 import {updateSubjectsAsync} from '../../../store/reducers/subjects';
 import { updateLessonsAsync } from '../../../store/reducers/lesson';
 
 
-const colorBack = ['color-primary', 'color-success', 'color-info', 'color-warning', 'color-danger', ];
+
 
 export default function LessonScreen({navigation,route}){
     const {colors, dark} = useTheme();
@@ -29,15 +28,17 @@ export default function LessonScreen({navigation,route}){
     const {subjects} = useSelector(state => state.subjects);
     const {width, height} = useSafeAreaInsets();
     const dispatch = useDispatch();
+
     const refresh = _ => {
-        dispatch(updateSubjectsAsync());
-        dispatch(updateLessonsAsync());
+        if(user){
+            dispatch(updateSubjectsAsync(user?.profile?.level));
+            dispatch(updateLessonsAsync());
+        }
     }
 
     useEffect(() => {
         refresh();
-    },[])
-
+    },[user])
     
 
     return (
@@ -73,8 +74,8 @@ export default function LessonScreen({navigation,route}){
                 }
             >
                 <View style={styles.header}>
-                    <Text h3 h3Style={styles.h3} style={styles.h4}>Hey {user?.name}</Text>
                     <Text style={styles.h4}>Start Learning!</Text>
+                    <Text style={styles.h5}>{user?.profile?.level_name}</Text>
                 </View>
                 <View style={styles.colors}>
                     <SearchInput  
@@ -86,11 +87,11 @@ export default function LessonScreen({navigation,route}){
                         <View style={styles.sect} key={id}>
                             <View style={styles.sectHeader}>
                                 <Text style={styles.h4}>{title} Lesson</Text>
-                                <TouchableWithoutFeedback onPress={() => navigate('List', {title: 'School'})}>
+                                <TouchableWithoutFeedback onPress={() => navigate('List', {title, id})}>
                                     <View><Text>more</Text></View>
                                 </TouchableWithoutFeedback>
                             </View>
-                            <LessonList data={lessons} subjectId={id} />
+                            <LessonList data={lessons} subjectId={id} more={() => navigate('List', {title, id})} />
                         </View>
                     ))
                 }
@@ -117,9 +118,9 @@ const styles = StyleSheet.create({
     header: {
         paddingHorizontal: 20,
     },
-    h3: {
-        fontFamily: 'Montserrat_400Regular',
-        fontSize: 30
+    h5: {
+        fontFamily: 'Montserrat_700Bold',
+        fontSize: 14
     },
     h4: {
         fontFamily: 'Montserrat_700Bold',
