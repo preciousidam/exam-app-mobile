@@ -7,7 +7,7 @@ import SignIn from '../../screens/auth/signin';
 import SignUp from '../../screens/auth/signup';
 import Reset from '../../screens/auth/forgotPassword';
 import VerifyPhone from '../../screens/auth/verifyPhone';
-import { ScreenOne, ScreenTwo, ScreenThree } from '../../screens/auth/ info';
+import { ScreenOne, ScreenTwo, ScreenThree } from '../../screens/auth/info';
 
 
 

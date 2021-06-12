@@ -7,9 +7,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useDispatch, useSelector } from 'react-redux';
 
 import {CardSquare, CardRect, ComingSoon} from './index';
-import { addBookmark } from '../../store/reducers/subjects';
+import { addBookmark, getViewedAsync } from '../../store/reducers/subjects';
 import { showMessage } from 'react-native-flash-message';
-import { PaymentModal } from '../modal/payment';
+import { PaymentModal } from '../modal/payment/payment';
 
 
 

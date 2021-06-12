@@ -16,7 +16,7 @@ import {Empty} from '../../assets/empty';
 import { addBookmark, getViewedAsync } from '../../store/reducers/subjects';
 import { showMessage } from 'react-native-flash-message';
 import AsyncStorage from '@react-native-community/async-storage';
-import { PaymentModal } from '../modal/payment';
+import { PaymentModal } from '../modal/payment/payment';
 
 
 function Corousel({subjectId, more}){
@@ -39,7 +39,7 @@ function Corousel({subjectId, more}){
         
         let access = await canAccess(item?.id);
 
-        if(subscription_active || (false &&access)){
+        if(subscription_active || access){
             navigate('Overview', {topic: item});
             return;
         }

@@ -9,15 +9,16 @@ import {
 } from 'react-native-responsive-screen';
 
 
-import {GradientButton} from '../../components/button';
+import {Solidbutton} from '../../components/button';
 import { OutlinedInput} from '../../components/input';
 import { OutlinedDatePicker } from '../../components/input/datepicker';
-import {DynamicPicker, LevelPicker, DynamicPickerIOS} from '../../components/input/picker';
+import {DynamicPicker, DynamicPickerIOS} from '../../components/input/picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { NoticeModal } from '../../components/modal';
 import { createProfile, edit, updateLevelsAsync } from '../../store/reducers/auth';
 import {ActInd} from '../../components/activityIndicator';
+import extraColors from '../../constants/custom-colors';
 
 const Picker = Platform.OS === 'ios' ? DynamicPickerIOS: DynamicPicker;
 const NIGERIA_STATE = ['Abia',
@@ -51,13 +52,13 @@ export function CreateProfile({navigation}){
     const dispatch = useDispatch();
 
     const onLevelChange = (itemValue) => {
-        const {id} = levels.find(({title}) => title == itemValue);
+        const level = levels.find(({title}) => title == itemValue);
         setLevel(itemValue);
-        dispatch(edit({...form, level:id}));
+        dispatch(edit({...form, level:level?.id}));
     }
     const onSchoolChange = (itemValue) => dispatch(edit({...form, school: itemValue}));
     const onGenderChange = (itemValue) => dispatch(edit({...form, gender: itemValue}));
-    const onPress = _ => navigation.navigate('profile-cont')
+    const onPress = () => navigation.navigate('profile-cont')
     
     useEffect(() => {
         setShow(true);
@@ -75,8 +76,8 @@ export function CreateProfile({navigation}){
                     keyboardVerticalOffset={Platform.OS === 'ios' ? 100: 100}
                 >
                     <View style={styles.centeredView}>
-                        <View style={styles.header}>
-                            <Typography h4 h4Style={[styles.h4, {color: colors.info}]}>Please provide the details below if applicable</Typography>
+                        <View>
+                            <Typography h4 h4Style={[styles.h4, {color: extraColors.info}]}>Please provide the details below if applicable</Typography>
                         </View>
                         <Text style={[styles.help, {color: colors.text}]}>Date of Birth</Text>
                         <OutlinedDatePicker
@@ -111,14 +112,13 @@ export function CreateProfile({navigation}){
                             value={form?.matricNo} 
                             onChangeText={({nativeEvent}) => dispatch(edit({...form, id_number: nativeEvent.text}))}
                             style={styles.textInput}
-                            textContentType="newPassword"
                             keyboardType='phone-pad'
                             textContentType='telephoneNumber'
                         />
 
                         
                         
-                        <GradientButton 
+                        <Solidbutton 
                             text="Continue" 
                             style={styles.btn}
                             onPress={onPress}
@@ -128,7 +128,7 @@ export function CreateProfile({navigation}){
                 </KeyboardAvoidingView>
                 
             </ScrollView>
-            <NoticeModal show={show} onSubmit={_ => setShow(false)} />
+            <NoticeModal show={show} onSubmit={() => setShow(false)} />
             <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
         </SafeAreaView>
     )
@@ -144,7 +144,7 @@ export function CreateProfileCont({navigation}){
     
     const onCountryChange = (itemValue) => dispatch(edit({...form, country: itemValue}));
     const onStateChange = (itemValue) => dispatch(edit({...form, state: itemValue}));
-    const onPress = e => navigation.navigate('guardian');
+    const onPress = () => navigation.navigate('guardian');
     
 
     return (
@@ -190,7 +190,7 @@ export function CreateProfileCont({navigation}){
                             options={form?.country === 'Nigeria'? NIGERIA_STATE: ['Select State']}
                         />
                         
-                        <GradientButton 
+                        <Solidbutton
                             text="Continue" 
                             style={styles.btn}
                             onPress={onPress}
@@ -212,7 +212,7 @@ export function AddGuardiansDetail(props){
     const {form, user, isLoading} = useSelector(state => state.auth);
     const dispatch = useDispatch();
     
-    const onPress = e => dispatch(createProfile(user,form));
+    const onPress = () => dispatch(createProfile(user,form));
 
     return (
         
@@ -261,7 +261,7 @@ export function AddGuardiansDetail(props){
                             keyboardType="phone-pad"
                         />
                         
-                        <GradientButton 
+                        <Solidbutton
                             text="Continue" 
                             style={styles.btn}
                             onPress={onPress}

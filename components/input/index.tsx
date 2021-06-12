@@ -1,5 +1,5 @@
 import React, {createRef, useEffect, useState} from 'react';
-import {TextInput, View, StyleSheet} from 'react-native';
+import {TextInput, View, StyleSheet, Platform, NativeSyntheticEvent, TextInputChangeEventData} from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
@@ -9,7 +9,19 @@ import {
 	heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-export const OutlinedInput = ({style, contProps, inputStyle, onChangeText, value, ...rest}) => {
+import extraColors from '../../constants/custom-colors';
+
+export interface IProps {
+    style?: object | object[],
+    placeholder?: string,
+    contProps?: object,
+    inputStyle?: object | object[],
+    onChangeText: (value: NativeSyntheticEvent<TextInputChangeEventData>) => void,
+    value?: string,
+    icon?: JSX.Element
+}
+
+export const OutlinedInput: React.FC<IProps & Record<string,any>> = ({style, contProps, inputStyle, onChangeText, value, ...rest}) => {
     
     const {colors} = useTheme();
     
@@ -45,7 +57,7 @@ export const OutlinedInput = ({style, contProps, inputStyle, onChangeText, value
 }
 
 
-export const EmailOutlinedInput = ({style, contProps, inputStyle, onChangeText, value, ...rest}) => {
+export const EmailOutlinedInput: React.FC<IProps & Record<string,any>> = ({style, contProps, inputStyle, onChangeText, value, ...rest}) => {
     
     const {colors} = useTheme();
     
@@ -53,12 +65,12 @@ export const EmailOutlinedInput = ({style, contProps, inputStyle, onChangeText, 
     const [valid, setValid] = useState(false);
     useEffect(() => {
         if(focused && valid) setBorderColor(colors.primary);
-        else if (focused && valid == false) setBorderColor(colors.danger);
+        else if (focused && valid == false) setBorderColor(extraColors.danger);
         else setBorderColor('#c6c6c6');
     }, [focused, value])
 
     const [borderColor, setBorderColor] = useState('#c6c6c6');
-    const validate = _ => {
+    const validate = () => {
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (reg.test(value) === false) {
             setValid(false);
@@ -73,9 +85,9 @@ export const EmailOutlinedInput = ({style, contProps, inputStyle, onChangeText, 
     }, [value]);
     
 
-    const onFocus = _ => setFocused(true);
+    const onFocus = () => setFocused(true);
     
-    const onBlur = _ => setFocused(false);
+    const onBlur = () => setFocused(false);
 
     return (
         <View 
@@ -100,20 +112,20 @@ export const EmailOutlinedInput = ({style, contProps, inputStyle, onChangeText, 
 }
 
 
-export const EmailOutlinedInputWithIcon = ({style, icon, contProps, inputStyle, onChangeText, value, ...rest}) => {
+export const EmailOutlinedInputWithIcon: React.FC<IProps & Record<string,any>> = ({style, icon, contProps, inputStyle, onChangeText, value, ...rest}) => {
     
     const {colors} = useTheme();
     const [focused, setFocused] = useState(false);
     const [valid, setValid] = useState(false);
     useEffect(() => {
-        if(focused && valid) setBorderColor(colors.success);
-        else if (focused && valid == false) setBorderColor(colors.danger);
+        if(focused && valid) setBorderColor(extraColors.success);
+        else if (focused && valid == false) setBorderColor(extraColors.danger);
         else setBorderColor('#c6c6c6');
     }, [focused, value])
 
     const [borderColor, setBorderColor] = useState('#c6c6c6');
 
-    const validate = _ => {
+    const validate = () => {
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (reg.test(value) === false) {
             setValid(false);
@@ -128,8 +140,8 @@ export const EmailOutlinedInputWithIcon = ({style, icon, contProps, inputStyle, 
         validate();
     }, [value]);
 
-    const onFocus = _ => setFocused(true);
-    const onBlur = _ => setFocused(false);
+    const onFocus = () => setFocused(true);
+    const onBlur = () => setFocused(false);
 
     return (
         <View 
@@ -155,20 +167,20 @@ export const EmailOutlinedInputWithIcon = ({style, icon, contProps, inputStyle, 
 }
 
 
-export const PasswordOutlinedInputWithIcon = ({style, icon, contProps, inputStyle, onChangeText, value, ...rest}) => {
+export const PasswordOutlinedInputWithIcon: React.FC<IProps & Record<string,any>> = ({style, icon, contProps, inputStyle, onChangeText, value, ...rest}) => {
     
     const {colors} = useTheme();
     const [focused, setFocused] = useState(false);
     const [valid, setValid] = useState(false);
     useEffect(() => {
-        if(focused && valid) setBorderColor(colors.success);
-        else if (focused && valid == false) setBorderColor(colors.danger);
+        if(focused && valid) setBorderColor(extraColors.success);
+        else if (focused && valid == false) setBorderColor(extraColors.danger);
         else setBorderColor('#c6c6c6');
     }, [focused, value])
 
     const [borderColor, setBorderColor] = useState('#c6c6c6');
 
-    const validate = _ => {
+    const validate = () => {
         let reg = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,15}$/;
         if (reg.test(value) === false) {
             setValid(false);
@@ -183,8 +195,8 @@ export const PasswordOutlinedInputWithIcon = ({style, icon, contProps, inputStyl
         validate();
     }, [value]);
 
-    const onFocus = _ => setFocused(true);
-    const onBlur = _ => setFocused(false);
+    const onFocus = () => setFocused(true);
+    const onBlur = () => setFocused(false);
 
     return (
         <View 
@@ -209,7 +221,7 @@ export const PasswordOutlinedInputWithIcon = ({style, icon, contProps, inputStyl
     )
 }
 
-export const OutlinedInputWithIcon = ({style, icon, contProps, inputStyle, onChangeText, value, ...rest}) => {
+export const OutlinedInputWithIcon: React.FC<IProps & Record<string,any>> = ({style, icon, contProps, inputStyle, onChangeText, value, ...rest}) => {
     
     const {colors} = useTheme();
     const [focused, setFocused] = useState(false);
@@ -245,7 +257,7 @@ export const OutlinedInputWithIcon = ({style, icon, contProps, inputStyle, onCha
 }
 
 
-export const SearchInput = ({style, contProps, inputStyle, onChangeText, value, ...rest}) => {
+export const SearchInput = ({style, contProps, inputStyle, onChangeText, value, ...rest}: IProps) => {
     
     const {colors} = useTheme();
     
@@ -267,7 +279,7 @@ export const SearchInput = ({style, contProps, inputStyle, onChangeText, value, 
             style={{...styles.container, ...style, borderColor, backgroundColor: focused? 'transparent':'#d8d8d8'}}
         >   
             <View style={{marginHorizontal: wp(2)}}>
-                <Ionicon name='md-search' size={wp(5)} color={colors.highlight} />
+                <Ionicon name='md-search' size={wp(5)} color={colors.border} />
             </View>
             <TextInput 
                 onFocus={onFocus} 
@@ -289,7 +301,7 @@ export const DateInput = ({style, contProps, inputStyle, onChangeText, value, ..
     
     const [focused, setFocused] = useState(false);
     useEffect(() => {
-        if(focused) setBorderColor(colors.secondary)
+        if(focused) setBorderColor(extraColors.secondary)
         else setBorderColor('#c6c6c6');
     }, [focused])
 
@@ -309,7 +321,6 @@ export const DateInput = ({style, contProps, inputStyle, onChangeText, value, ..
         <View 
             {...contProps} 
             style={{...styles.container, ...style, borderColor}}
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
         >
             <TextInput 
                 onFocus={onFocus} 

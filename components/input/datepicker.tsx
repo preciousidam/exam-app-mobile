@@ -1,5 +1,5 @@
 import React, {createRef, useEffect, useState} from 'react';
-import {TextInput, View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {TextInput, View, StyleSheet, TouchableOpacity, Text, Platform} from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
@@ -9,7 +9,20 @@ import {
 	heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-export const OutlinedDatePicker = ({style, icon, help, contProps, inputStyle, onChangeText, value, ...rest}) => {
+export interface IProps {
+    help?: string,
+    onChangeText: (value:string) => void,
+    style?: object | object[],
+    placeholder?: string,
+    contProps?: object,
+    inputStyle?: object | object[],
+    value?: string,
+    icon?: JSX.Element
+};
+
+const date = new Date();
+
+export const OutlinedDatePicker: React.FC<IProps & Record<string,any>> = ({style, icon, help, contProps, inputStyle, onChangeText, value, ...rest}) => {
     
     const {colors} = useTheme();
     const [focused, setFocused] = useState(false);
@@ -22,14 +35,14 @@ export const OutlinedDatePicker = ({style, icon, help, contProps, inputStyle, on
     const [borderColor, setBorderColor] = useState('#c6c6c6')
     
 
-    const onFocus = _ => setFocused(true);
-    const onBlur = _ => setFocused(false);
+    const onFocus = () => setFocused(true);
+    const onBlur = () => setFocused(false);
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
         onChangeText(moment(currentDate).format('YYYY-MM-DD'));
-      };
+    };
     
     
     
@@ -49,7 +62,7 @@ export const OutlinedDatePicker = ({style, icon, help, contProps, inputStyle, on
                 onBlur={onBlur} 
                 value={moment(value).format('YYYY-MM-DD')} 
                 style={{...styles.input, color: colors.text, ...inputStyle}} 
-                onChange={onChangeText}
+                onChangeText={onChangeText}
                 blurOnSubmit={true}
                 editable={false}
                 {...rest} 

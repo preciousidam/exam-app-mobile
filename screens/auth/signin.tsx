@@ -13,7 +13,7 @@ import {
 
 import { signIn } from '../../store/reducers/auth';
 
-import {GradientButton} from '../../components/button';
+import {Solidbutton} from '../../components/button';
 import {EmailOutlinedInputWithIcon, PasswordOutlinedInputWithIcon} from '../../components/input';
 import { ActInd } from '../../components/activityIndicator';
 import { Pressable } from 'react-native';
@@ -27,7 +27,7 @@ export function SignIn({navigation, route}){
     const dispatch = useDispatch();
     const {isLoading} = useSelector(state => state.auth);
 
-    const onPress = _ => {
+    const onPress = () => {
         dispatch(signIn({username: email.toLowerCase(),password}));
     }
 
@@ -36,7 +36,6 @@ export function SignIn({navigation, route}){
         <SafeAreaView style={{flex: 1, backgroundColor: colors.card}}>
             <ScrollView contentContainerStyle={[styles.scroll, {backgroundColor: colors.card}]}>
                 <KeyboardAvoidingView 
-                    style={{...styles.container, backgroundColor: colors.card}}
                     style={{...styles.container, backgroundColor: colors.card}}
                     behavior={Platform.OS === 'ios'? "padding": "position"}
                     keyboardVerticalOffset={Platform.OS === 'ios' ? 100: 10}
@@ -64,7 +63,7 @@ export function SignIn({navigation, route}){
                         >
                             Forgot Password
                         </Text>
-                        <GradientButton 
+                        <Solidbutton 
                             text="Login" 
                             style={styles.btn}
                             onPress={onPress}

@@ -2,34 +2,30 @@ import { createSlice } from "@reduxjs/toolkit";
 import { showMessage } from "react-native-flash-message";
 import getLoggedInClient from "../../apiAuth/loggedInClient";
 
+export const PAY_FLOW = {'charge': 'CHARGE CARD', 'validate': 'VALIDATE', 'complete': "COMPLETE"}
 
-export const noteSlice = createSlice({
-    name: 'notes',
+export const subSlice = createSlice({
+    name: 'subscription',
     initialState: {
-        notes: [],
+        recent: null,
         loading: false,
+        current_flow: PAY_FLOW.charge,
+        error: null,
+        message: null
     },
     reducers: {
         load(state, action){
-            const {notes} =  action.payload;
+            const {sub} =  action.payload;
             return {
                 ...state,
-                notes
+                recent: sub
             };
         },
-        new_note(state, action){
-            const {note} =  action.payload;
+        flow(state, action){
+            const {flow} = action.payload;
             return {
                 ...state,
-                notes: [note, ...state.notes]
-            };
-        },
-        update(state, action){
-            const {note} =  action.payload;
-            let notes = [note, ...state.notes.filter(({id}) => note.id !== id)]
-            return {
-                ...state,
-                notes
+                current_flow: flow
             };
         },
         loading(state, action){
@@ -38,22 +34,30 @@ export const noteSlice = createSlice({
                 ...state,
                 loading,
             }
+        },
+        error(state, action){
+            const {error, message} = action.payload;
+            return {
+                ...state,
+                error,
+                message
+            }
         }
     }
 });
 
-export const {update, new_note, load, loading} = noteSlice.actions;
+export const {flow, load, loading, error} = subSlice.actions;
 
-export default noteSlice.reducer;
+export default subSlice.reducer;
 
-export const fetchNotesAsync = id => async dispatch => {
+export const fetchSubAsync = id => async dispatch => {
     try{
         dispatch(loading({loading: true}));
         const client = await getLoggedInClient();
-        const {data, status} = await client.get(`personal-notes/?student=${id}`);
+        const {data, status} = await client.get(`subscriptions/?student=${id}`);
         dispatch(loading({loading: false}));
         if(status === 200){
-            dispatch(load({notes: data}));
+            dispatch(load({sub: data}));
             return
         }
 
@@ -85,23 +89,17 @@ export const fetchNotesAsync = id => async dispatch => {
     }
 }
 
-export const newNoteAsync = note => async dispatch => {
+export const chargeAsync = data => async dispatch => {
     try{
         dispatch(loading({loading: true}));
         const client = await getLoggedInClient();
-        const {data, status} = await client.post(`personal-notes/`, note);
-        console.log(data)
+        const {data, status} = await client.post(`pay/rave/`, data);
+        
         dispatch(loading({loading: false}));
         if(status === 200 || status === 201){
-            dispatch(new_note({note: data}));
-            showMessage({
-                type: 'success',
-                message: "Note Saved",
-                description: "Note was saved successfully",
-                icon: 'auto',
-                duration: 7000,
-                hideStatusBar: true,
-            })
+            dispatch(error({error: false, message: data.msg}))
+            dispatch(flow({flow: PAY_FLOW.validate}));
+            
             return
         }
 
@@ -133,23 +131,16 @@ export const newNoteAsync = note => async dispatch => {
     }
 }
 
-export const editNoteAsync = note => async dispatch => {
+export const validateAsync = data => async dispatch => {
     try{
         
         dispatch(loading({loading: true}));
         const client = await getLoggedInClient();
-        const {data, status} = await client.put(`personal-notes/${note?.id}/`, note);
+        const {data, status} = await client.post(`pay/rave/validate/`, data);
         dispatch(loading({loading: false}));
         if(status === 200 || status === 201){
-            dispatch(update({note: data}));
-            showMessage({
-                type: 'success',
-                message: "Note Saved",
-                description: "Note was saved successfully",
-                icon: 'auto',
-                duration: 7000,
-                hideStatusBar: true,
-            })
+            dispatch(load({sub: data}));
+            dispatch(flow({flow: PAY_FLOW.complete}))
             return
         }
 

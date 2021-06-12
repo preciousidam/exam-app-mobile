@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 export const Bookmarks = ({}) => {
     const {bookmarked} = useSelector(state => state.subjects);
     const {colors} = useTheme();
+    const {subscription_active} = useSelector(state => state.auth);
     const {navigate} = useNavigation();
     const dispatch = useDispatch();
 

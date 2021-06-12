@@ -7,8 +7,14 @@ import {
 	heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-
-export const Outlinedbutton = ({text, onPress, style, textStyle}) =>{
+interface IProps {
+    text: string,
+    style?: object | object[],
+    textStyle?: object | object[],
+    onPress: () => void,
+    icon?: JSX.Element
+}
+export const Outlinedbutton = ({text, onPress, style, textStyle}: IProps) =>{
     const {colors} = useTheme()
     return (
         <TouchableOpacity onPress={onPress} style={{...styles.container}} activeOpacity={0.8}>
@@ -19,7 +25,7 @@ export const Outlinedbutton = ({text, onPress, style, textStyle}) =>{
     )
 }
 
-export const Solidbutton = ({text, onPress, style, textStyle}) =>{
+export const Solidbutton = ({text, onPress, style, textStyle}: IProps) =>{
     return (
         <TouchableOpacity onPress={onPress} style={{...styles.container}} activeOpacity={0.8}>
                 <LinearGradient start={[0.7,0.2]} colors={['#f5af19', '#FF9D14',]} style={[{...styles.grad, borderRadius: wp('2%')},style]} >
@@ -29,7 +35,7 @@ export const Solidbutton = ({text, onPress, style, textStyle}) =>{
     )
 }
 
-export const SolidbuttonNoGradient = ({text, onPress, style, textStyle}) =>{
+export const SolidbuttonNoGradient = ({text, onPress, style, textStyle}: IProps) =>{
     return (
         <TouchableOpacity onPress={onPress} style={{...styles.container}} activeOpacity={0.8}>
                 <View style={[{...styles.grad, borderRadius: wp('2%')}, style]} >
@@ -39,7 +45,7 @@ export const SolidbuttonNoGradient = ({text, onPress, style, textStyle}) =>{
     )
 }
 
-export const SolidbuttonWithIcon = ({text, onPress, style, textStyle, icon}) =>{
+export const SolidbuttonWithIcon = ({text, onPress, style, textStyle, icon}: IProps) =>{
     return (
         <TouchableOpacity onPress={onPress} style={{...styles.container}} activeOpacity={0.8}>
                 <LinearGradient start={[0.7,0.2]} colors={['#f5af19', '#FF9D14',]} style={[{...styles.grad, borderRadius: 25},style]} >
@@ -50,18 +56,6 @@ export const SolidbuttonWithIcon = ({text, onPress, style, textStyle, icon}) =>{
     )
 }
 
-export const GradientButton = ({text, onPress, style, textStyle}) => {
-
-    return (
-        <TouchableOpacity onPress={onPress} style={{...styles.container, ...style}} activeOpacity={0.7}>
-            <View style={styles.view}>
-                <LinearGradient start={[0.7,0.2]} colors={['#f5af19', '#FF9D14']} style={styles.grad} >
-                    <Text style={{...styles.text, ...textStyle}}>{text}</Text>
-                </LinearGradient>
-            </View>
-        </TouchableOpacity>
-    )
-}
 
 export const FloatingActionButton = ({icon, onPress, style}) => {
     const {colors} = useTheme();

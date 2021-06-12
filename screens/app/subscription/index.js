@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
@@ -10,6 +10,10 @@ import {
 import { FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SolidbuttonNoGradient } from '../../../components/button';
+import getLoggedInClient from '../../../apiAuth/loggedInClient';
+import { showMessage } from 'react-native-flash-message';
+import { ActInd } from '../../../components/activityIndicator';
+import {PaymentFormModal} from '../../../components/modal/payment/index';
 
 const plans = [
     {id: 1, title: "Monthly", amount: 10000, duration: 1, discount: null},
@@ -22,13 +26,55 @@ export const SubscriptionScreen = ({navigation}) => {
     const {colors} = useTheme();
     const {width, height} = useSafeAreaInsets();
     const close = _ => navigation.goBack();
+    const [plans, setPlans] = useState([]);
+    const [selected, setSelected] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const getPlans = async _ => {
+        try{
+            setLoading(true);
+            const client = await getLoggedInClient();
+            const {data, status} = await client.get('plans/');
+            setLoading(false);
+            if(status === 200){
+                setPlans(data);
+            }
+            if(status === 500) throw 'Something happen please check back later or contact support';
+            return;
+        }catch (err){
+            console.log(err)
+            showMessage({
+                type: 'danger',
+                message: "Something happened",
+                description: err.message,
+                icon: 'auto',
+                duration: 3000,
+                hideStatusBar: true,
+            })
+        }
+    }
+
+    useEffect(() => {
+        getPlans();
+    }, []);
+
+    const onSelect = sid => {
+        let plan = plans.find(({id}) => id == sid);
+        setSelected(plan);
+        setShowModal(true);
+    }
 
     const renderItems = ({item}) => (
         <Plan
             {...item}
-            onPress={_ => {}}
+            onPress={onSelect}
         />
     );
+
+    if(plans.length <= 0){
+        return <ActInd status={loading} />
+    }
 
     return (
         <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingVertical: height}]}>
@@ -52,18 +98,19 @@ export const SubscriptionScreen = ({navigation}) => {
                     contentContainerStyle={{paddingHorizontal: 30}}
                 />
             </View>
+            <PaymentFormModal show={showModal} plan={selected} close={_ => setShowModal(false)} />
         </SafeAreaView>
     )
 }
 
-export const Plan = ({id, title, amount, discount, duration}) => {
+export const Plan = ({id, title, price, discount, duration, onPress}) => {
     const {colors} = useTheme();
 
     return (
         <LinearGradient start={[0.6,0.6]} end={[.2,.8]} colors={[colors.primary, colors.warning,]} style={styles.plan}>
             <View style={[styles.sect]}>
                 <Text style={[styles.title]}>{title}</Text>
-                <Text style={[styles.amt]}>NGN {amount} / {duration} Month(s)</Text>
+                <Text style={[styles.amt]}>NGN {price} / {duration} Month(s)</Text>
             </View>
             <View style={[styles.sect,]}>
                 <Text style={[styles.middle]}>Unlimited access to lessons and practise questions for up to {duration} month(s).</Text>
@@ -73,6 +120,7 @@ export const Plan = ({id, title, amount, discount, duration}) => {
                 <SolidbuttonNoGradient
                     text="SUBSCRIBE NOW"
                     style={styles.button}
+                    onPress={_ => onPress(id)}
                 />
                 <Text style={styles.bottomText}>No Commitment, Cancel anytime.</Text>
             </View>

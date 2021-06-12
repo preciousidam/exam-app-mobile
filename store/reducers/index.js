@@ -6,6 +6,7 @@ import lessonReducer from './lesson';
 import subjectReducer from './subjects';
 import assignmentReducer from './assignment';
 import noteReducer from './note';
+import subReducer from './subscription';
 
 export default combineReducers({
     app: appReducer,
@@ -15,4 +16,5 @@ export default combineReducers({
     subjects: subjectReducer,
     assignments: assignmentReducer,
     notes: noteReducer,
+    subscription: subReducer,
 });

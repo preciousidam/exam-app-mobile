@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
 import {Text,} from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ import {
 	heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {SvgXml} from 'react-native-svg';
+import styled from '@emotion/native';
 
 
 import FocusAwareStatusBar from '../../../components/StatusBar';
@@ -20,30 +21,41 @@ import { SolidbuttonWithIcon } from '../../../components/button';
 import {Empty} from '../../../assets/empty';
 import { Modal } from 'react-native';
 import { updateViewed } from '../../../store/reducers/subjects';
+import extraColors from '../../../constants/custom-colors';
+import { Highlights as HighL, ISelected } from './interfaces';
 
 const colorBack = ['color-primary', 'color-success', 'color-info', 'color-warning', 'color-danger', ];
 const sections = ['Details', 'Exercises', 'Highlights']
 
+const ClassLabel = styled.Text({
+    paddingHorizontal: 15,
+    fontSize: 11,
+    borderRadius: 5,
+    position: 'absolute',
+    right: 10,
+    fontFamily: 'OpenSans_700Bold',
+    color: '#fff',
+});
+
 export default function OverviewScreen({navigation, route}){
     const {colors, dark} = useTheme();
-    const fontLoaded = loadFonts();
     const {navigate} = navigation;
-    const [active, setActive] = useState(0)
-    const {width, height} = useSafeAreaInsets();
+    const [active, setActive] = useState<number>(0)
+    const insets:EdgeInsets = useSafeAreaInsets();
     const {topic} = route.params;
     const dispatch = useDispatch();
    
 
-    const detailsActive = async (id) => {
+    const detailsActive = async (id?:number) => {
         dispatch(updateViewed({id: topic?.id}));
-        navigate('Detail', {lID: id||topic?.lessons[0]?.id, lessons: topic?.lessons});
+        navigate('Detail', {lID: id||topic?.lessons[0]?.id, lessons: topic?.lessons, topic: topic?.id});
     }
-    const exerciseActive = _ => {
+    const exerciseActive = () => {
         navigate('Exercise', {exercises: topic?.exercises });
     }
     
     return (
-        <SafeAreaView style={[styles.container, {paddingHorizontal: width, paddingTop: height}]}>
+        <SafeAreaView style={[styles.container, {paddingHorizontal: insets.left, paddingTop: insets.top}]}>
             
             <View style={styles.sect}>
                <View style={styles.header}>
@@ -54,7 +66,7 @@ export default function OverviewScreen({navigation, route}){
                             {topic?.subject_title} Lesson
                         </Text>
                     </View>
-                    <HeaderBackButton onPress={_ => navigation.goBack()} />
+                    <HeaderBackButton onPress={() => navigation.goBack()} />
                </View>
                <View style={styles.topicView}>
                     <Text style={styles.topic}>{topic?.title}</Text>
@@ -71,7 +83,7 @@ export default function OverviewScreen({navigation, route}){
                </View>
                <View style={styles.content}>
                     {active === 0 && <Details data={topic?.lessons} onPress={detailsActive} />}
-                    {active === 1 && <Exercises data={topic?.exercises} onPress={exerciseActive} />}
+                    {active === 1 && <Exercises data={topic?.exercises}  />}
                     {active === 2 && <Highlights data={topic?.adminnote_notes}  />}
                     
                </View>
@@ -79,7 +91,7 @@ export default function OverviewScreen({navigation, route}){
                     <SolidbuttonWithIcon 
                         text='Start Lessons'
                         icon={<MaterialCommunityIcons name='arrow-right' size={16} color='#ffffff' />}
-                        onPress={_ => detailsActive()}
+                        onPress={() => detailsActive()}
                     />
                 </View>}
                 {active === 1 && topic?.exercises?.length > 0 && <View style={styles.start}>
@@ -94,8 +106,6 @@ export default function OverviewScreen({navigation, route}){
         </SafeAreaView>
     );
 }
-
-
 
 const styles = StyleSheet.create({
     container: {
@@ -254,7 +264,7 @@ export function Details({data, onPress}){
     return(
         <View style={styles.innerView}>
             <ScrollView contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 300}}>
-                {data?.map(({id, title, paragraphs}, index) => (
+                {data?.map(({id, title, paragraphs, class_name}, index) => (
                 <TouchableOpacity 
                     activeOpacity={0.8} key={`${index}`}
                     onPress={_ => onPress(id)}
@@ -265,6 +275,9 @@ export function Details({data, onPress}){
                         </View>
                         <View style={styles.listContent}>
                             <Text style={styles.subHeader}>{title}</Text>
+                            <ClassLabel style={{backgroundColor: extraColors.secondary}}>
+                                {class_name}
+                            </ClassLabel>
                             <Text numberOfLines={1} ellipsizeMode='tail' style={styles.body} >
                                 {paragraphs[0].body}
                             </Text>
@@ -306,9 +319,10 @@ export function Exercises({data}){
     )
 }
 
-export function Highlights({data}){
+
+export function Highlights({data}: HighL){
     const {colors} = useTheme();
-    const [selected, setSelected] = useState({});
+    const [selected, setSelected] = useState<ISelected>();
     const [show, setShow] = useState(false);
 
     const onPress = text => {
@@ -321,13 +335,12 @@ export function Highlights({data}){
     return(
         <View style={styles.innerView}>
             <ScrollView contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 300}}>
-                {data?.map(({title, body, color, last_modified}, index) => (<TouchableOpacity activeOpacity={0.8} key={`${index}`} onPress={_ => onPress({body, title})}>
+                {data?.map(({title, body}, index) => (<TouchableOpacity activeOpacity={0.8} key={`${index}`} onPress={_ => onPress({body, title})}>
                     <View style={[styles.highlightsItem, {backgroundColor: colors.card}]}>
                         <View style={styles.titleView}>
                             <Text style={styles.subHeader}>{title}</Text>
                             <View style={{alignItems: "center", justifyContent: "center"}}>
-                                {/*<Text style={styles.body}>{moment(last_modified).fromNow()}</Text>*/}
-                                <View style={{backgroundColor: colors.info, width: 15, height: 15}}></View>
+                                <View style={{backgroundColor: extraColors.info, width: 15, height: 15}}></View>
                             </View>
                         </View>
                         <View style={{}}>
@@ -339,14 +352,14 @@ export function Highlights({data}){
             </ScrollView>
             <Modal
                 visible={show}
-                onRequestClose={_ => setShow(false)}
+                onRequestClose={() => setShow(false)}
                 transparent={false}
                 presentationStyle="overFullScreen"
             >
                 <View >
                     <View style={styles.noteHead}>
                         <Text style={styles.noteTitle}>{selected.title}</Text>
-                        <Text style={styles.notePress} onPress={_ => setShow(false)}>
+                        <Text onPress={_ => setShow(false)}>
                             <Ionicons name="ios-close" size={24} color="#a3a3a3" />
                         </Text>
                     </View>

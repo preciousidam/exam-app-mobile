@@ -2,8 +2,10 @@ import React, {createRef, useEffect, useState} from 'react';
 import {TextInput, View, StyleSheet} from 'react-native';
 import { useTheme } from '@react-navigation/native';
 
+import {IProps} from './index';
 
-export const CardNumberInputWithIcon = ({style, icon, contProps, inputStyle, onChangeText, value, ...rest}) => {
+
+export const CardNumberInputWithIcon = ({style, icon, contProps, inputStyle, onChangeText, value, ...rest}: IProps) => {
     
     const {colors} = useTheme();
     const [focused, setFocused] = useState(false);
@@ -55,7 +57,7 @@ export const CardNumberInputWithIcon = ({style, icon, contProps, inputStyle, onC
     )
 }
 
-export const CardDateInputWithIcon = ({style, icon, contProps, inputStyle, onChangeText, value, ...rest}) => {
+export const CardDateInputWithIcon = ({style, icon, contProps, inputStyle, onChangeText, value, ...rest}: IProps) => {
     
     const {colors} = useTheme();
     const [focused, setFocused] = useState(false);
@@ -105,7 +107,7 @@ export const CardDateInputWithIcon = ({style, icon, contProps, inputStyle, onCha
     )
 }
 
-export const CardInputWithIcon = ({style, icon, contProps, inputStyle, onChangeText, value, ...rest}) => {
+export const CardInputWithIcon = ({style, icon, contProps, inputStyle, onChangeText, value, ...rest}: IProps) => {
     
     const {colors} = useTheme();
     const [focused, setFocused] = useState(false);

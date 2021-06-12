@@ -8,17 +8,19 @@ import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { showMessage } from 'react-native-flash-message';
+import { Pressable } from 'react-native';
 
 
-import {GradientButton} from '../../components/button';
+import {Solidbutton} from '../../components/button';
 import { EmailOutlinedInputWithIcon, OutlinedInputWithIcon, PasswordOutlinedInputWithIcon } from '../../components/input';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { isValidEmail, isValidPassword } from '../../utility';
 import { signUp } from '../../store/reducers/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActInd } from '../../components/activityIndicator';
-import { showMessage } from 'react-native-flash-message';
-import { Pressable } from 'react-native';
+import extraColors from '../../constants/custom-colors';
+
 
 
 
@@ -37,7 +39,7 @@ export function SignUp({navigation}){
         setDate(selDate);
     }
 
-    const onPress = async _ => {
+    const onPress = async () => {
         
         if (!isValidEmail(email)){
             showMessage({
@@ -122,14 +124,14 @@ export function SignUp({navigation}){
                             
                             <Text style={{color: colors.text, flexWrap: 'wrap', fontSize: wp('3%'), fontFamily: 'OpenSans_400Regular',}}>
                                 By signing up you have agreed to the{" "} 
-                                <Text style={{color: colors.secondary, flexWrap: 'wrap'}}>
+                                <Text style={{color: extraColors.secondary, flexWrap: 'wrap'}}>
                                     terms and 
                                     condition {" "}
                                 </Text> for using this app
                             </Text>
                         </View>
                         
-                        <GradientButton 
+                        <Solidbutton
                             text="Sign Up" 
                             style={styles.btn}
                             onPress={onPress}

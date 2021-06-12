@@ -12,7 +12,7 @@ import CreateNoteModal from '../../../components/modal/note';
 
 export default function DetailScreen({navigation, route}) {
     const {colors, dark} = useTheme();
-    const {lID, lessons} = route.params;
+    const {lID, lessons, topic} = route.params;
     const [id, setID] = useState(lID);
     const details = lessons?.find(({id: lessonId}) => id === lessonId);
     const [fav, setFav] = useState(false);
@@ -24,16 +24,11 @@ export default function DetailScreen({navigation, route}) {
             title: details?.title,
             headerRight: _ => (<TouchableOpacity onPress={ _ => setFav(prev => addfav(!prev))}>
                     <View style={styles.fav}>
-                        {fav === true ? <Ionicon 
-                            name='ios-heart' 
-                            size={30} 
-                            color={colors.notification} 
-                        />:
                         <Ionicon 
-                            name='ios-heart-empty'
-                            size={30} 
+                            name="bookmarks"
+                            size={22} 
                             color={colors.notification} 
-                        />}
+                        />
                     </View>
                 </TouchableOpacity>)
         });
@@ -120,7 +115,7 @@ export default function DetailScreen({navigation, route}) {
                 onPress={_ => setShowModal(true)}
                 style={{bottom: 80}}
             />
-            <CreateNoteModal show={showModal} close={_ => setShowModal(false)} />
+            <CreateNoteModal show={showModal} close={_ => setShowModal(false)} topic={topic} />
         </View>
     )
 }

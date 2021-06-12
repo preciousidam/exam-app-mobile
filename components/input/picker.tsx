@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableWithoutFeedback, Text} from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import {useActionSheet} from '@expo/react-native-action-sheet';
 import { useTheme } from '@react-navigation/native';
+import { ItemValue } from '@react-native-community/picker/typings/Picker';
 
 
 
@@ -10,7 +11,17 @@ const {Item} = Picker;
 
 const levels = ['Junior Secondary', 'Senior Secondary']
 
-export const LevelPicker = ({style, contProps, pickerStyle, onValueChange, value, ...rest}) => {
+export interface IProps {
+    value?: string,
+    icon?: JSX.Element,
+    style?: object | object[],
+    placeholder?: string,
+    contProps?: object,
+    inputStyle?: object | object[],
+    onValueChange: (value: ItemValue, index?: number) => void,
+}
+
+export const LevelPicker: React.FC<IProps & Record<string,any>> = ({style, contProps, pickerStyle, onValueChange, value, ...rest}) => {
     
     const {colors} = useTheme();
     
@@ -32,7 +43,7 @@ export const LevelPicker = ({style, contProps, pickerStyle, onValueChange, value
 }
 
 
-export const DynamicPicker = ({style, contProps, pickerStyle, onValueChange, options, value, ...rest}) => {
+export const DynamicPicker: React.FC<IProps & Record<string,any>> = ({style, contProps, pickerStyle, onValueChange, options, value, ...rest}) => {
     
     const {colors} = useTheme();
     
@@ -53,7 +64,7 @@ export const DynamicPicker = ({style, contProps, pickerStyle, onValueChange, opt
     )
 }
 
-export const DynamicPickerIOS = ({style, contProps, pickerStyle, onValueChange, options, value, ...rest}) => {
+export const DynamicPickerIOS: React.FC<IProps & Record<string,any>> = ({style, contProps, pickerStyle, onValueChange, options, value, ...rest}) => {
     
     const {colors} = useTheme();
     const sheetOptions = [...options, 'cancel'];
@@ -94,7 +105,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#c6c6c6',
         borderRadius: 10,
-        borderColor: '#c6c6c6'
     },
     input: {
         fontFamily: 'Montserrat_700Bold',

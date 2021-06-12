@@ -8,7 +8,7 @@ import {
 	heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import {Solidbutton, SolidbuttonNoGradient} from '../button';
+import {Solidbutton, SolidbuttonNoGradient} from '../../button';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 

@@ -8,7 +8,7 @@ import {Provider} from 'react-redux';
 import FlashMessage from 'react-native-flash-message';
 
 import MainNavigator from './navigations';
-import {dark, light} from './constants/colors';
+import baseColors, {ColorsType} from './constants/colors';
 import {colors} from './constants/custom-colors';
 import {store} from './store';
 
@@ -17,7 +17,7 @@ export default function App() {
   const scheme = useColorScheme();
   
   const rnDefalt = scheme === 'dark' ? DarkTheme: DefaultTheme ;
-  const theme = scheme === 'dark' ? dark: light;
+  const theme: ColorsType = baseColors(scheme === 'dark');
   const rnTheme = {
       ...rnDefalt,
       colors: {
