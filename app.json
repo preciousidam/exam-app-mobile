@@ -22,7 +22,8 @@
       "userInterfaceStyle": "automatic"
     },
     "android": {
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "package": "com.harrp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
