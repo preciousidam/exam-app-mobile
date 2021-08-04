@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {useDispatch} from 'react-redux';
 
 
-import { restore } from '../store/reducers/auth';
+import { restore, signIn } from '../store/reducers/auth';
 import {bootstrap} from '../store/reducers/app';
 
 import { loadFonts } from '../libs/fonts';
@@ -22,10 +22,11 @@ export function SplashScreen({theme}){
     const setup = async () => {
         
         const user = await AsyncStorage.getItem('harrp-user');
-        const app = await AsyncStorage.getItem('apps')
-       
+        const app = await AsyncStorage.getItem('apps');
+        dispatch(signIn({username: "preciousidam@yahoo.com", password: "testPassword01"}))
+        //console.log(JSON.parse(user));
         dispatch(bootstrap(JSON.parse(app)));
-        dispatch(restore({user: JSON.parse(user)}));
+        //dispatch(restore({user: JSON.parse(user)}));
         //dispatch(restore({user: null}));
     }
 

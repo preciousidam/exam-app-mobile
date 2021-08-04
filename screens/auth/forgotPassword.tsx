@@ -4,7 +4,7 @@ import { Text as Typography } from 'react-native-elements';
 import { withTheme } from 'react-native-elements';
 import { useTheme } from '@react-navigation/native';
 
-import {GradientButton} from '../../components/button';
+import {Solidbutton} from '../../components/button';
 import {OutlinedInput} from '../../components/input';
 
 
@@ -14,7 +14,7 @@ export function ResetPassword({navigation, route}){
     const {colors, dark} = useTheme();
     const [email, setEmail] = useState('');
 
-    const onPress = e => signIn({ type: 'SIGN_IN', token: email });
+    const onPress = () => signIn({ type: 'SIGN_IN', token: email });
 
     return (
         <ScrollView contentContainerStyle={styles.scroll}>
@@ -33,7 +33,7 @@ export function ResetPassword({navigation, route}){
                         keyboardType="email-address"
                     />
 
-                    <GradientButton 
+                    <Solidbutton 
                         text="Reset" 
                         style={styles.btn}
                         onPress={onPress}

@@ -13,7 +13,30 @@ export const authSlice = createSlice({
         isLoading: false,
         isRestoring: true,
         isSignOut: true,
-        user: null,
+        user: {
+            "email": "preciousidam@yahoo.com",
+            "first_name": "Precious",
+            "last_name": "Idam",
+            "phone": "08162300796",
+            "pk": 1,
+            "profile": {
+              "address": "7, furo Ezimora street, Mauwa, Lekki Phase 1",
+              "city": "Lekki",
+              "country": "Nigeria",
+              "dob": "2019-06-04",
+              "gender": "Male",
+              "guard_one_email": "preciousidam@gmail.com",
+              "guard_one_phone": "08162300797",
+              "guard_two_email": null,
+              "guard_two_phone": null,
+              "id": 1,
+              "id_number": null,
+              "level": 1,
+              "level_name": "Senior Secondary",
+              "schools": [],
+              "state": "Lagos",
+            }
+        },
         form: {},
         levels: [],
         subscription_active: false,
@@ -24,6 +47,7 @@ export const authSlice = createSlice({
             return {
                 ...state,
                 isSignOut: false,
+                isRestoring: false,
                 user,
             };
         },
@@ -51,7 +75,7 @@ export const authSlice = createSlice({
         processing(state, action){
             const {loading} = action.payload;
             return {
-                ...state, isLoading: loading,
+                ...state, isLoading: loading
             }
         },
         level(state, action){

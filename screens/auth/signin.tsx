@@ -28,7 +28,7 @@ export function SignIn({navigation, route}){
     const {isLoading} = useSelector(state => state.auth);
 
     const onPress = () => {
-        dispatch(signIn({username: email.toLowerCase(),password}));
+        dispatch(signIn({username: email.toLowerCase(), password}));
     }
 
     return (
@@ -47,7 +47,7 @@ export function SignIn({navigation, route}){
                         </View>
                         <EmailOutlinedInputWithIcon 
                             value={email} 
-                            onChangeText={({nativeEvent}) =>setEmail(nativeEvent.text)} 
+                            onChangeText={({nativeEvent}) =>setEmail(nativeEvent.text.toLowerCase())} 
                             style={styles.textInput}
                             icon={<MaterialIcons name="mail-outline" color={colors.primary} size={wp("5%")} />}
                         />

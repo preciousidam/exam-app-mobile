@@ -35,14 +35,6 @@ export default function DrawerCustom(props){
                     <View style={{flexDirection: "column", padding: 10}}>
                         <Text style={styles.h4}>{`${user?.first_name} ${user?.last_name}`}</Text>
                         <Text style={styles.email} ellipsizeMode='tail' numberOfLines={1}>{user?.email}</Text>
-                        <Picker 
-                            itemStyle={{color: colors.text}} 
-                            style={{color: colors.text}}
-                            dropdownIconColor="#ffffff"
-                        >
-                            <Item label="Corona School" value="Corona" />
-                            <Item label="Tokunbo" value="tokunbo" />
-                        </Picker>
                     </View>
                 </View>
             </View>

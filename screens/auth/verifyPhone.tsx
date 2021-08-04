@@ -7,7 +7,7 @@ import {SvgXml} from 'react-native-svg';
 import {CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell} from 'react-native-confirmation-code-field';
 
 
-import {GradientButton} from '../../components/button';
+import {Solidbutton} from '../../components/button';
 import {verify} from '../../assets/verify';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendVerify, verifyEmail } from '../../store/reducers/auth';
@@ -25,7 +25,7 @@ export function VerifyPhone({navigation}){
     const dispatch = useDispatch();
     const {user, isLoading} = useSelector(state => state.auth);
 
-    const onPress = _ => {
+    const onPress = () => {
         dispatch(verifyEmail(value, user?.pk));
     }
 
@@ -66,7 +66,7 @@ export function VerifyPhone({navigation}){
                         )}
                     />
 
-                    <GradientButton 
+                    <Solidbutton
                         text="Verify" 
                         style={styles.btn}
                         onPress={onPress}

@@ -100,7 +100,7 @@ export function SignUp({navigation}){
                         <EmailOutlinedInputWithIcon
                             icon={<MaterialIcons name="mail-outline" color={colors.primary} size={24} />}
                             value={email} 
-                            onChangeText={({nativeEvent}) => setEmail(nativeEvent.text)}
+                            onChangeText={({nativeEvent}) => setEmail(nativeEvent.text.toLowerCase())}
                             style={styles.textInput}
                         />
                         <PasswordOutlinedInputWithIcon

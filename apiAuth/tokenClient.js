@@ -37,6 +37,6 @@ client.interceptors.response.use(
     },
     error => {
         //return Promise.reject(error);
-        return {data: error.response.data, status: error.response.status}
+        return {data: error?.response?.data, status: error?.response?.status}
     },
 );
