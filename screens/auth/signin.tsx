@@ -10,25 +10,45 @@ import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
-import { signIn } from '../../store/reducers/auth';
+import { showMessage, hideMessage } from "react-native-flash-message";
+import { isAvailableAsync, setItemAsync } from "expo-secure-store";
 
 import {Solidbutton} from '../../components/button';
 import {EmailOutlinedInputWithIcon, PasswordOutlinedInputWithIcon} from '../../components/input';
 import { ActInd } from '../../components/activityIndicator';
 import { Pressable } from 'react-native';
+import type {LoginRequest} from '../../store/auth/api';
+import {useLoginMutation} from '../../store/auth/api';
+import {setCredential} from '../../store/auth';
 
 
 
 export function SignIn({navigation, route}){
     const {colors, dark} = useTheme();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [detail, setDetail] = useState<LoginRequest>({} as LoginRequest)
     const dispatch = useDispatch();
-    const {isLoading} = useSelector(state => state.auth);
+    const [login, {isLoading}] = useLoginMutation();
 
-    const onPress = () => {
-        dispatch(signIn({username: email.toLowerCase(), password}));
+    const onPress = async () => {
+        try {
+            const {data} = await login(detail).unwrap();
+            let secureStore = await isAvailableAsync();
+            if(secureStore){
+                setItemAsync('username',detail.username);
+                setItemAsync('password',detail.password);
+            }
+            dispatch(setCredential(data));
+        }catch(error){
+            console.log(error);
+            /*showMessage({
+                type: 'danger',
+                message: item.toUpperCase(),
+                description: data[item],
+                icon: 'auto',
+                duration: 3000,
+                hideStatusBar: true,
+            })*/
+        }
     }
 
     return (
@@ -46,15 +66,15 @@ export function SignIn({navigation, route}){
                             <Typography h4 h4Style={styles.h4}>Sign in to continue!</Typography>
                         </View>
                         <EmailOutlinedInputWithIcon 
-                            value={email} 
-                            onChangeText={({nativeEvent}) =>setEmail(nativeEvent.text.toLowerCase())} 
+                            value={detail.username} 
+                            onChangeText={({nativeEvent}) => setDetail(prev => ({...prev, username: nativeEvent.text.toLowerCase()}))} 
                             style={styles.textInput}
                             icon={<MaterialIcons name="mail-outline" color={colors.primary} size={wp("5%")} />}
                         />
                         <PasswordOutlinedInputWithIcon
                             icon={<MaterialIcons name="lock-outline" color={colors.primary} size={24} />}
-                            value={password} 
-                            onChangeText={({nativeEvent}) => setPassword(nativeEvent.text)}
+                            value={detail.password} 
+                            onChangeText={({nativeEvent}) => setDetail(prev => ({...prev, password: nativeEvent.text.toLowerCase()}))}
                             style={styles.textInput}  
                         />
                         <Text 

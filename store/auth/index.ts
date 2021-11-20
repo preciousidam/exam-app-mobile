@@ -1,95 +1,107 @@
 import AsyncStorage from "@react-native-community/async-storage";
-import { createSlice } from "@reduxjs/toolkit";
-import client from '../../apiAuth/tokenClient';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from '..';
 import { isAvailableAsync, setItemAsync } from "expo-secure-store";
-import getLoginClient from "../../apiAuth/loggedInClient";
 
+export type Profile = {
+    address: string;
+    city: string;
+    country: string;
+    dob: string;
+    gender: string;
+    id: string | number;
+    id_number?: string | number;
+    level: number;
+    level_name: string;
+    school?: number;
+    state: string;
+    guard_one_email: string;
+    guard_two_email?: string;
+    guard_one_phone: string;
+    guard_two_phone?: string;
+}
 
+export type User = {
+    email: string;
+    first_name: string;
+    last_name: string;
+    phone: string;
+    pk: 1,
+    profile: Profile;
+};
+
+export type Data = {
+	user: User;
+	refresh_token: string;
+	access_token: string;
+	isLoading: boolean;
+} 
+
+const user: User = {
+    "email": "preciousidam@yahoo.com",
+    "first_name": "Precious",
+    "last_name": "Idam",
+    "phone": "08162300796",
+    "pk": 1,
+    "profile": {
+      "address": "7, furo Ezimora street, Mauwa, Lekki Phase 1",
+      "city": "Lekki",
+      "country": "Nigeria",
+      "dob": "2019-06-04",
+      "gender": "Male",
+      "guard_one_email": "preciousidam@gmail.com",
+      "guard_one_phone": "08162300797",
+      "guard_two_email": null,
+      "guard_two_phone": null,
+      "id": 1,
+      "id_number": null,
+      "level": 1,
+      "level_name": "Senior Secondary",
+      "school": null,
+      "state": "Lagos",
+    }
+}
+
+export const initialState: Data = {
+	user,
+	refresh_token: null,
+	access_token: null,
+	isLoading: true,
+}
 
 export const authSlice = createSlice({
     name: 'auth',
-    initialState: {
-        isLoading: false,
-        isRestoring: true,
-        isSignOut: true,
-        user: {
-            "email": "preciousidam@yahoo.com",
-            "first_name": "Precious",
-            "last_name": "Idam",
-            "phone": "08162300796",
-            "pk": 1,
-            "profile": {
-              "address": "7, furo Ezimora street, Mauwa, Lekki Phase 1",
-              "city": "Lekki",
-              "country": "Nigeria",
-              "dob": "2019-06-04",
-              "gender": "Male",
-              "guard_one_email": "preciousidam@gmail.com",
-              "guard_one_phone": "08162300797",
-              "guard_two_email": null,
-              "guard_two_phone": null,
-              "id": 1,
-              "id_number": null,
-              "level": 1,
-              "level_name": "Senior Secondary",
-              "schools": [],
-              "state": "Lagos",
-            }
-        },
-        form: {},
-        levels: [],
-        subscription_active: false,
-    },
+    initialState,
     reducers: {
-        login(state, action){
-            const {user} =  action.payload;
-            return {
-                ...state,
-                isSignOut: false,
-                isRestoring: false,
-                user,
-            };
-        },
-        edit(state, action){
-            const form = action.payload;
-
-            return {
-                ...state,
-                form
-            }
-
+        setCredential(state, 
+            {payload: {user, access_token, refresh_token, isLoading}}: PayloadAction<Data>
+        ){
+            AsyncStorage.setItem(
+                '@harrp_user',
+                JSON.stringify({ user, access_token, refresh_token })
+            );
+            state.user = user;
+            state.access_token = access_token;
+            state.refresh_token = refresh_token;
+            state.isLoading = isLoading;
         },
         logout(state){
-            AsyncStorage.removeItem('harrp-user');
-            return {...state, isSignOut: true, user: null};
-        },
-        restore(state, action){
-            const {user} =  action.payload;
-            return {
-                ...state,
-                isRestoring: false,
-                user,
-            };
-        },
-        processing(state, action){
-            const {loading} = action.payload;
-            return {
-                ...state, isLoading: loading
-            }
-        },
-        level(state, action){
-            const {levels} = action.payload;
-            return {...state, levels}
+            AsyncStorage.removeItem('@harrp-user');
+            return {access_token: null, refresh_token: null, user: null, isLoading: false};
         }
     }
 });
 
-export const {login, logout, restore, processing, edit, level} = authSlice.actions;
+export const {setCredential, logout} = authSlice.actions;
 
 export default authSlice.reducer;
+export const useSelectCurrentUser = (
+  state: RootState
+): User | null | undefined => state.auth.user;
+export const useIsLoading = (state: RootState): boolean | undefined =>
+  state.auth.isLoading;
 
-export const signIn = details => async dispatch => {
+/*export const signIn = details => async dispatch => {
     
     try{ 
         dispatch(processing({loading: true}));
@@ -214,46 +226,6 @@ export const verifyEmail = (otp, pk) => async dispatch => {
     }
 }
 
-export const refreshToken = refresh => async dispatch => {
-    
-    try{ 
-        const {data, status} = await client.post('auth/token/refresh/', {refresh})
-        
-        
-        if (status === 201 || status === 200 ){
-            let token = await AsyncStorage.getItem('harrptokenData');
-            token = JSON.parse(token);
-            token.access_token = data.access;
-            
-            await AsyncStorage.setItem('harrptokenData', JSON.stringify(token));
-        
-            return
-        }
-        for (let item in data){
-            showMessage({
-                type: 'danger',
-                message: {item},
-                description: data[item],
-                icon: 'auto',
-                duration: 3000,
-                hideStatusBar: true,
-            })
-        }
-        dispatch(processing({loading: false}));
-        return
-    }catch (err){
-        console.log(err)
-        dispatch(processing({loading: false}));
-        showMessage({
-            type: 'danger',
-            message: "Something happened",
-            description: err.message,
-            icon: 'auto',
-            duration: 3000,
-            hideStatusBar: true,
-        })
-    }
-}
 
 export const signUp = details => async dispatch => {
     
@@ -453,4 +425,4 @@ export const updateLevelsAsync = _ => async dispatch => {
             hideStatusBar: true,
         })
     }
-}
+}*/

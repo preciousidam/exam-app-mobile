@@ -16,9 +16,21 @@ import {DynamicPicker, DynamicPickerIOS} from '../../components/input/picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { NoticeModal } from '../../components/modal';
-import { createProfile, edit, updateLevelsAsync } from '../../store/reducers/auth';
+//import { createProfile, edit, updateLevelsAsync } from '../../store/auth';
 import {ActInd} from '../../components/activityIndicator';
 import extraColors from '../../constants/custom-colors';
+
+const createProfile = (value, ano) => {
+
+}
+
+const edit = (value) => {
+
+}
+
+const updateLevelsAsync = () => {
+
+}
 
 const Picker = Platform.OS === 'ios' ? DynamicPickerIOS: DynamicPicker;
 const NIGERIA_STATE = ['Abia',

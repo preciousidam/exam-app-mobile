@@ -10,7 +10,7 @@ import {
 
 import { CardForm } from './form';
 import FocusAwareStatusBar from '../../StatusBar';
-import { PAY_FLOW } from '../../../store/reducers/subscription';
+import { PAY_FLOW } from '../../../store/subscription';
 
 
 export const PaymentFormModal = ({show, close, pay, plan}) => {

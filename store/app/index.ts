@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "..";
 import client from '../../apiAuth/guestClient';
 
 
@@ -9,6 +10,7 @@ export const appSlice = createSlice({
         terms: null,
         processing: false,
         error: false,
+        isRestoring: true
     },
     reducers: {
         terms(state, action){
@@ -33,11 +35,19 @@ export const appSlice = createSlice({
                 error, 
                 processing: false,
             }
+        },
+        restore(state, action){
+            const {user} =  action.payload;
+            return {
+                ...state,
+                isRestoring: false,
+                user,
+            };
         }
     }
 });
 
-export const {terms, products, processing, error} = appSlice.actions;
+export const {terms, processing, error, restore} = appSlice.actions;
 
 export default appSlice.reducer;
 
@@ -51,4 +61,8 @@ export const bootstrap = payload => async dispatch => {
     }
 }
 
+export const useSelectTerms = (state: RootState) => state.app.terms;
+export const useSelectProcessing = (state: RootState) => state.app.processing;
+export const useSelectIsRestoring = (state: RootState) => state.app.isRestoring;
+export const useSelectError  = (state: RootState) => state.app.error;
 

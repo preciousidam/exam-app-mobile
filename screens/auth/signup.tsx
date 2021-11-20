@@ -10,16 +10,18 @@ import {
 } from 'react-native-responsive-screen';
 import { showMessage } from 'react-native-flash-message';
 import { Pressable } from 'react-native';
+import { isAvailableAsync, setItemAsync } from "expo-secure-store";
 
 
 import {Solidbutton} from '../../components/button';
 import { EmailOutlinedInputWithIcon, OutlinedInputWithIcon, PasswordOutlinedInputWithIcon } from '../../components/input';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { isValidEmail, isValidPassword } from '../../utility';
-import { signUp } from '../../store/reducers/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { Data, setCredential } from '../../store/auth';
+import { useDispatch } from 'react-redux';
 import { ActInd } from '../../components/activityIndicator';
 import extraColors from '../../constants/custom-colors';
+import {useRegisterMutation, useLoginMutation, LoginRequest} from '../../store/auth/api';
 
 
 
@@ -32,11 +34,34 @@ export function SignUp({navigation}){
     const [date, setDate] = useState(new Date());
     const [fullname, setFullname] = useState('');
     const dispatch = useDispatch();
-    const {isLoading} = useSelector(state => state.auth);
+    const [register, {isError, isLoading: isRLoading, isSuccess}] = useRegisterMutation();
+    const [login, {isLoading}] = useLoginMutation();
 
     const onDateChange = (event, selectedDate) => {
         const selDate = selectedDate || date;
         setDate(selDate);
+    }
+
+    const onLogin = async (detail: LoginRequest) => {
+        try {
+            const {data} = await login(detail).unwrap();
+            let secureStore = await isAvailableAsync();
+            if(secureStore){
+                setItemAsync('username',detail.username);
+                setItemAsync('password',detail.password);
+            }
+            dispatch(setCredential(data));
+        }catch(error){
+            console.log(error);
+            /*showMessage({
+                type: 'danger',
+                message: item.toUpperCase(),
+                description: data[item],
+                icon: 'auto',
+                duration: 3000,
+                hideStatusBar: true,
+            })*/
+        }
     }
 
     const onPress = async () => {
@@ -64,16 +89,26 @@ export function SignUp({navigation}){
             })
             return
         }
-       
-        dispatch(signUp({
-            username: email,
-            email: email.toLowerCase(),
-            password, 
-            phone, 
-            last_name: fullname.split(' ')[0],
-            first_name: fullname.split(' ')[1],
-            is_student: true,
-        }));
+        try {
+            const user: Data = await register({
+                email: email.toLowerCase(),
+                password, 
+                phone, 
+                last_name: fullname.split(' ')[0],
+                first_name: fullname.split(' ')[1],
+                is_student: true,
+            }).unwrap();
+
+            if(isError){
+                throw user;
+            }
+            else if( isSuccess){
+                onLogin({username: email, password})
+            }
+        }
+        catch (error){
+            console.log(error);
+        }
     }
 
     return (
@@ -141,7 +176,7 @@ export function SignUp({navigation}){
                 </KeyboardAvoidingView>
                 
             </ScrollView>
-            <ActInd status={isLoading} />
+            <ActInd status={isLoading || isLoading} />
             <StatusBar barStyle={dark? 'light-content': 'dark-content' } backgroundColor={colors.card} />
 
             <Pressable onPress={e => navigation.navigate('Login')}>

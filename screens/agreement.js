@@ -6,7 +6,7 @@ import {useDispatch} from 'react-redux';
 
 import { Solidbutton } from '../components/button';
 
-import {bootstrap} from '../store/reducers/app';
+import {bootstrap} from '../store/app';
 import FocusAwareStatusBar from '../components/StatusBar';
 
 

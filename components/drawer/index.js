@@ -10,7 +10,7 @@ import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { logout } from '../../store/reducers/auth';
+import { logout } from '../../store/auth';
 
 export default function DrawerCustom(props){
     const {colors} = useTheme();

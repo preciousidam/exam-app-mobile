@@ -10,7 +10,7 @@ import {CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell} from 'react-na
 import {Solidbutton} from '../../components/button';
 import {verify} from '../../assets/verify';
 import { useDispatch, useSelector } from 'react-redux';
-import { sendVerify, verifyEmail } from '../../store/reducers/auth';
+//import { sendVerify, verifyEmail } from '../../store/auth';
 import { ActInd } from '../../components/activityIndicator';
 
 
@@ -25,13 +25,13 @@ export function VerifyPhone({navigation}){
     const dispatch = useDispatch();
     const {user, isLoading} = useSelector(state => state.auth);
 
-    const onPress = () => {
-        dispatch(verifyEmail(value, user?.pk));
-    }
+    // const onPress = () => {
+    //     dispatch(verifyEmail(value, user?.pk));
+    // }
 
-    useEffect(() => {
-        dispatch(sendVerify(user?.pk));
-    },[])
+    // useEffect(() => {
+    //     dispatch(sendVerify(user?.pk));
+    // },[])
 
     return (
         <ScrollView contentContainerStyle={styles.scroll}>
@@ -66,11 +66,11 @@ export function VerifyPhone({navigation}){
                         )}
                     />
 
-                    <Solidbutton
+                    {/* <Solidbutton
                         text="Verify" 
                         style={styles.btn}
                         onPress={onPress}
-                    />
+                    /> */}
                 </View>
                 
             </KeyboardAvoidingView>

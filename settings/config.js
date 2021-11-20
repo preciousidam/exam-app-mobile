@@ -5,5 +5,6 @@ const api = (typeof manifest.packagerOpts === `object`) && manifest.packagerOpts
   : `www.harrplatform.com`;
 
 export const apiConfig = {
-    baseUrl: `http://${api}/api/v1/`,
+  //baseUrl: `http://${api}/api/v1/`,
+  baseUrl: `https://harrp.herokuapp.com/api/v1/`,
 }

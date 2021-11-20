@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
+import {useAuth} from '../store/auth/hook';
 
 import SplashScreen from '../screens/splashScreen';
 import AuthFlow, {ProfileFlow} from './authentication';
@@ -16,18 +17,18 @@ export function MainNavigation(props){
   
     const {Navigator, Screen} = Stack;
     const fontLoaded = loadFonts();
-    const {isRestoring, user} = useSelector(state => state.auth);
+    const {isLoading, user} = useAuth();
     const {terms} = useSelector(state => state.app);
 
 	
     
     return(
 		fontLoaded && <Navigator>
-			{ isRestoring && <Screen name='Splash' component={SplashScreen} options={{headerShown: false}} /> }
-			{ terms === null && <Screen name='Privacy' component={Agree} options={{headerShown: false}} /> }
+			{ isLoading && <Screen name='Splash' component={SplashScreen} options={{headerShown: false}} /> }
+			{/* { terms === null && <Screen name='Privacy' component={Agree} options={{headerShown: false}} /> } */}
 			{ user === null && <Screen name="auth" component={AuthFlow} options={{ headerShown: false}} /> }
-      		{ user && user.verified === false && <Screen name="verify" component={VerifyPhone} options={{ headerShown: false}} /> }
-			{ user && user.profile === null && <Screen name="profile" component={ProfileFlow} options={{ headerShown: false}} /> }
+      		{/* user && user.verified === false && <Screen name="verify" component={VerifyPhone} options={{ headerShown: false}} /> }
+			{ user && user.profile === null && <Screen name="profile" component={ProfileFlow} options={{ headerShown: false}} /> */}
 			{ user !== null && <Screen name="app" component={HomeNavigation} options={{ headerShown: false }}/> }
 		</Navigator>
     )

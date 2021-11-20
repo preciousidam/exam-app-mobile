@@ -15,7 +15,7 @@ import FocusAwareStatusBar from '../../../components/StatusBar';
 import LessonList from '../../../components/lesson';
 import {SearchInput} from '../../../components/input';
 import {updateSubjectsAsync} from '../../../store/reducers/subjects';
-import { updateLessonsAsync } from '../../../store/reducers/lesson';
+import { updateLessonsAsync } from '../../../store/lesson';
 
 
 

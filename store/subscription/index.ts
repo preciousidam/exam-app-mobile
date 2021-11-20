@@ -2,17 +2,28 @@ import { createSlice } from "@reduxjs/toolkit";
 import { showMessage } from "react-native-flash-message";
 import getLoggedInClient from "../../apiAuth/loggedInClient";
 
-export const PAY_FLOW = {'charge': 'CHARGE CARD', 'validate': 'VALIDATE', 'complete': "COMPLETE"}
+export enum PAY_FLOW {
+    charge='CHARGE CARD', 
+    validate= 'VALIDATE', 
+    complete= "COMPLETE"
+}
+type Props = {
+	recent?: object;
+	loading: boolean;
+	current_flow?: PAY_FLOW;
+	error?: any;
+	message: String;
+};
+
+const initialState = {
+	loading: false,
+    current_flow: PAY_FLOW.charge,
+
+} as Props;
 
 export const subSlice = createSlice({
     name: 'subscription',
-    initialState: {
-        recent: null,
-        loading: false,
-        current_flow: PAY_FLOW.charge,
-        error: null,
-        message: null
-    },
+    initialState,
     reducers: {
         load(state, action){
             const {sub} =  action.payload;
@@ -50,7 +61,7 @@ export const {flow, load, loading, error} = subSlice.actions;
 
 export default subSlice.reducer;
 
-export const fetchSubAsync = id => async dispatch => {
+/*export const fetchSubAsync = id => async dispatch => {
     try{
         dispatch(loading({loading: true}));
         const client = await getLoggedInClient();
@@ -170,5 +181,5 @@ export const validateAsync = data => async dispatch => {
             hideStatusBar: true,
         })
     }
-}
+}*/
 

@@ -5,25 +5,45 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {useDispatch} from 'react-redux';
 
 
-import { restore, signIn } from '../store/reducers/auth';
-import {bootstrap} from '../store/reducers/app';
+import { setCredential } from '../store/auth';
+import {bootstrap} from '../store/app';
 
 import { loadFonts } from '../libs/fonts';
 import { withTheme } from 'react-native-elements';
+import { useLoginMutation } from '../store/auth/api';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 
 
 export function SplashScreen({theme}){
     const {colors, dark} = useTheme();
+    const [login, {isSuccess, isError}] = useLoginMutation();
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const fontLoaded = loadFonts();
 
+    const LoginApp = async () => {
+        try {
+            const data = await login({username: "preciousidam@yahoo.com", password: "testPassword01"}).unwrap();
+            console.log(data)
+            console.log(isError, isSuccess)
+            if(data){
+                dispatch(setCredential({
+                    data.data,
+                    isLoading: false,
+                }))
+            }
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
+
     const setup = async () => {
-        
-        const user = await AsyncStorage.getItem('harrp-user');
+        LoginApp();
+        const user = await AsyncStorage.getItem('@harrp-user');
         const app = await AsyncStorage.getItem('apps');
-        dispatch(signIn({username: "preciousidam@yahoo.com", password: "testPassword01"}))
+        // dispatch(signIn({username: "preciousidam@yahoo.com", password: "testPassword01"}))
         //console.log(JSON.parse(user));
         dispatch(bootstrap(JSON.parse(app)));
         //dispatch(restore({user: JSON.parse(user)}));
