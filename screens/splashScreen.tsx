@@ -25,7 +25,7 @@ export function SplashScreen({theme}){
     const LoginApp = async () => {
         try {
             const data = await login({username: "preciousidam@yahoo.com", password: "testPassword01"}).unwrap();
-            console.log(data)
+            
             if(data){
                 dispatch(setCredential({
                     ...data,

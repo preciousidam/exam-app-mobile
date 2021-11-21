@@ -73,7 +73,6 @@ export const authSlice = createSlice({
         setCredential(state, 
             {payload: {user, access_token, refresh_token, isLoading}}: PayloadAction<Data>
         ){
-            console.log(user)
             AsyncStorage.setItem(
                 '@harrp_user',
                 JSON.stringify({ user, access_token, refresh_token })
