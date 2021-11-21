@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from '..';
 import { isAvailableAsync, setItemAsync } from "expo-secure-store";
@@ -31,9 +31,9 @@ export type User = {
 };
 
 export type Data = {
-	user: User;
-	refresh_token: string;
-	access_token: string;
+	user?: User;
+	refresh_token?: string;
+	access_token?: string;
 	isLoading: boolean;
 } 
 
@@ -63,9 +63,6 @@ const user: User = {
 }
 
 export const initialState: Data = {
-	user,
-	refresh_token: null,
-	access_token: null,
 	isLoading: true,
 }
 
@@ -76,6 +73,7 @@ export const authSlice = createSlice({
         setCredential(state, 
             {payload: {user, access_token, refresh_token, isLoading}}: PayloadAction<Data>
         ){
+            console.log(user)
             AsyncStorage.setItem(
                 '@harrp_user',
                 JSON.stringify({ user, access_token, refresh_token })

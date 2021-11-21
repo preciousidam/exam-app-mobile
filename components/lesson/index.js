@@ -15,7 +15,7 @@ import {loadFonts} from '../../libs/fonts';
 import {Empty} from '../../assets/empty';
 import { addBookmark, getViewedAsync } from '../../store/reducers/subjects';
 import { showMessage } from 'react-native-flash-message';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PaymentModal } from '../modal/payment/payment';
 
 

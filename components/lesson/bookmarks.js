@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {CardSquare, CardRect, ComingSoon} from './index';
 import { removeBookmark } from '../../store/reducers/subjects';
 import { showMessage } from 'react-native-flash-message';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Bookmarks = ({}) => {
     const {bookmarked} = useSelector(state => state.subjects);

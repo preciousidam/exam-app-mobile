@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "..";
 import client from '../../apiAuth/guestClient';

@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice } from "@reduxjs/toolkit";
 import { showMessage, hideMessage } from "react-native-flash-message";
 

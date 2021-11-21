@@ -11,13 +11,15 @@ import {
 	heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { logout } from '../../store/auth';
+import { useAuth } from '../../store/auth/hook';
 
 export default function DrawerCustom(props){
     const {colors} = useTheme();
-    const {user} = useSelector(state => state.auth);
+    //const {user} = useSelector(state => state.auth);
+    const {user} = useAuth();
     const dispatch = useDispatch();
     const {Item} = Picker;
-
+    console.log(user)
     const signOut = _ => {
         dispatch(logout());
     }

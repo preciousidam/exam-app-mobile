@@ -1,12 +1,12 @@
 import axios from 'axios';
 import {Alert} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {apiConfig} from '../settings/config';
 
 
 const getAccessToken = async () => {
     try {
-        const retrievedItem = await AsyncStorage.getItem('harrptokenData');
+        const retrievedItem = await AsyncStorage.getItem('@harrp-user');
         if (retrievedItem !== null) {
             const item = JSON.parse(retrievedItem);
             //console.log(item);
@@ -63,7 +63,7 @@ loginClient.interceptors.response.use(
         
         if (error?.response?.status === 401) {
             try {
-                const value = await AsyncStorage.getItem('harrptokenData');
+                const value = await AsyncStorage.getItem('@harrp-user');
                 
                 if (value !== null) {
                     // We have data!!

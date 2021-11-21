@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Text, View, StyleSheet, Image, StatusBar} from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 
 
@@ -26,10 +26,9 @@ export function SplashScreen({theme}){
         try {
             const data = await login({username: "preciousidam@yahoo.com", password: "testPassword01"}).unwrap();
             console.log(data)
-            console.log(isError, isSuccess)
             if(data){
                 dispatch(setCredential({
-                    data.data,
+                    ...data,
                     isLoading: false,
                 }))
             }
@@ -41,7 +40,7 @@ export function SplashScreen({theme}){
 
     const setup = async () => {
         LoginApp();
-        const user = await AsyncStorage.getItem('@harrp-user');
+        //const user = await AsyncStorage.getItem('@harrp-user');
         const app = await AsyncStorage.getItem('apps');
         // dispatch(signIn({username: "preciousidam@yahoo.com", password: "testPassword01"}))
         //console.log(JSON.parse(user));
